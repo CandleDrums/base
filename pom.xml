@@ -3,7 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.cds.base</groupId>
+	<groupId>com.candledrums.base</groupId>
 	<artifactId>base</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
@@ -35,138 +35,138 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>com.cds.base</groupId>
+				<groupId>com.candledrums.base</groupId>
 				<artifactId>base-common</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.cds.base</groupId>
+				<groupId>com.candledrums.base</groupId>
 				<artifactId>base-constant</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.cds.base</groupId>
+				<groupId>com.candledrums.base</groupId>
 				<artifactId>base-exception</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.cds.base</groupId>
+				<groupId>com.candledrums.base</groupId>
 				<artifactId>base-util</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.cds.base</groupId>
+				<groupId>com.candledrums.base</groupId>
 				<artifactId>base-dal</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.cds.base</groupId>
+				<groupId>com.candledrums.base</groupId>
 				<artifactId>base-biz</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.cds.base</groupId>
+				<groupId>com.candledrums.base</groupId>
 				<artifactId>base-core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.cds.base</groupId>
+				<groupId>com.candledrums.base</groupId>
 				<artifactId>base-api</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.cds.maven</groupId>
+				<groupId>com.candledrums.maven</groupId>
 				<artifactId>configure-maven-tools</artifactId>
 				<version>${configure.maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
-				<groupId>com.cds.maven</groupId>
+				<groupId>com.candledrums.maven</groupId>
 				<artifactId>configure-maven-javax</artifactId>
 				<version>${configure.maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
-				<groupId>com.cds.maven</groupId>
+				<groupId>com.candledrums.maven</groupId>
 				<artifactId>configure-maven-commons</artifactId>
 				<version>${configure.maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
-				<groupId>com.cds.maven</groupId>
+				<groupId>com.candledrums.maven</groupId>
 				<artifactId>configure-maven-redis</artifactId>
 				<version>${configure.maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
-				<groupId>com.cds.maven</groupId>
+				<groupId>com.candledrums.maven</groupId>
 				<artifactId>configure-maven-spring-boot</artifactId>
 				<version>${configure.maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
-				<groupId>com.cds.maven</groupId>
+				<groupId>com.candledrums.maven</groupId>
 				<artifactId>configure-maven-jackson</artifactId>
 				<version>${configure.maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
-				<groupId>com.cds.maven</groupId>
+				<groupId>com.candledrums.maven</groupId>
 				<artifactId>configure-maven-spring</artifactId>
 				<version>${configure.maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
-				<groupId>com.cds.maven</groupId>
+				<groupId>com.candledrums.maven</groupId>
 				<artifactId>configure-maven-validation</artifactId>
 				<version>${configure.maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
-				<groupId>com.cds.maven</groupId>
+				<groupId>com.candledrums.maven</groupId>
 				<artifactId>configure-maven-lombok</artifactId>
 				<version>${configure.maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
-				<groupId>com.cds.maven</groupId>
+				<groupId>com.candledrums.maven</groupId>
 				<artifactId>configure-maven-poi</artifactId>
 				<version>${configure.maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
-				<groupId>com.cds.maven</groupId>
+				<groupId>com.candledrums.maven</groupId>
 				<artifactId>configure-maven-dom</artifactId>
 				<version>${configure.maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
-				<groupId>com.cds.maven</groupId>
+				<groupId>com.candledrums.maven</groupId>
 				<artifactId>configure-maven-http</artifactId>
 				<version>${configure.maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
-				<groupId>com.cds.maven</groupId>
+				<groupId>com.candledrums.maven</groupId>
 				<artifactId>configure-maven-mybatis</artifactId>
 				<version>${configure.maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
-				<groupId>com.cds.maven</groupId>
+				<groupId>com.candledrums.maven</groupId>
 				<artifactId>configure-maven-alibaba</artifactId>
 				<version>${configure.maven.version}</version>
 				<type>pom</type>
