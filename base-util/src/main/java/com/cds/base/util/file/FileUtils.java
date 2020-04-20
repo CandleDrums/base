@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.cds.base.util.bean.CheckUtils;
@@ -35,9 +36,9 @@ import com.cds.base.util.lang.StringUtils;
 public class FileUtils {
 
     public final static String FILE_EXTENSION_SEPARATOR = ".";
-    public final static String CHARSET                  = "utf-8";
+    public final static String CHARSET = "utf-8";
 
-    private FileUtils(){
+    private FileUtils() {
         throw new AssertionError();
     }
 
@@ -45,9 +46,11 @@ public class FileUtils {
      * read file
      * 
      * @param filePath
-     * @param charsetName The name of a supported {@link java.nio.charset.Charset </code>charset<code>}
+     * @param charsetName
+     *            The name of a supported {@link java.nio.charset.Charset </code>charset<code>}
      * @return if file not exist, return null, else return content of file
-     * @throws RuntimeException if an error occurs while operator BufferedReader
+     * @throws RuntimeException
+     *             if an error occurs while operator BufferedReader
      */
     public static StringBuilder readFile(String filePath, String charsetName) {
         File file = new File(filePath);
@@ -80,9 +83,11 @@ public class FileUtils {
      * 
      * @param filePath
      * @param content
-     * @param append is append, if true, write to the end of file, else clear content of file and write into it
+     * @param append
+     *            is append, if true, write to the end of file, else clear content of file and write into it
      * @return return false if content is empty, true otherwise
-     * @throws RuntimeException if an error occurs while operator FileWriter
+     * @throws RuntimeException
+     *             if an error occurs while operator FileWriter
      */
     public static boolean writeFile(String filePath, String content, boolean append) {
         if (StringUtils.isEmpty(content)) {
@@ -107,9 +112,11 @@ public class FileUtils {
      * 
      * @param filePath
      * @param contentList
-     * @param append is append, if true, write to the end of file, else clear content of file and write into it
+     * @param append
+     *            is append, if true, write to the end of file, else clear content of file and write into it
      * @return return false if contentList is empty, true otherwise
-     * @throws RuntimeException if an error occurs while operator FileWriter
+     * @throws RuntimeException
+     *             if an error occurs while operator FileWriter
      */
     public static boolean writeFile(String filePath, List<String> contentList, boolean append) {
         if (CheckUtils.isEmpty(contentList)) {
@@ -188,11 +195,15 @@ public class FileUtils {
     /**
      * write file
      * 
-     * @param file the file to be opened for writing.
-     * @param stream the input stream
-     * @param append if <code>true</code>, then bytes will be written to the end of the file rather than the beginning
+     * @param file
+     *            the file to be opened for writing.
+     * @param stream
+     *            the input stream
+     * @param append
+     *            if <code>true</code>, then bytes will be written to the end of the file rather than the beginning
      * @return return true
-     * @throws RuntimeException if an error occurs while operator FileOutputStream
+     * @throws RuntimeException
+     *             if an error occurs while operator FileOutputStream
      */
     public static boolean writeFile(String filePath, InputStream stream, boolean append) {
         return writeFile(filePath != null ? new File(filePath) : null, stream, append);
@@ -213,11 +224,15 @@ public class FileUtils {
     /**
      * write file
      * 
-     * @param file the file to be opened for writing.
-     * @param stream the input stream
-     * @param append if <code>true</code>, then bytes will be written to the end of the file rather than the beginning
+     * @param file
+     *            the file to be opened for writing.
+     * @param stream
+     *            the input stream
+     * @param append
+     *            if <code>true</code>, then bytes will be written to the end of the file rather than the beginning
      * @return return true
-     * @throws RuntimeException if an error occurs while operator FileOutputStream
+     * @throws RuntimeException
+     *             if an error occurs while operator FileOutputStream
      */
     public static boolean writeFile(File file, InputStream stream, boolean append) {
         OutputStream o = null;
@@ -274,7 +289,8 @@ public class FileUtils {
      * @param sourceFilePath
      * @param destFilePath
      * @return
-     * @throws RuntimeException if an error occurs while operator FileOutputStream
+     * @throws RuntimeException
+     *             if an error occurs while operator FileOutputStream
      */
     public static boolean copyFile(String sourceFilePath, String destFilePath) {
         InputStream inputStream = null;
@@ -290,9 +306,11 @@ public class FileUtils {
      * read file to string list, a element of list is a line
      * 
      * @param filePath
-     * @param charsetName The name of a supported {@link java.nio.charset.Charset </code>charset<code>}
+     * @param charsetName
+     *            The name of a supported {@link java.nio.charset.Charset </code>charset<code>}
      * @return if file not exist, return null, else return content of file
-     * @throws RuntimeException if an error occurs while operator BufferedReader
+     * @throws RuntimeException
+     *             if an error occurs while operator BufferedReader
      */
     public static List<String> readFileToList(String filePath, String charsetName) {
         File file = new File(filePath);
@@ -464,12 +482,12 @@ public class FileUtils {
      * 
      * @param filePath
      * @return true if the necessary directories have been created or the target directory already exists, false one of
-     * the directories can not be created.
-     * <ul>
-     * <li>if {@link FileUtils#getFolderName(String)} return null, return false</li>
-     * <li>if target directory already exists, return true</li>
-     * <li>return {@link File#makeFolder}</li>
-     * </ul>
+     *         the directories can not be created.
+     *         <ul>
+     *         <li>if {@link FileUtils#getFolderName(String)} return null, return false</li>
+     *         <li>if target directory already exists, return true</li>
+     *         <li>return {@link File#makeFolder}</li>
+     *         </ul>
      */
     public static boolean makeDirs(String filePath) {
         String folderName = getFolderName(filePath);
@@ -574,4 +592,55 @@ public class FileUtils {
         File file = new File(path);
         return (file.exists() && file.isFile() ? file.length() : -1);
     }
+
+    /**
+     * @description 不使用递归的方法调用
+     * @param path
+     *            文件夹路径
+     * @return java.util.List<java.io.File>
+     * @author https://blog.csdn.net/chen_2890
+     * @date 2019/6/14 17:34
+     * @version V1.0
+     */
+    public static List<File> traverseFolder(String path) {
+        List<File> fileList = new ArrayList<>();
+        int fileNum = 0, folderNum = 0;
+        File file = new File(path);
+        if (file.exists()) {
+            LinkedList<File> list = new LinkedList<File>();
+            File[] files = file.listFiles();
+            for (File file2 : files) {
+                if (file2.isDirectory()) {
+                    // System.out.println("文件夹:" + file2.getAbsolutePath());
+                    list.add(file2);
+                    folderNum++;
+                } else {
+                    fileList.add(file2);
+                    // System.out.println("文件:" + file2.getAbsolutePath());
+                    fileNum++;
+                }
+            }
+            File temp_file;
+            while (!list.isEmpty()) {
+                temp_file = list.removeFirst();
+                files = temp_file.listFiles();
+                for (File file2 : files) {
+                    if (file2.isDirectory()) {
+                        // System.out.println("文件夹:" + file2.getAbsolutePath());
+                        list.add(file2);
+                        folderNum++;
+                    } else {
+                        fileList.add(file2);
+                        // System.out.println("文件:" + file2.getAbsolutePath());
+                        fileNum++;
+                    }
+                }
+            }
+        } else {
+            // System.out.println("文件不存在!");
+        }
+        System.out.println("文件夹共有:" + folderNum + ",文件共有:" + fileNum);
+        return fileList;
+    }
+
 }
