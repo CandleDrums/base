@@ -9,6 +9,7 @@ package com.cds.base.core.impl;
 
 import javax.validation.constraints.NotNull;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -16,7 +17,6 @@ import com.cds.base.api.service.BasicManageService;
 import com.cds.base.biz.service.BasicService;
 import com.cds.base.common.code.ResultCode;
 import com.cds.base.common.result.ResponseResult;
-import com.cds.base.util.bean.BeanUtils;
 import com.cds.base.util.bean.CheckUtils;
 
 /**

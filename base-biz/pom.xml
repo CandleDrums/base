@@ -16,7 +16,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.candledrums.base</groupId>
-			<artifactId>base-constant</artifactId>
+			<artifactId>base-common</artifactId>
 		</dependency>
 	</dependencies>
 </project>

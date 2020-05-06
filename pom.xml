@@ -18,7 +18,6 @@
 		<module>base-dal</module>
 		<module>base-core</module>
 		<module>base-api</module>
-		<module>base-constant</module>
 		<module>base-redis</module>
 		<module>base-module</module>
 	</modules>
@@ -37,11 +36,6 @@
 			<dependency>
 				<groupId>com.candledrums.base</groupId>
 				<artifactId>base-common</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.candledrums.base</groupId>
-				<artifactId>base-constant</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
