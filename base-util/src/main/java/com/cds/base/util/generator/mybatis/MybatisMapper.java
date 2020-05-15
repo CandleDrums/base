@@ -20,27 +20,27 @@ public interface MybatisMapper {
     /**
      * 根据id查询操作
      */
-    String FIND_BY_ID         = "findById";
+    String FIND_BY_ID = "findById";
     /**
      * 根据num查询操作
      */
-    String FIND_BY_NUM        = "findByNum";
+    String FIND_BY_NUM = "findByNum";
     /**
      * 执行修改操作
      */
-    String UPDATE             = "update";
+    String UPDATE = "update";
     /**
      * 删除单条记录操作
      */
-    String DELETE_BY_ID       = "deletedById";
+    String DELETE_BY_ID = "deletedById";
     /**
      * 批量删除记录操作
      */
-    String DELETE_BY_ID_LIST  = "deletedByIdList";
+    String DELETE_BY_ID_LIST = "deletedByIdList";
     /**
      * 删除单条记录操作(逻辑删除)
      */
-    String DELETE_BY_NUM      = "deletedByNum";
+    String DELETE_BY_NUM = "deletedByNum";
     /**
      * 批量删除记录操作(逻辑删除)
      */
@@ -48,19 +48,19 @@ public interface MybatisMapper {
     /**
      * 执行存储操作
      */
-    String SAVE               = "save";
+    String SAVE = "save";
     /**
      * 执行存储操作
      */
-    String SAVE_ALL           = "saveAll";
+    String SAVE_ALL = "saveAll";
     /**
      * 根据条件查询记录条数
      */
-    String QUERY_ALL          = "queryAll";
+    String QUERY_ALL = "queryAll";
     /**
      * 根据条件查询记录条数
      */
-    String QUERY_PAGING_LIST  = "queryPagingList";
+    String QUERY_PAGING_LIST = "queryPagingList";
 
     /**
      * 根据条件查询记录条数
@@ -69,13 +69,13 @@ public interface MybatisMapper {
     /**
      * 每页数量
      */
-    String PAGE_SIZE          = "pageSize";
+    String PAGE_SIZE = "pageSize";
     /**
      * 当前页
      */
-    String CURRENT_PAGE       = "currentPage";
+    String CURRENT_PAGE = "currentPage";
     /**
      * 当前页
      */
-    String PAGE_SKIP          = "pageSkip";
+    String PAGE_SKIP = "pageSkip";
 }

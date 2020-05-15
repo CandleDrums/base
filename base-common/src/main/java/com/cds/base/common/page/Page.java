@@ -9,6 +9,8 @@ package com.cds.base.common.page;
 
 import java.io.Serializable;
 
+import lombok.Data;
+
 /**
  * @Description 分页对象
  * @Notes 未填写备注
@@ -17,24 +19,29 @@ import java.io.Serializable;
  * @version 1.0
  * @since JDK 1.8
  */
+@Data
 public class Page<T> implements Serializable {
 
     // 默认序列号
     private static final long serialVersionUID = 1L;
     // 页大小默认值
-    private static final int DEFAULT_PAGE_SIZE = 20;
+    private static final Integer DEFAULT_PAGE_SIZE = 20;
     // 分页参数
-    private int currentPage = 1;
+    private Integer currentPage = 1;
     // 分页大小
-    private int pageSize = DEFAULT_PAGE_SIZE;
+    private Integer pageSize = DEFAULT_PAGE_SIZE;
     // 总记录数
-    private int totalCount;
+    private Integer totalCount;
     // 总页数
-    private int totalPageCount;
+    private Integer totalPageCount;
     // 需要返回总数
-    private boolean needCount;
+    private Boolean needCount;
     // 查询实体
     private T param;
+    // 排序属性
+    private String orderBy;
+    // 是否降序
+    private Boolean desc;
 
     /**
      * Create a new instance Page.
@@ -49,7 +56,7 @@ public class Page<T> implements Serializable {
      * @param pageSize
      *            页大小
      */
-    public Page(final int pageSize) {
+    public Page(final Integer pageSize) {
         if (pageSize > 0 && pageSize <= 10000) {
             this.setPageSize(pageSize);
         }
@@ -66,10 +73,10 @@ public class Page<T> implements Serializable {
     /**
      * @description 获取起始记录数
      * @return
-     * @returnType int
+     * @returnType Integer
      * @author liming
      */
-    public int getStartIndex() {
+    public Integer getStartIndex() {
         return (currentPage - 1) * pageSize;
     }
 
@@ -80,7 +87,7 @@ public class Page<T> implements Serializable {
      * @exception @since
      *                1.0.0
      */
-    public void setCurrentPage(int currentPage) {
+    public void setCurrentPage(Integer currentPage) {
         this.currentPage = currentPage;
 
         if (currentPage < 1) {
@@ -91,16 +98,16 @@ public class Page<T> implements Serializable {
     /**
      * @description 根据pageSize与totalCount计算总页数,默认值为-1.
      * @return
-     * @returnType int
+     * @returnType Integer
      * @exception @since
      *                1.0.0
      */
-    public int getTotalPages() {
+    public Integer getTotalPages() {
         if (totalCount == 0)
             return 1;
 
         if (totalPageCount == 0) {
-            int count = totalCount / pageSize;
+            Integer count = totalCount / pageSize;
             if (totalCount % pageSize > 0) {
                 count++;
             }
@@ -112,22 +119,22 @@ public class Page<T> implements Serializable {
     /**
      * @description 是否还有下一页
      * @return
-     * @returnType boolean
+     * @returnType Boolean
      * @exception @since
      *                1.0.0
      */
-    public boolean isHasNext() {
+    public Boolean isHasNext() {
         return (currentPage + 1 <= getTotalPages());
     }
 
     /**
      * @description 取得下页的页号,序号从1开始.
      * @return
-     * @returnType int
+     * @returnType Integer
      * @exception @since
      *                1.0.0
      */
-    public int getNextPage() {
+    public Integer getNextPage() {
         if (isHasNext())
             return currentPage + 1;
         else
@@ -137,94 +144,26 @@ public class Page<T> implements Serializable {
     /**
      * @description 是否还有上一页
      * @return
-     * @returnType boolean
+     * @returnType Boolean
      * @exception @since
      *                1.0.0
      */
-    public boolean isHasPre() {
+    public Boolean isHasPre() {
         return (currentPage - 1 >= 1);
     }
 
     /**
      * @description 取得上页的页号,序号从1开始.
      * @return
-     * @returnType int
+     * @returnType Integer
      * @exception @since
      *                1.0.0
      */
-    public int getPrePage() {
+    public Integer getPrePage() {
         if (isHasPre())
             return currentPage - 1;
         else
             return currentPage;
-    }
-
-    /**
-     * pageSize
-     *
-     * @return pageSize
-     * @since 1.0.0
-     */
-
-    public int getPageSize() {
-        return pageSize;
-    }
-
-    /**
-     * @param pageSize
-     *            the pageSize to set
-     */
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
-    }
-
-    /**
-     * totalCount
-     *
-     * @return totalCount
-     * @since 1.0.0
-     */
-
-    public int getTotalCount() {
-        return totalCount;
-    }
-
-    /**
-     * @param totalCount
-     *            the totalCount to set
-     */
-    public void setTotalCount(int totalCount) {
-        this.totalCount = totalCount;
-    }
-
-    /**
-     * totalPageCount
-     *
-     * @return totalPageCount
-     * @since 1.0.0
-     */
-
-    public int getTotalPageCount() {
-        return totalPageCount;
-    }
-
-    /**
-     * @param totalPageCount
-     *            the totalPageCount to set
-     */
-    public void setTotalPageCount(int totalPageCount) {
-        this.totalPageCount = totalPageCount;
-    }
-
-    /**
-     * serialversionuid
-     *
-     * @return serialversionuid
-     * @since 1.0.0
-     */
-
-    public static long getSerialversionuid() {
-        return serialVersionUID;
     }
 
     /**
@@ -234,56 +173,8 @@ public class Page<T> implements Serializable {
      * @since 1.0.0
      */
 
-    public static int getDefaultPageSize() {
+    public static Integer getDefaultPageSize() {
         return DEFAULT_PAGE_SIZE;
-    }
-
-    /**
-     * currentPage
-     *
-     * @return currentPage
-     * @since 1.0.0
-     */
-
-    public int getCurrentPage() {
-        return currentPage;
-    }
-
-    /**
-     * needCount
-     *
-     * @return needCount
-     * @since 1.0.0
-     */
-
-    public boolean isNeedCount() {
-        return needCount;
-    }
-
-    /**
-     * @param needCount
-     *            the needCount to set
-     */
-    public void setNeedCount(boolean needCount) {
-        this.needCount = needCount;
-    }
-
-    /**
-     * param
-     *
-     * @return param
-     */
-
-    public T getParam() {
-        return param;
-    }
-
-    /**
-     * @param param
-     *            the param to set
-     */
-    public void setParam(T param) {
-        this.param = param;
     }
 
 }

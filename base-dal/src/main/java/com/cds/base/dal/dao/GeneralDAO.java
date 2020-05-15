@@ -22,23 +22,23 @@ public interface GeneralDAO<DO> extends BaseDAO<DO> {
      * @description 更新
      * @return void
      */
-    void update(DO value);
+    Integer modify(DO value);
 
     /**
      * @description 删除
      * @return void
      */
-    void delete(String num);
+    Integer delete(String num);
 
     /**
      * @description 根据主键查询
      * @return DO
      */
-    DO find(String num);
+    DO detail(String num);
 
     /**
      * @description 查询列表
      * @return List<DO>
      */
-    List<DO> findList(List<String> numList);
+    List<DO> detailList(List<String> numList);
 }

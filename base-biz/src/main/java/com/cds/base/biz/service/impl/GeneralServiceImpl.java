@@ -73,12 +73,12 @@ public abstract class GeneralServiceImpl<VO, DO> extends BaseServiceImpl<VO, DO>
         if (CheckUtils.isEmpty(num)) {
             throw new ValidateException("未传递编号");
         }
-        DO oldValue = getDAO().find(String.valueOf(num));
+        DO oldValue = getDAO().detail(String.valueOf(num));
         if (CheckUtils.isEmpty(oldValue)) {
             throw new ValidateException("数据不存在");
         }
         BeanUtils.copyProperties(value, oldValue);
-        getDAO().update(oldValue);
+        getDAO().modify(oldValue);
         BeanUtils.copyProperties(oldValue, value);
         return value;
     }
@@ -114,7 +114,7 @@ public abstract class GeneralServiceImpl<VO, DO> extends BaseServiceImpl<VO, DO>
     public VO detail(String num) {
         if (CheckUtils.isEmpty(num))
             return null;
-        DO result = getDAO().find(num);
+        DO result = getDAO().detail(num);
         return getVO(result, voType);
     }
 
@@ -122,7 +122,7 @@ public abstract class GeneralServiceImpl<VO, DO> extends BaseServiceImpl<VO, DO>
     public List<VO> findList(List<String> idList) {
         if (CheckUtils.isEmpty(idList))
             return null;
-        return getVOList(getDAO().findList(idList), voType);
+        return getVOList(getDAO().detailList(idList), voType);
     }
 
     @Override

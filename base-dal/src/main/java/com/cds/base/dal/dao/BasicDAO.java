@@ -23,7 +23,7 @@ public interface BasicDAO<DO> extends BaseDAO<DO> {
      * @description 删除
      * @return void
      */
-    void delete(Integer id);
+    Integer delete(Integer id);
 
     /**
      * @description 详情
