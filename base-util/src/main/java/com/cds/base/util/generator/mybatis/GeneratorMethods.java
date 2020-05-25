@@ -100,7 +100,7 @@ public class GeneratorMethods {
      */
     public static Element genenalUpdate(Table table) {
         Element update = new Element("update");
-        update.setAttribute("id", "update");
+        update.setAttribute("id", "modify");
         update.setAttribute("parameterType", table.getClassName());
         StringBuilder sql = new StringBuilder();
         sql.append("update ").append(table.getTableName()).append("\n");
@@ -120,7 +120,7 @@ public class GeneratorMethods {
      */
     public static Element basicUpdate(Table table) {
         Element update = new Element("update");
-        update.setAttribute("id", "update");
+        update.setAttribute("id", "modify");
         update.setAttribute("parameterType", table.getClassName());
         StringBuilder sql = new StringBuilder();
         sql.append("update ").append(table.getTableName()).append("\n");
@@ -160,7 +160,7 @@ public class GeneratorMethods {
         String entityColumns = entityName + "Columns";
         String resultMap = entityName + "ResultMap";
         Element selectById = new Element("select");
-        selectById.setAttribute("id", "find");
+        selectById.setAttribute("id", "detail");
         selectById.setAttribute("parameterType", "java.lang.Integer");
         selectById.setAttribute("resultMap", resultMap);
         selectById.addContent("select \n");
@@ -175,7 +175,7 @@ public class GeneratorMethods {
         String entityColumns = entityName + "Columns";
         String resultMap = entityName + "ResultMap";
         Element selectById = new Element("select");
-        selectById.setAttribute("id", "findList");
+        selectById.setAttribute("id", "detailList");
         selectById.setAttribute("parameterType", "java.util.List");
         selectById.setAttribute("resultMap", resultMap);
         selectById.addContent("select \n");
@@ -199,7 +199,7 @@ public class GeneratorMethods {
         String entityColumns = entityName + "Columns";
         String resultMap = entityName + "ResultMap";
         Element selectById = new Element("select");
-        selectById.setAttribute("id", "find");
+        selectById.setAttribute("id", "detail");
         selectById.setAttribute("parameterType", "string");
         selectById.setAttribute("resultMap", resultMap);
         selectById.addContent("select \n");
@@ -214,7 +214,7 @@ public class GeneratorMethods {
         String entityColumns = entityName + "Columns";
         String resultMap = entityName + "ResultMap";
         Element selectById = new Element("select");
-        selectById.setAttribute("id", "findList");
+        selectById.setAttribute("id", "detailList");
         selectById.setAttribute("parameterType", "java.util.List");
         selectById.setAttribute("resultMap", resultMap);
         selectById.addContent("select \n");
