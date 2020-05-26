@@ -3,7 +3,7 @@
  * @Package com.cds.base.core.impl
  * @Class BasicQueryServiceImpl.java
  * @Date Oct 31, 2019 6:51:25 PM
- * @Copyright (c) 2019 YOUWE All Right Reserved.
+ * @Copyright (c) 2019 CandleDrums.com All Right Reserved.
  */
 package com.cds.base.core.impl;
 

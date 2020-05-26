@@ -3,7 +3,7 @@
  * @Package com.cds.base.server.dal.mapper.generator
  * @Class TableAnnotation.java
  * @Date 2017年11月20日 下午4:07:27
- * @Copyright (c) 2019 YOUWE All Right Reserved.
+ * @Copyright (c) 2019 CandleDrums.com All Right Reserved.
  */
 package com.cds.base.util.generator.mybatis.annotaion;
 

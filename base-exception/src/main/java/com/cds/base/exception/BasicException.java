@@ -3,7 +3,7 @@
  * @Package com.cds.base.exception
  * @Class BasicException.java
  * @Date 2017年12月20日 下午7:00:19
- * @Copyright (c) 2019 YOUWE All Right Reserved.
+ * @Copyright (c) 2019 CandleDrums.com All Right Reserved.
  */
 package com.cds.base.exception;
 

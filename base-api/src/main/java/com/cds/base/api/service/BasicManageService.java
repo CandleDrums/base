@@ -3,7 +3,7 @@
  * @Package com.cds.base.api.service
  * @Class BasicManageService.java
  * @Date Oct 8, 2019 11:02:56 AM
- * @Copyright (c) 2019 YOUWE All Right Reserved.
+ * @Copyright (c) 2019 CandleDrums.com All Right Reserved.
  */
 package com.cds.base.api.service;
 

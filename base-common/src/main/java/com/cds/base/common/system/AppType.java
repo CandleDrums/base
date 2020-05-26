@@ -3,7 +3,7 @@
  * @Package com.cds.base.common.system
  * @Class AppType.java
  * @Date 2019年9月16日 下午6:12:18
- * @Copyright (c) 2019 YOUWE All Right Reserved.
+ * @Copyright (c) 2019 CandleDrums.com All Right Reserved.
  */
 package com.cds.base.common.system;
 

@@ -19,7 +19,6 @@
 		<module>base-core</module>
 		<module>base-api</module>
 		<module>base-redis</module>
-		<module>base-module</module>
 	</modules>
 	<properties>
 		<java.version>1.8</java.version>

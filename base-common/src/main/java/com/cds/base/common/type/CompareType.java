@@ -3,7 +3,7 @@
  * @Package com.cds.base.common.type
  * @Class CompareType.java
  * @Date Dec 9, 2019 4:04:49 PM
- * @Copyright (c) 2019 YOUWE All Right Reserved.
+ * @Copyright (c) 2019 CandleDrums.com All Right Reserved.
  */
 package com.cds.base.common.type;
 

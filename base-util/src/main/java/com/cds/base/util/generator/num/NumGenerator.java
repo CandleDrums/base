@@ -3,7 +3,7 @@
  * @Package com.cds.base.util.generator.num
  * @Class NumGenerator.java
  * @Date 2019年9月16日 下午5:32:31
- * @Copyright (c) 2019 YOUWE All Right Reserved.
+ * @Copyright (c) 2019 CandleDrums.com All Right Reserved.
  */
 package com.cds.base.util.generator.num;
 
