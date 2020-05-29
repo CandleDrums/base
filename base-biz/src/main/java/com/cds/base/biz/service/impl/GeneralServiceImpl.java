@@ -22,7 +22,7 @@ import com.cds.base.util.bean.CheckUtils;
 import com.cds.base.util.generator.num.NumGenerator;
 
 /**
- * @Description TODO 填写描述信息
+ * @Description 通用Service实现
  * @Notes 未填写备注
  * @author liming
  * @Date Oct 31, 2019 6:17:28 PM
