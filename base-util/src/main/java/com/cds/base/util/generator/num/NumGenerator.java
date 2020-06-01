@@ -13,6 +13,8 @@ import com.cds.base.common.rule.NumRule;
 import com.cds.base.common.rule.NumSplicingRule;
 import com.cds.base.util.misc.DateUtils;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * @Description Num生成器
  * @Notes 未填写备注
@@ -21,6 +23,7 @@ import com.cds.base.util.misc.DateUtils;
  * @version 1.0
  * @since JDK 1.8
  */
+@Slf4j
 public class NumGenerator {
 
     /**
@@ -28,7 +31,7 @@ public class NumGenerator {
      * @return void
      */
     public static void main(String[] args) {
-        System.out.println(nextNum(NumRule.Account));
+        log.info(nextNum(NumRule.Account));
     }
 
     /**

@@ -213,7 +213,7 @@ public class XmlUtil {
         // 创建一个串的字符输入流
         StringReader in = new StringReader(xml);
         Document doc = reader.read(in);
-        // System.out.println(doc.getRootElement());
+        // log.info(doc.getRootElement());
         // 创建输出格式
         OutputFormat formater = OutputFormat.createPrettyPrint();
         // formater=OutputFormat.createCompactFormat();
@@ -247,11 +247,4 @@ public class XmlUtil {
         return tInputStringStream;
     }
 
-    public static void main(String[] args)
-        throws IOException, SAXException, ParserConfigurationException, DocumentException {
-        String xml =
-            "<?xml version='1.0' encoding='GBK' standalone='yes'?><data><batch_No>201605047298811</batch_No><cmd>TransferBatch</cmd><group_Id>10012680705</group_Id><hmac>MIIFGAYJKoZIhvcNAQcCoIIFCTCCBQUCAQExCzAJBgUrDgMCGgUAMC8GCSqGSIb3DQEHAaAiBCAwNTE2MDA0ODMzN2IwMGRiYjA3OGYxOTNlYmQ0YjRkNaCCA9owggPWMIIDP6ADAgECAhBb+ionTVvZmtzTNvPMBrqHMA0GCSqGSIb3DQEBBQUAMCoxCzAJBgNVBAYTAkNOMRswGQYDVQQKExJDRkNBIE9wZXJhdGlvbiBDQTIwHhcNMTUxMjI5MDE1NjA4WhcNMTgxMjI5MDE1NjA4WjCBhjELMAkGA1UEBhMCQ04xGzAZBgNVBAoTEkNGQ0EgT3BlcmF0aW9uIENBMjEWMBQGA1UECxMNcmEueWVlcGF5LmNvbTEUMBIGA1UECxMLRW50ZXJwcmlzZXMxLDAqBgNVBAMUIzA0MUBaMTAwMTI2ODA3MDUgQGR1b2xhYmFvQDAwMDAwMDAyMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDZByMYogmelhnYMsMOIYEMuMVKCpda6U9vyq1nVmwD4Jz4Sp51SIR33z+9alBjROZ9ITU/TTS9ZI7WqQDI2ocmf4Mdq+X3LAmPJhx/rgkAW3LRoOyDpk/+3ARUTAPvdXCN6p/2deVTqSlUTyjVwnoMhrfpBrOKrejTwetZmYOSGwIDAQABo4IBnjCCAZowHwYDVR0jBBgwFoAU8I3ts0G7++8IHlUCwzE37zwUTs0wHQYDVR0OBBYEFEeoTXsGikeI8r+ftrEx9jRAvNMIMAsGA1UdDwQEAwIE8DAMBgNVHRMEBTADAQEAMDsGA1UdJQQ0MDIGCCsGAQUFBwMBBggrBgEFBQcDAgYIKwYBBQUHAwMGCCsGAQUFBwMEBggrBgEFBQcDCDCB/wYDVR0fBIH3MIH0MFegVaBTpFEwTzELMAkGA1UEBhMCQ04xGzAZBgNVBAoTEkNGQ0EgT3BlcmF0aW9uIENBMjEMMAoGA1UECxMDQ1JMMRUwEwYDVQQDEwxjcmwxMDRfMTQ1OTEwgZiggZWggZKGgY9sZGFwOi8vY2VydDg2My5jZmNhLmNvbS5jbjozODkvQ049Y3JsMTA0XzE0NTkxLE9VPUNSTCxPPUNGQ0EgT3BlcmF0aW9uIENBMixDPUNOP2NlcnRpZmljYXRlUmV2b2NhdGlvbkxpc3Q/YmFzZT9vYmplY3RjbGFzcz1jUkxEaXN0cmlidXRpb25Qb2ludDANBgkqhkiG9w0BAQUFAAOBgQBU8fE8eHnMOx1N+fzFWKSMz9VuNvLJTk4N6LBY0OkuK5+a7m6/L4U6OO3YvNMK5a4zRoAzcRqtkcQe8eqHBYh0x7JQzxclrEHmHe09ALjcDFgqUlwjwRIkIGN4V7+0T4z3n2A/sDeV8Law1hSqW9EU3nLK2yNIMo7j9APJlsAJBTGB4zCB4AIBATA+MCoxCzAJBgNVBAYTAkNOMRswGQYDVQQKExJDRkNBIE9wZXJhdGlvbiBDQTICEFv6KidNW9ma3NM288wGuocwCQYFKw4DAhoFADANBgkqhkiG9w0BAQEFAASBgMJF+tKnd9LzjSakkyoKdjMVZIPDosLbTo2cuHM4R3MalzLgoAnVRwAFyHZphCCpj4nAVbRdBHgkj7VjB+UAY11im3/nBmrrTHy7NS6hQ67lh5u+aPU6a6Kvxbj7R6NS2uuLXx9kxfadK2phlalHhBHliAOLFqIPeld92GCriT6I</hmac><is_Repay>0</is_Repay><list/><mer_Id>10012680705</mer_Id><total_Amt>0.00</total_Amt><total_Num>0</total_Num><version>1.0</version></data>";
-        String transfer = XmlUtil.formatXml(xml);
-        System.out.println(transfer);
-    }
 }

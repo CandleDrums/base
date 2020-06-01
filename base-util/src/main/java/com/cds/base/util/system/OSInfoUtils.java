@@ -9,12 +9,15 @@ package com.cds.base.util.system;
 
 import com.cds.base.common.system.PlatformType;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * @Description TODO 填写描述信息
  * @Notes 未填写备注
  * @author liming
  * @Date Apr 30, 2020 10:55:47 AM
  */
+@Slf4j
 public class OSInfoUtils {
     private static final String OS = System.getProperty("os.name").toLowerCase();
 
@@ -136,12 +139,5 @@ public class OSInfoUtils {
             _instance.platform = PlatformType.Others;
         }
         return _instance.platform;
-    }
-
-    /**
-     * @param args
-     */
-    public static void main(String[] args) {
-        System.out.println(OSInfoUtils.getOSname());
     }
 }

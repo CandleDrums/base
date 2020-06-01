@@ -92,7 +92,7 @@ public class DateUtils {
 
 	}
 	/*
-	 * public static void main(String[] args) { System.out.println(formatDate(new
+	 * public static void main(String[] args) { log.info(formatDate(new
 	 * Date(),SIMPLE_HOUR_FMT)); }
 	 */
 

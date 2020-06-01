@@ -31,6 +31,8 @@ import com.cds.base.util.generator.mybatis.annotaion.ColumnAnnotation;
 import com.cds.base.util.generator.mybatis.annotaion.Table;
 import com.cds.base.util.generator.mybatis.annotaion.TableAnnotation;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * @Description Mybitas 配置文件生成器
  * @Notes 未填写备注
@@ -39,6 +41,7 @@ import com.cds.base.util.generator.mybatis.annotaion.TableAnnotation;
  * @version 1.0
  * @since JDK 1.7
  */
+@Slf4j
 public class MybatisMapperGenerator {
 
     static final String PUBLIC_ID = "-//mybatis.org//DTD Mapper 3.0//EN";
@@ -410,7 +413,7 @@ public class MybatisMapperGenerator {
     @SuppressWarnings("rawtypes")
     public static void build(Class c) {
         if (c == null) {
-            System.out.println("class is null,can not init");
+            log.info("class is null,can not init");
         }
         boolean isGeneral = isGeneralModel(c);
 
@@ -441,8 +444,8 @@ public class MybatisMapperGenerator {
             }
             // 创建DAO
             createDAO(c);
-            System.out.println("创建成功，文件位置：");
-            System.out.println(mapperUrl);
+            log.info("创建成功，文件位置：");
+            log.info(mapperUrl);
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -611,12 +611,12 @@ public class FileUtils {
             File[] files = file.listFiles();
             for (File file2 : files) {
                 if (file2.isDirectory()) {
-                    // System.out.println("文件夹:" + file2.getAbsolutePath());
+                    // log.info("文件夹:" + file2.getAbsolutePath());
                     list.add(file2);
                     folderNum++;
                 } else {
                     fileList.add(file2);
-                    // System.out.println("文件:" + file2.getAbsolutePath());
+                    // log.info("文件:" + file2.getAbsolutePath());
                     fileNum++;
                 }
             }
@@ -626,20 +626,19 @@ public class FileUtils {
                 files = temp_file.listFiles();
                 for (File file2 : files) {
                     if (file2.isDirectory()) {
-                        // System.out.println("文件夹:" + file2.getAbsolutePath());
+                        // log.info("文件夹:" + file2.getAbsolutePath());
                         list.add(file2);
                         folderNum++;
                     } else {
                         fileList.add(file2);
-                        // System.out.println("文件:" + file2.getAbsolutePath());
+                        // log.info("文件:" + file2.getAbsolutePath());
                         fileNum++;
                     }
                 }
             }
         } else {
-            // System.out.println("文件不存在!");
+            // log.info("文件不存在!");
         }
-        System.out.println("文件夹共有:" + folderNum + ",文件共有:" + fileNum);
         return fileList;
     }
 

@@ -14,7 +14,6 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -362,17 +361,4 @@ public class HessianUtil {
         return objDirFile;
     }
 
-    public static void main(String[] args) throws IOException {
-        Map<String, Serializable> map = new HashMap<String, Serializable>();
-        map.put("a", "c");
-        map.put("b", "c");
-        map.put("c", "c");
-        map.put("d", "c");
-        map.put("d２２", "c");
-
-        byte[][] bytes = mapToByteArray(map);
-        for (int i = 0; i < bytes.length; i++) {
-            System.out.println(Arrays.toString(bytes[i]));
-        }
-    }
 }
