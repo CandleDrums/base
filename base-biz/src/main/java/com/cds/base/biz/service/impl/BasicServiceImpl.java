@@ -73,6 +73,7 @@ public abstract class BasicServiceImpl<VO, DO> extends BaseServiceImpl<VO, DO> i
     }
 
     @Override
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     public List<VO> findList(List<Integer> idList) {
         if (CheckUtils.isEmpty(idList))
             return null;
