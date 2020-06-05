@@ -68,7 +68,7 @@ public abstract class BasicServiceImpl<VO, DO> extends BaseServiceImpl<VO, DO> i
     public VO detail(Integer id) {
         if (CheckUtils.isEmpty(id))
             return null;
-        DO result = getDAO().find(id);
+        DO result = getDAO().detail(id);
         return getVO(result, voType);
     }
 
@@ -77,7 +77,7 @@ public abstract class BasicServiceImpl<VO, DO> extends BaseServiceImpl<VO, DO> i
     public List<VO> findList(List<Integer> idList) {
         if (CheckUtils.isEmpty(idList))
             return null;
-        return getVOList(getDAO().findList(idList), voType);
+        return getVOList(getDAO().detailList(idList), voType);
     }
 
     @Override

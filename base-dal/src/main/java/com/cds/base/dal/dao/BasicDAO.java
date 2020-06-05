@@ -29,11 +29,11 @@ public interface BasicDAO<DO> extends BaseDAO<DO> {
      * @description 详情
      * @return DO
      */
-    DO find(Integer id);
+    DO detail(Integer id);
 
     /**
      * @description 查询列表
      * @return List<DO>
      */
-    List<DO> findList(List<Integer> idList);
+    List<DO> detailList(List<Integer> idList);
 }
