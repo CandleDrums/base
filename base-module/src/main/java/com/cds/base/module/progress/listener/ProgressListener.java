@@ -23,13 +23,21 @@ import com.cds.base.module.progress.model.Progress;
 public class ProgressListener {
     private HttpSession session;
     private static final String PROGRESS_DATA = "PROGRESS_DATA";
+    private String name = PROGRESS_DATA;
 
     public void startProgress(HttpSession session, int step, int total) {
+        this.startProgress(session, null, step, total);
+    }
+
+    public void startProgress(HttpSession session, String specialName, int step, int total) {
         this.session = session;
+        if (specialName != null) {
+            this.name = name + specialName;
+        }
         Progress p = new Progress();
         p.setStep(step);
         p.setTotal(total);
-        session.setAttribute(PROGRESS_DATA, p);
+        session.setAttribute(name, p);
     }
 
     /**
@@ -38,7 +46,7 @@ public class ProgressListener {
      */
     public void update(int current) {
 
-        Progress p = (Progress)session.getAttribute(PROGRESS_DATA);
+        Progress p = (Progress)session.getAttribute(name);
         if (p == null) {
             p = new Progress();
         }
@@ -51,7 +59,7 @@ public class ProgressListener {
      * @return void
      */
     public void finish() {
-        Progress p = (Progress)session.getAttribute(PROGRESS_DATA);
+        Progress p = (Progress)session.getAttribute(name);
         this.update(p.getTotal());
     }
 
@@ -60,7 +68,7 @@ public class ProgressListener {
      * @return void
      */
     public void stepTimes(Integer times) {
-        Progress p = (Progress)session.getAttribute(PROGRESS_DATA);
+        Progress p = (Progress)session.getAttribute(name);
         if (p == null) {
             p = new Progress();
         }
@@ -78,7 +86,7 @@ public class ProgressListener {
      * @return void
      */
     public void step() {
-        Progress p = (Progress)session.getAttribute(PROGRESS_DATA);
+        Progress p = (Progress)session.getAttribute(name);
         if (p == null) {
             p = new Progress();
         }
@@ -95,7 +103,7 @@ public class ProgressListener {
      * @return Progress
      */
     public Progress getProgress() {
-        return (Progress)session.getAttribute(PROGRESS_DATA);
+        return (Progress)session.getAttribute(name);
     }
 
 }
