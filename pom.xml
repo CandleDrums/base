@@ -13,7 +13,6 @@
 	<modules>
 		<module>base-biz</module>
 		<module>base-common</module>
-		<module>base-exception</module>
 		<module>base-util</module>
 		<module>base-dal</module>
 		<module>base-core</module>

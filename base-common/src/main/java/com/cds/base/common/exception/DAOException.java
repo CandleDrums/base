@@ -5,7 +5,7 @@
  * @Date 2017年12月19日 下午6:47:44
  * @Copyright (c) 2019 CandleDrums.com All Right Reserved.
  */
-package com.cds.base.exception;
+package com.cds.base.common.exception;
 
 /**
  * @Description DAO异常

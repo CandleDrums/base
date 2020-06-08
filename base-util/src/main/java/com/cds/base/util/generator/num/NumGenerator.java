@@ -13,8 +13,6 @@ import com.cds.base.common.rule.NumRule;
 import com.cds.base.common.rule.NumSplicingRule;
 import com.cds.base.util.misc.DateUtils;
 
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * @Description Num生成器
  * @Notes 未填写备注
@@ -23,36 +21,7 @@ import lombok.extern.slf4j.Slf4j;
  * @version 1.0
  * @since JDK 1.8
  */
-@Slf4j
 public class NumGenerator {
-
-    /**
-     * @description 示例
-     * @return void
-     */
-    public static void main(String[] args) {
-        log.info(nextNum(NumRule.Account));
-    }
-
-    /**
-     * @description 根据DO直接生成
-     * @notes 注意：在<code>NumRule</code>必须已经声明与DO同名的枚举值
-     * @return String
-     */
-    public static String nextNum(Class t) {
-        // eg:AccountDO,去掉DO后为Account，与NumRule中的枚举名对应
-        String className = t.getSimpleName();
-        if (className.lastIndexOf("DO") <= 0 || className.lastIndexOf("VO") <= 0) {
-            return "";
-        }
-        // 去掉DO/VO后缀
-        className = className.substring(0, className.length() - 2);
-        NumRule rule = NumRule.valueOf(className);
-        StringBuffer sb = new StringBuffer();
-        sb.append(rule.getPrefixCode());
-        int splicingRule = rule.getNumSplicingRule();
-        return generateCode(splicingRule, 1, sb);
-    }
 
     /**
      * @description 获取编号
@@ -61,8 +30,7 @@ public class NumGenerator {
     public static String nextNum(NumRule rule) {
         StringBuffer sb = new StringBuffer();
         sb.append(rule.getPrefixCode());
-        int splicingRule = rule.getNumSplicingRule();
-        return generateCode(splicingRule, 1, sb);
+        return generateCode(rule.getNumSplicingRule(), 1, sb);
     }
 
     /**

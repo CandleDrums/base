@@ -5,7 +5,7 @@
  * @Date 2018年1月31日 上午11:34:07
  * @Copyright (c) YOUWE All Right Reserved.
  */
-package com.cds.base.exception;
+package com.cds.base.common.exception;
 
 /**
  * @Description TODO 填写描述信息

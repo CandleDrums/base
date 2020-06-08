@@ -40,7 +40,7 @@ public abstract class GeneralServiceImpl<VO, DO> extends BaseServiceImpl<VO, DO>
         String num = "";
         Object numExtised = BeanUtils.getProperty(value, "num");
         if (CheckUtils.isEmpty(numExtised)) {
-            num = NumGenerator.nextNum(NumRule.getRule(getRuleClassName(value)));
+            num = NumGenerator.nextNum(NumRule.getNumRule(value.getClass()));
             try {
                 BeanUtils.setProperty(value, "num", num);
             } catch (Exception e) {

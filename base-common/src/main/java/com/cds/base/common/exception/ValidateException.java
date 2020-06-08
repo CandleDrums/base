@@ -1,4 +1,4 @@
-package com.cds.base.exception;
+package com.cds.base.common.exception;
 
 /**
  * 展现层验证异常，类型为<code>Exception</code>，此类异常作校验失败后抛出

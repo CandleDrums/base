@@ -1,4 +1,4 @@
-package com.cds.base.exception;
+package com.cds.base.common.exception;
 
 /**
  * @Description 业务异常

@@ -5,7 +5,7 @@
  * @Date Nov 4, 2019 1:49:37 PM
  * @Copyright (c) 2019 CandleDrums.com All Right Reserved.
  */
-package com.cds.base.exception;
+package com.cds.base.common.exception;
 
 /**
  * @Description 多条重复记录异常
