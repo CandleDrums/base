@@ -7,11 +7,6 @@
  */
 package com.cds.base.common.rule;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import com.cds.base.common.exception.ValidateException;
-
 import lombok.Data;
 
 /**
@@ -23,7 +18,6 @@ import lombok.Data;
 @Data
 public class NumRule {
 
-    public static final Map<String, NumRule> ruleMap = new ConcurrentHashMap<String, NumRule>();
     // 前缀
     private String prefixCode;
     // 编号拼接规则<see>NumSplicingRule</see>
@@ -36,28 +30,9 @@ public class NumRule {
     // 7=TIMESTAMP+RANDOM+REDIS_INCR
     private int numSplicingRule;
 
-    /**
-     * @description 注册规则
-     * @return void
-     */
-    public static void regRule(Class t, NumRule rule) {
-        ruleMap.put(getModelName(t), rule);
+    public NumRule(String prefixCode, int numSplicingRule) {
+        this.prefixCode = prefixCode;
+        this.numSplicingRule = numSplicingRule;
     }
 
-    /**
-     * @description 获取规则
-     * @return NumRule
-     */
-    public static NumRule getNumRule(Class t) {
-        return ruleMap.get(getModelName(t));
-    }
-
-    private static String getModelName(Class t) {
-        String className = t.getSimpleName();
-        if (className.lastIndexOf("DO") <= 0 || className.lastIndexOf("VO") <= 0) {
-            throw new ValidateException("注册失败，请确认类型");
-        }
-        // 去掉DO/VO后缀
-        return className.substring(0, className.length() - 2);
-    }
 }
