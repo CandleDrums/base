@@ -26,5 +26,13 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.candledrums.base</groupId>
+			<artifactId>base-redis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.candledrums.base</groupId>
+			<artifactId>base-util</artifactId>
+		</dependency>
 	</dependencies>
 </project>

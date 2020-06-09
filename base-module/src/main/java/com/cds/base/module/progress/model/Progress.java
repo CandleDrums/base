@@ -18,8 +18,8 @@ import lombok.Data;
 @Data
 public class Progress {
 
-    // 当前总进度百分比
-    private Double percent = 0.0;
+    // 当前总进度百分比,0-100
+    private int percent = 0;
     // 当前值
     private int current = 0;
     // 递增值
@@ -44,9 +44,12 @@ public class Progress {
      * @description 获取进度
      * @return Double
      */
-    public Double getPercent() {
+    public int getPercent() {
         if (current > 0) {
-            return Double.valueOf(current / total);
+            double currentPercent = ((current + 1d) / total) * 100;
+            if ((int)Math.floor(currentPercent) - percent >= 1) {
+                percent = (int)Math.floor(currentPercent) - 1;
+            }
         }
         return percent;
     }

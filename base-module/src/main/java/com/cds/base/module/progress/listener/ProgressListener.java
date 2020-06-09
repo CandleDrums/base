@@ -7,11 +7,12 @@
  */
 package com.cds.base.module.progress.listener;
 
-import javax.servlet.http.HttpSession;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.cds.base.module.progress.model.Progress;
+import com.cds.base.redis.client.RedisClient;
+import com.cds.base.util.bean.CheckUtils;
 
 /**
  * @Description 进度监听器
@@ -21,23 +22,23 @@ import com.cds.base.module.progress.model.Progress;
  */
 @Component
 public class ProgressListener {
-    private HttpSession session;
-    private static final String PROGRESS_DATA = "PROGRESS_DATA";
+    @Autowired
+    private RedisClient<Progress> redisClient;
+    private static final String PROGRESS_DATA = "MODULE:PROGRESS_DATA";
     private String name = PROGRESS_DATA;
 
-    public void startProgress(HttpSession session, int step, int total) {
-        this.startProgress(session, null, step, total);
+    public void startProgress(int step, int total) {
+        this.startProgress(null, step, total);
     }
 
-    public void startProgress(HttpSession session, String specialName, int step, int total) {
-        this.session = session;
+    public void startProgress(String specialName, int step, int total) {
         if (specialName != null) {
-            this.name = name + specialName;
+            this.name = PROGRESS_DATA + specialName;
         }
         Progress p = new Progress();
         p.setStep(step);
         p.setTotal(total);
-        session.setAttribute(name, p);
+        redisClient.set(name, p, 60);
     }
 
     /**
@@ -45,13 +46,12 @@ public class ProgressListener {
      * @return void
      */
     public void update(int current) {
-
-        Progress p = (Progress)session.getAttribute(name);
+        Progress p = redisClient.get(name);
         if (p == null) {
             p = new Progress();
         }
         p.setCurrent(current);
-        session.setAttribute(PROGRESS_DATA, p);
+        redisClient.set(name, p, 60);
     }
 
     /**
@@ -59,7 +59,7 @@ public class ProgressListener {
      * @return void
      */
     public void finish() {
-        Progress p = (Progress)session.getAttribute(name);
+        Progress p = redisClient.get(name);
         this.update(p.getTotal());
     }
 
@@ -68,7 +68,7 @@ public class ProgressListener {
      * @return void
      */
     public void stepTimes(Integer times) {
-        Progress p = (Progress)session.getAttribute(name);
+        Progress p = redisClient.get(name);
         if (p == null) {
             p = new Progress();
         }
@@ -86,7 +86,7 @@ public class ProgressListener {
      * @return void
      */
     public void step() {
-        Progress p = (Progress)session.getAttribute(name);
+        Progress p = redisClient.get(name);
         if (p == null) {
             p = new Progress();
         }
@@ -99,11 +99,15 @@ public class ProgressListener {
     }
 
     /**
-     * @description 获取进度
+     * @description 获取进度,已初始化后
      * @return Progress
      */
-    public Progress getProgress() {
-        return (Progress)session.getAttribute(name);
+    public Progress getProgress(String specialName) {
+        if (CheckUtils.isEmpty(specialName)) {
+            return redisClient.get(name);
+        }
+        return redisClient.get(PROGRESS_DATA + specialName);
+
     }
 
 }

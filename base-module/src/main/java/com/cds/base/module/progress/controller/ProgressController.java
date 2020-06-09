@@ -9,13 +9,11 @@ package com.cds.base.module.progress.controller;
 
 import java.io.IOException;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cds.base.module.progress.listener.ProgressListener;
@@ -28,14 +26,14 @@ import com.cds.base.module.progress.model.Progress;
  * @Date Jun 8, 2020 5:54:19 PM
  */
 @CrossOrigin
-@RestController(value = "/common")
+@RestController
+@RequestMapping(value = "/module/progress")
 public class ProgressController {
     @Autowired
     private ProgressListener progressListener;
 
-    @GetMapping("/progress.htm")
-    public Progress getProgress(HttpServletRequest request, HttpServletResponse response, HttpSession session)
-        throws IOException {
-        return progressListener.getProgress();
+    @GetMapping("/detail.htm")
+    public Progress getProgress(@RequestParam(name = "name", required = false) String name) throws IOException {
+        return progressListener.getProgress(name);
     }
 }
