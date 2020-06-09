@@ -7,6 +7,8 @@
  */
 package com.cds.base.module.progress.model;
 
+import java.io.Serializable;
+
 import lombok.Data;
 
 /**
@@ -16,8 +18,9 @@ import lombok.Data;
  * @Date Jun 8, 2020 4:30:25 PM
  */
 @Data
-public class Progress {
+public class Progress implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     // 当前总进度百分比,0-100
     private int percent = 0;
     // 当前值
