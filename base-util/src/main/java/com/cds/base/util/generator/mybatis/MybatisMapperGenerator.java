@@ -380,15 +380,16 @@ public class MybatisMapperGenerator {
         XMLOut.output(doc, new FileOutputStream(fileName));
     }
 
-    private static void createDAO(Class c) {
-        String daoPath = System.getProperty("user.dir") + "\\src\\main\\java\\";
-        String packageName = c.getPackage().getName().replace(".", "\\").replace("model", "dao");
+    private static void createDAO(Class c, String splitSlash) {
+        String daoPath = System.getProperty("user.dir") + splitSlash + "src" + splitSlash + "main" + splitSlash + "java"
+            + splitSlash;
+        String packageName = c.getPackage().getName().replace(".", splitSlash).replace("model", "dao");
         File folder = new File(daoPath + packageName);
         if (!folder.exists()) {
             folder.mkdirs();
         }
         String className = c.getSimpleName().replace("DO", "DAO");
-        File daoFile = new File(daoPath + packageName + "\\" + className);
+        File daoFile = new File(daoPath + packageName + splitSlash + className);
     }
 
     /**
@@ -423,13 +424,14 @@ public class MybatisMapperGenerator {
             Table table = getTable(c);
             String daoName = getDAOName(table);
             int index = daoName.lastIndexOf(".");
-
-            String mapperPath = System.getProperty("user.dir") + "\\src\\main\\resources\\mapper\\";
+            String splitSlash = "\\";
             String os = System.getProperty("os.name");
             // 说明是Mac系统
             if (os.toLowerCase().startsWith("mac")) {
-                mapperPath = System.getProperty("user.dir") + "/src/main/resources/mapper/";
+                splitSlash = "/";
             }
+            String mapperPath = System.getProperty("user.dir") + splitSlash + "src" + splitSlash + "main" + splitSlash
+                + "resources" + splitSlash + "mapper" + splitSlash;
             String mapperUrl = mapperPath + daoName.substring(index + 1) + ".xml";
             File folder = new File(mapperPath);
             if (!folder.exists()) {
@@ -443,7 +445,7 @@ public class MybatisMapperGenerator {
                 createBasiclMapper(table, mapperUrl, daoName);
             }
             // 创建DAO
-            createDAO(c);
+            // createDAO(c, splitSlash);
             log.info("创建成功，文件位置：");
             log.info(mapperUrl);
 
