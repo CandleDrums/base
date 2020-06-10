@@ -3,7 +3,7 @@
  * @Package com.cds.base.dep.dal.mapper
  * @Class GeneratorMethods.java
  * @Date 2018年1月10日 下午5:43:00
- * @Copyright (c) YOUWE All Right Reserved.
+ * @Copyright (c) CandleDrumS.com All Right Reserved
  */
 package com.cds.base.util.generator.mybatis;
 

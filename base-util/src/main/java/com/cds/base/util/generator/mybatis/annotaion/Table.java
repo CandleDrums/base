@@ -3,7 +3,7 @@
  * @Package com.cds.base.server.dal.mapper.generator
  * @Class Table.java
  * @Date 2017年11月20日 下午3:49:18
- * @Copyright (c) 2019 CandleDrums.com All Right Reserved.
+ * @Copyright (c) 2019 CandleDrumS.com All Right Reserved
  */
 package com.cds.base.util.generator.mybatis.annotaion;
 

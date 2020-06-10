@@ -3,7 +3,7 @@
  * @Package com.cds.base.common.type
  * @Class ResultType.java
  * @Date Jan 3, 2020 1:57:54 PM
- * @Copyright (c) 2020 YOUWE All Right Reserved.
+ * @Copyright (c) 2020 CandleDrumS.com All Right Reserved
  */
 package com.cds.base.common.type;
 

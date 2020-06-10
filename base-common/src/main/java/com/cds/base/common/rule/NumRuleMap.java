@@ -3,7 +3,7 @@
  * @Package com.cds.base.common.rule
  * @Class NumRuleMap.java
  * @Date Jun 8, 2020 4:22:37 PM
- * @Copyright (c) 2020 CandleDrums.com All Right Reserved.
+ * @Copyright (c) 2020 CandleDrumS.com All Right Reserved
  */
 package com.cds.base.common.rule;
 

@@ -3,7 +3,7 @@
  * @Package com.cds.base.common.system
  * @Class PlatformType.java
  * @Date Apr 30, 2020 10:53:04 AM
- * @Copyright (c) 2020 CandleDrums.com All Right Reserved.
+ * @Copyright (c) 2020 CandleDrumS.com All Right Reserved
  */
 package com.cds.base.common.system;
 

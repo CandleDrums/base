@@ -3,7 +3,7 @@
  * @Package com.cds.candledrums.base.biz.service.impl
  * @Class BasicServiceImpl.java
  * @Date Oct 31, 2019 6:17:13 PM
- * @Copyright (c) 2019 CandleDrums.com All Right Reserved.
+ * @Copyright (c) 2019 CandleDrumS.com All Right Reserved
  */
 package com.cds.base.biz.service.impl;
 

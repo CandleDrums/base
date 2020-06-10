@@ -3,7 +3,7 @@
  * @Package com.cds.base.util.http
  * @Class HttpUtils.java
  * @Date Jan 16, 2020 4:50:53 PM
- * @Copyright (c) 2020 YOUWE All Right Reserved.
+ * @Copyright (c) 2020 CandleDrumS.com All Right Reserved
  */
 package com.cds.base.util.http;
 

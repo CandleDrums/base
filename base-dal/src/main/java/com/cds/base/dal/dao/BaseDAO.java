@@ -3,7 +3,7 @@
  * @Package com.cds.base.dal.dao
  * @Class BaseDAO.java
  * @Date 2018年2月7日 下午5:37:57
- * @Copyright (c) YOUWE All Right Reserved.
+ * @Copyright (c) CandleDrumS.com All Right Reserved
  */
 package com.cds.base.dal.dao;
 

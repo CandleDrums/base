@@ -3,7 +3,7 @@
  * @Package com.cds.base.common.constants
  * @Class BizCode.java
  * @Date 2019年2月26日 下午5:19:08
- * @Copyright (c) 2019 CandleDrums.com All Right Reserved.
+ * @Copyright (c) 2019 CandleDrumS.com All Right Reserved
  */
 package com.cds.base.common.constants;
 

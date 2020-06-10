@@ -3,7 +3,7 @@
  * @Package com.cds.base.util.lang
  * @Class BigDecimalUtils.java
  * @Date Dec 9, 2019 4:03:14 PM
- * @Copyright (c) 2019 CandleDrums.com All Right Reserved.
+ * @Copyright (c) 2019 CandleDrumS.com All Right Reserved
  */
 package com.cds.base.util.lang;
 

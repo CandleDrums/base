@@ -3,7 +3,7 @@
  * @Package com.cds.base.common.enums
  * @Class ResultCode.java
  * @Date 2018年2月8日 下午3:57:08
- * @Copyright (c) YOUWE All Right Reserved.
+ * @Copyright (c) CandleDrumS.com All Right Reserved
  */
 package com.cds.base.common.code;
 

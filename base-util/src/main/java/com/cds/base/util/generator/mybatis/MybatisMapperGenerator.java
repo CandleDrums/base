@@ -3,7 +3,7 @@
  * @Package com.cds.base.server.dal.util
  * @Class MybatisMapperGenerator.java
  * @Date 2017年11月20日 下午3:45:48
- * @Copyright (c) 2019 CandleDrums.com All Right Reserved.
+ * @Copyright (c) 2019 CandleDrumS.com All Right Reserved
  */
 package com.cds.base.util.generator.mybatis;
 

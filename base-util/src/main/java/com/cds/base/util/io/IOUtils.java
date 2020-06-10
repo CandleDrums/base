@@ -3,7 +3,7 @@
  * @Package com.cds.base.util.io
  * @Class IOUtils.java
  * @Date 2018年3月2日 下午3:54:38
- * @Copyright (c) YOUWE All Right Reserved.
+ * @Copyright (c) CandleDrumS.com All Right Reserved
  */
 package com.cds.base.util.io;
 

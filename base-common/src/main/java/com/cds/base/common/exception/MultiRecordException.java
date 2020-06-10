@@ -3,7 +3,7 @@
  * @Package com.cds.base.exception
  * @Class MultiRecordException.java
  * @Date Nov 4, 2019 1:49:37 PM
- * @Copyright (c) 2019 CandleDrums.com All Right Reserved.
+ * @Copyright (c) 2019 CandleDrumS.com All Right Reserved
  */
 package com.cds.base.common.exception;
 
