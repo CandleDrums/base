@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.jdom2.Comment;
 import org.jdom2.DocType;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -284,6 +285,24 @@ public class MapperUtils {
         return className.replace("model", "dao").replace("DO", "DAO");
     }
 
+    public static String getBaseDAOName(Table table) {
+        String className = table.getClassName();
+        return className.replace("model", "dao").replace("DO", "BaseDAO");
+    }
+
+    public static void createExtMapper(Table table, String fileName, String daoName) throws Exception {
+        Element root = new Element("mapper");
+        root.setAttribute("namespace", daoName);
+        Document Doc = new Document(root);
+        DocType docType = new DocType("mapper");
+        docType.setPublicID(PUBLIC_ID);
+        docType.setSystemID(SYSTEM_ID);
+        Doc.setDocType(docType);
+        root.addContent(new Comment("可以在此配置文件中添加自定义的方法"));
+        // 输出
+        outPut(Doc, fileName);
+    }
+
     /**
      * @description 生成通用Mapper
      * @param table
@@ -295,6 +314,7 @@ public class MapperUtils {
     public static void createGeneralMapper(Table table, String fileName, String daoName) throws Exception {
         Element root = new Element("mapper");
         root.setAttribute("namespace", daoName);
+        root.addContent(new Comment("本文件一般不必要修改，由generator自动创建"));
         Document Doc = new Document(root);
         DocType docType = new DocType("mapper");
         docType.setPublicID(PUBLIC_ID);

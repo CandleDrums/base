@@ -3,7 +3,7 @@
  * @Package com.cds.base.server.dal.util
  * @Class MybatisMapperGenerator.java
  * @Date 2017年11月20日 下午3:45:48
- * @Copyright (c) 2019 CandleDrumS.com All Right Reserved
+ * @Copyright (c) 2019 CandleDrums.com All Right Reserved.
  */
 package com.cds.base.util.generator.mybatis;
 
@@ -24,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class MybatisMapperGenerator {
+
     /**
      * @description 生成需要的文件，默认生成的路径为当前DO项目根目录src/main/resources/mapper <br/>
      *              默认生成的文件名为：class名+Mapper.xml 例如：c.getSimpleName()+Mapper.xml
@@ -36,23 +37,36 @@ public class MybatisMapperGenerator {
         if (c == null) {
             log.info("class is null,can not init");
         }
-        boolean isGeneral = MapperUtils.isGeneralModel(c);
+        String splitSlash = "\\";
+        String os = System.getProperty("os.name");
+        // 说明是Mac系统
+        if (os.toLowerCase().startsWith("mac")) {
+            splitSlash = "/";
+        }
 
+        boolean isGeneral = MapperUtils.isGeneralModel(c);
+        // 获取当前目录
+        Table table = MapperUtils.getTable(c);
+
+        createBaseDAOFile(c, table, isGeneral, splitSlash);
+        createDAOFile(c, table, splitSlash);
+    }
+
+    /**
+     * @description 创建基础DAO文件
+     * @return void
+     */
+    private static void createBaseDAOFile(Class c, Table table, boolean isGeneral, String splitSlash) {
+        String daoName = MapperUtils.getDAOName(table);
+        String baseDaoName = MapperUtils.getBaseDAOName(table);
+        String mapperPath = System.getProperty("user.dir") + splitSlash + "src" + splitSlash + "main" + splitSlash
+            + "resources" + splitSlash + "mapper" + splitSlash + "base" + splitSlash;
+        // daoName:com.cds.example.dep.dal.dao.TableNameDAO
+        // 截取TableNameDAO
+        // eg:example-dep/example-dep-dal/src/main/resources/mapper/base/TableNameBaseDAO.xml
+        String mapperUrl = mapperPath + baseDaoName.substring(baseDaoName.lastIndexOf(".") + 1) + ".xml";
         try {
 
-            // 获取当前目录
-            Table table = MapperUtils.getTable(c);
-            String daoName = MapperUtils.getDAOName(table);
-            int index = daoName.lastIndexOf(".");
-            String splitSlash = "\\";
-            String os = System.getProperty("os.name");
-            // 说明是Mac系统
-            if (os.toLowerCase().startsWith("mac")) {
-                splitSlash = "/";
-            }
-            String mapperPath = System.getProperty("user.dir") + splitSlash + "src" + splitSlash + "main" + splitSlash
-                + "resources" + splitSlash + "mapper" + splitSlash;
-            String mapperUrl = mapperPath + daoName.substring(index + 1) + ".xml";
             File folder = new File(mapperPath);
             if (!folder.exists()) {
                 folder.mkdirs();
@@ -72,7 +86,32 @@ public class MybatisMapperGenerator {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
+    /**
+     * @description 创建DAO文件
+     * @return void
+     */
+    private static void createDAOFile(Class c, Table table, String splitSlash) {
+        String daoName = MapperUtils.getDAOName(table);
+        int index = daoName.lastIndexOf(".");
+        String mapperPath = System.getProperty("user.dir") + splitSlash + "src" + splitSlash + "main" + splitSlash
+            + "resources" + splitSlash + "mapper" + splitSlash;
+        String mapperUrl = mapperPath + daoName.substring(index + 1) + ".xml";
+        try {
+
+            File folder = new File(mapperPath);
+            if (!folder.exists()) {
+                folder.mkdirs();
+            }
+            MapperUtils.createExtMapper(table, mapperUrl, daoName);
+            // 创建DAO
+            // createDAO(c, splitSlash);
+            log.info("创建成功，文件位置：");
+            log.info(mapperUrl);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
