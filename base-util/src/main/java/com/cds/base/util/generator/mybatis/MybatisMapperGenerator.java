@@ -96,9 +96,11 @@ public class MybatisMapperGenerator {
         String mapperUrl = mapperPath + daoName.substring(index + 1) + ".xml";
         try {
 
-            File folder = new File(mapperPath);
-            if (!folder.exists()) {
-                folder.mkdirs();
+            File folder = new File(mapperUrl);
+            if (folder.exists()) {
+                log.info("文件已存在，自动跳过");
+
+                return;
             }
             MapperUtils.createExtMapper(table, mapperUrl, daoName);
             // 创建DAO
