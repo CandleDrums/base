@@ -95,6 +95,11 @@ public class OSInfoUtils {
         return OS.indexOf("openvms") >= 0;
     }
 
+    public static String getSplitSlash() {
+        PlatformType oSname = getOSname();
+        return oSname.getSplitSlash();
+    }
+
     /**
      * 获取操作系统名字
      * 

@@ -11,6 +11,7 @@ import java.io.File;
 
 import com.cds.base.util.generator.mybatis.annotaion.Table;
 import com.cds.base.util.generator.mybatis.common.MapperUtils;
+import com.cds.base.util.system.OSInfoUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,12 +38,7 @@ public class MybatisMapperGenerator {
         if (c == null) {
             log.info("class is null,can not init");
         }
-        String splitSlash = "\\";
-        String os = System.getProperty("os.name");
-        // 说明是Mac系统
-        if (os.toLowerCase().startsWith("mac")) {
-            splitSlash = "/";
-        }
+        String splitSlash = OSInfoUtils.getSplitSlash();
 
         boolean isGeneral = MapperUtils.isGeneralModel(c);
         // 获取当前目录
