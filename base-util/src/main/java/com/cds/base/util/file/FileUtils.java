@@ -3,7 +3,7 @@
  * @Package com.cds.base.util.file
  * @Class FileUtils.java
  * @Date 2018年3月2日 下午3:48:14
- * @Copyright (c) CandleDrumS.com All Right Reserved
+ * @Copyright (c) CandleDrumS.com All Right Reserved.
  */
 package com.cds.base.util.file;
 

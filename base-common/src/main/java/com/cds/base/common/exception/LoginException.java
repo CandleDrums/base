@@ -3,7 +3,7 @@
  * @Package com.cds.base.custom.exception
  * @Class LoginException.java
  * @Date 2018年1月31日 上午11:34:07
- * @Copyright (c) CandleDrumS.com All Right Reserved
+ * @Copyright (c) CandleDrumS.com All Right Reserved.
  */
 package com.cds.base.common.exception;
 

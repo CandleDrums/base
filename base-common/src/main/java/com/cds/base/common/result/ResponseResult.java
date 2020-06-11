@@ -3,7 +3,7 @@
  * @Package com.cds.base.common.result
  * @Class ResponseResult.java
  * @Date 2019年9月12日 上午11:47:57
- * @Copyright (c) 2019 CandleDrumS.com All Right Reserved
+ * @Copyright (c) 2019 CandleDrumS.com All Right Reserved.
  */
 package com.cds.base.common.result;
 

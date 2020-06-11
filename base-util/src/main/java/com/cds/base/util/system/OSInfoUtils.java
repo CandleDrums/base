@@ -3,7 +3,7 @@
  * @Package com.cds.base.util.system
  * @Class OSInfoUtils.java
  * @Date Apr 30, 2020 10:55:47 AM
- * @Copyright (c) 2020 CandleDrumS.com All Right Reserved
+ * @Copyright (c) 2020 CandleDrumS.com All Right Reserved.
  */
 package com.cds.base.util.system;
 

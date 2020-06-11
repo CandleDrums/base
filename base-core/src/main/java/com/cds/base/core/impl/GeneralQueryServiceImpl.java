@@ -3,7 +3,7 @@
  * @Package com.cds.base.core.impl
  * @Class GeneralQueryServiceImpl.java
  * @Date Oct 31, 2019 6:51:06 PM
- * @Copyright (c) 2019 CandleDrumS.com All Right Reserved
+ * @Copyright (c) 2019 CandleDrumS.com All Right Reserved.
  */
 package com.cds.base.core.impl;
 

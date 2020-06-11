@@ -3,7 +3,7 @@
  * @Package com.cds.base.dal.model
  * @Class GeneralModel.java
  * @Date 2019年9月10日 上午11:49:36
- * @Copyright (c) 2019 CandleDrumS.com All Right Reserved
+ * @Copyright (c) 2019 CandleDrumS.com All Right Reserved.
  */
 package com.cds.base.dal.model;
 

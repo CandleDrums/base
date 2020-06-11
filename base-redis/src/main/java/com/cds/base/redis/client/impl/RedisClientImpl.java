@@ -3,7 +3,7 @@
  * @Package com.cds.base.redis.client.impl
  * @Class RedisClientImpl.java
  * @Date Oct 10, 2019 2:40:24 PM
- * @Copyright (c) 2019 CandleDrumS.com All Right Reserved
+ * @Copyright (c) 2019 CandleDrumS.com All Right Reserved.
  */
 package com.cds.base.redis.client.impl;
 

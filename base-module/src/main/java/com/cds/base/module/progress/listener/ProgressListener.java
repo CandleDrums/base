@@ -3,7 +3,7 @@
  * @Package com.cds.base.module.progress.listener
  * @Class ProgressListener.java
  * @Date Jun 8, 2020 4:36:16 PM
- * @Copyright (c) 2020 CandleDrumS.com All Right Reserved
+ * @Copyright (c) 2020 CandleDrumS.com All Right Reserved.
  */
 package com.cds.base.module.progress.listener;
 

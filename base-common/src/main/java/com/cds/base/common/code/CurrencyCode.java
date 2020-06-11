@@ -3,7 +3,7 @@
  * @Package com.cds.base.common.code
  * @Class CurrencyCode.java
  * @Date 2019年9月10日 下午4:49:11
- * @Copyright (c) 2019 CandleDrumS.com All Right Reserved
+ * @Copyright (c) 2019 CandleDrumS.com All Right Reserved.
  */
 package com.cds.base.common.code;
 

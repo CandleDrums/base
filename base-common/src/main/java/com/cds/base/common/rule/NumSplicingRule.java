@@ -3,7 +3,7 @@
  * @Package com.cds.base.common.rule
  * @Class NumSplicingRule.java
  * @Date 2019年9月16日 下午6:33:09
- * @Copyright (c) 2019 CandleDrumS.com All Right Reserved
+ * @Copyright (c) 2019 CandleDrumS.com All Right Reserved.
  */
 package com.cds.base.common.rule;
 

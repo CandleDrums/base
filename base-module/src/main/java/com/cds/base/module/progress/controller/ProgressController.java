@@ -3,7 +3,7 @@
  * @Package com.cds.base.module.progress.controller
  * @Class ProgressController.java
  * @Date Jun 8, 2020 5:54:19 PM
- * @Copyright (c) 2020 CandleDrumS.com All Right Reserved
+ * @Copyright (c) 2020 CandleDrumS.com All Right Reserved.
  */
 package com.cds.base.module.progress.controller;
 

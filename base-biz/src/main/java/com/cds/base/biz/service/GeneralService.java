@@ -3,7 +3,7 @@
  * @Package com.cds.candledrums.base.biz.service
  * @Class GeneralService.java
  * @Date Oct 31, 2019 6:13:16 PM
- * @Copyright (c) 2019 CandleDrumS.com All Right Reserved
+ * @Copyright (c) 2019 CandleDrumS.com All Right Reserved.
  */
 package com.cds.base.biz.service;
 

@@ -3,7 +3,7 @@
  * @Package com.cds.base.api.service
  * @Class GeneralQueryService.java
  * @Date Oct 31, 2019 6:41:35 PM
- * @Copyright (c) 2019 CandleDrumS.com All Right Reserved
+ * @Copyright (c) 2019 CandleDrumS.com All Right Reserved.
  */
 package com.cds.base.api.service;
 

@@ -3,7 +3,7 @@
  * @Package com.cds.base.util.generator.redis
  * @Class RedisKeyGenerator.java
  * @Date Sep 29, 2019 5:30:37 PM
- * @Copyright (c) 2019 CandleDrumS.com All Right Reserved
+ * @Copyright (c) 2019 CandleDrumS.com All Right Reserved.
  */
 package com.cds.base.util.generator.redis;
 

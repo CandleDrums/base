@@ -3,7 +3,7 @@
  * @Package com.cds.base.common.type
  * @Class OwnerType.java
  * @Date 2019年9月10日 下午3:11:33
- * @Copyright (c) 2019 CandleDrumS.com All Right Reserved
+ * @Copyright (c) 2019 CandleDrumS.com All Right Reserved.
  */
 package com.cds.base.common.type;
 
