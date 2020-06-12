@@ -13,7 +13,8 @@ import org.ehcache.Cache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.cds.base.util.bean.BeanUtils;
+import com.alibaba.fastjson.JSON;
+import com.cds.base.util.bean.CheckUtils;
 
 /**
  * @Description ehCache工具
@@ -24,18 +25,18 @@ import com.cds.base.util.bean.BeanUtils;
 @Component
 public class EhCacheUtils<T> {
     @Autowired
-    private Cache<String, Object> ehCache;
+    private Cache<String, String> ehCache;
 
     public T getCache(String key) {
-        Object object = ehCache.get(key);
-        if (object == null) {
+        String value = ehCache.get(key);
+        if (CheckUtils.isEmpty(value)) {
             return null;
         }
-        return BeanUtils.getObject(object, getTClass());
+        return JSON.parseObject(value, getTClass());
     }
 
     public void putCache(String key, T t) {
-        ehCache.put(key, t);
+        ehCache.put(key, JSON.toJSONString(t));
     }
 
     public Class<T> getTClass() {

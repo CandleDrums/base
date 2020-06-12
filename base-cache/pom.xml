@@ -26,5 +26,9 @@
 			<groupId>com.candledrums.base</groupId>
 			<artifactId>base-util</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+		</dependency>
 	</dependencies>
 </project>

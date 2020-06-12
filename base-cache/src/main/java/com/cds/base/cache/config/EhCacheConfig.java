@@ -33,7 +33,7 @@ public class EhCacheConfig {
     }
 
     @Bean
-    public Cache<String, Object> ehCache(CacheManager cacheManager) {
-        return cacheManager.getCache("defaultCache", String.class, Object.class);
+    public Cache<String, String> ehCache(CacheManager cacheManager) {
+        return cacheManager.getCache("defaultCache", String.class, String.class);
     }
 }

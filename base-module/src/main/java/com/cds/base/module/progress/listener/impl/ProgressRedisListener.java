@@ -26,10 +26,6 @@ public class ProgressRedisListener extends AbstractProgressListener {
     @Autowired
     private RedisClient<Progress> redisClient;
 
-    public ProgressRedisListener() {
-        startProgress(null, 1, 100);
-    }
-
     @Override
     public void setProgress(String name, Progress p) {
         if (CheckUtils.isEmpty(name)) {

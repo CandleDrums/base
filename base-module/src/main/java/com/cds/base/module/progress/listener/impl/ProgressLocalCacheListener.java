@@ -24,10 +24,6 @@ public class ProgressLocalCacheListener extends AbstractProgressListener {
     @Autowired
     private EhCacheUtils<Progress> ehCacheUtils;
 
-    public ProgressLocalCacheListener() {
-        startProgress(null, 1, 100);
-    }
-
     @Override
     public void setProgress(String name, Progress p) {
         ehCacheUtils.putCache(name, p);
