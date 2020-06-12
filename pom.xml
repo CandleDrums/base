@@ -19,6 +19,7 @@
 		<module>base-api</module>
 		<module>base-redis</module>
 		<module>base-module</module>
+		<module>base-cache</module>
 	</modules>
 	<properties>
 		<java.version>1.8</java.version>
@@ -45,6 +46,11 @@
 			<dependency>
 				<groupId>com.candledrums.base</groupId>
 				<artifactId>base-util</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.candledrums.base</groupId>
+				<artifactId>base-cache</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
@@ -82,6 +88,13 @@
 			<dependency>
 				<groupId>com.candledrums.maven</groupId>
 				<artifactId>configure-maven-javax</artifactId>
+				<version>${configure.maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.candledrums.maven</groupId>
+				<artifactId>configure-maven-cache</artifactId>
 				<version>${configure.maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
