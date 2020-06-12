@@ -33,24 +33,24 @@ public abstract class AbstractProgressListener implements ProgressListener {
     }
 
     @Override
-    public void update(String name, int current) {
+    public void update(String name, String message, int current) {
         Progress p = this.getProgress(name);
         if (p == null) {
             p = new Progress();
         }
         p.setCurrent(current);
+        p.setMessage(message);
         this.setProgress(name, p);
-
     }
 
     @Override
-    public void finish(String name) {
+    public void finish(String name, String message) {
         Progress p = this.getProgress(name);
-        this.update(name, p.getTotal());
+        this.update(name, message, p.getTotal());
     }
 
     @Override
-    public void stepTimes(String name, Integer times) {
+    public void stepTimes(String name, String message, Integer times) {
         Progress p = this.getProgress(name);
         if (p == null) {
             p = new Progress();
@@ -60,12 +60,12 @@ public abstract class AbstractProgressListener implements ProgressListener {
             if (current > p.getTotal()) {
                 current = p.getTotal();
             }
-            this.update(name, current);
+            this.update(name, message, current);
         }
     }
 
     @Override
-    public void step(String name) {
+    public void step(String name, String message) {
         Progress p = this.getProgress(name);
         if (p == null) {
             p = new Progress();
@@ -75,7 +75,7 @@ public abstract class AbstractProgressListener implements ProgressListener {
         if (current > p.getTotal()) {
             current = p.getTotal();
         }
-        this.update(name, current);
+        this.update(name, message, current);
     }
 
 }

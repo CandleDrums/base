@@ -20,7 +20,7 @@ import com.cds.base.util.bean.CheckUtils;
  * @author liming
  * @Date Jun 11, 2020 5:36:12 PM
  */
-@Component
+@Component("progressRedisListener")
 public class ProgressRedisListener extends AbstractProgressListener {
 
     @Autowired

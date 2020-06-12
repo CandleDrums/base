@@ -7,8 +7,6 @@
  */
 package com.cds.base.cache.ehcache;
 
-import java.lang.reflect.ParameterizedType;
-
 import org.ehcache.Cache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,20 +25,24 @@ public class EhCacheUtils<T> {
     @Autowired
     private Cache<String, String> ehCache;
 
-    public T getCache(String key) {
+    /**
+     * @description 获取
+     * @return T
+     */
+    public T getCache(String key, Class type) {
         String value = ehCache.get(key);
         if (CheckUtils.isEmpty(value)) {
             return null;
         }
-        return JSON.parseObject(value, getTClass());
+        return (T)JSON.parseObject(value, type);
     }
 
+    /**
+     * @description 存入
+     * @return void
+     */
     public void putCache(String key, T t) {
         ehCache.put(key, JSON.toJSONString(t));
     }
 
-    public Class<T> getTClass() {
-        Class<T> tClass = (Class<T>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-        return tClass;
-    }
 }

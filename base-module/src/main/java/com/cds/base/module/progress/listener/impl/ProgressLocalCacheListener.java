@@ -19,7 +19,7 @@ import com.cds.base.module.progress.model.Progress;
  * @author liming
  * @Date Jun 11, 2020 5:58:23 PM
  */
-@Component
+@Component("progressLocalCacheListener")
 public class ProgressLocalCacheListener extends AbstractProgressListener {
     @Autowired
     private EhCacheUtils<Progress> ehCacheUtils;
@@ -31,7 +31,7 @@ public class ProgressLocalCacheListener extends AbstractProgressListener {
 
     @Override
     public Progress getProgress(String name) {
-        return ehCacheUtils.getCache(name);
+        return ehCacheUtils.getCache(name, Progress.class);
     }
 
 }

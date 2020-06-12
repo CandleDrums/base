@@ -27,25 +27,25 @@ public interface ProgressListener {
      * @description 更新
      * @return void
      */
-    void update(String name, int current);
+    void update(String name, String message, int current);
 
     /**
      * @description 完成
      * @return void
      */
-    void finish(String name);
+    void finish(String name, String message);
 
     /**
      * @description 倍数步增，新进度=原进度+步增*倍数
      * @return void
      */
-    void stepTimes(String name, Integer times);
+    void stepTimes(String name, String message, Integer times);
 
     /**
      * @description 单倍步增
      * @return void
      */
-    void step(String name);
+    void step(String name, String message);
 
     /**
      * @description 获取进度,已初始化后

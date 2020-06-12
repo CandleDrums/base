@@ -9,7 +9,8 @@ package com.cds.base.module.progress.controller;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,11 +30,11 @@ import com.cds.base.module.progress.model.Progress;
 @RestController
 @RequestMapping(value = "/module/progress")
 public class ProgressController {
-    @Autowired
-    private ProgressListener progressListener;
+    @Resource
+    private ProgressListener progressLocalCacheListener;
 
     @GetMapping("/detail.htm")
     public Progress getProgress(@RequestParam(name = "name", required = false) String name) throws IOException {
-        return progressListener.getProgress(name);
+        return progressLocalCacheListener.getProgress(name);
     }
 }

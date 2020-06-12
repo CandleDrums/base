@@ -28,7 +28,7 @@ public class EhCacheConfig {
         return CacheManagerBuilder.newCacheManagerBuilder()
             .withCache("defaultCache",
                 CacheConfigurationBuilder
-                    .newCacheConfigurationBuilder(Long.class, String.class, ResourcePoolsBuilder.heap(100)).build())
+                    .newCacheConfigurationBuilder(String.class, String.class, ResourcePoolsBuilder.heap(100)).build())
             .build(true);
     }
 

@@ -21,6 +21,10 @@ import lombok.Data;
 public class Progress implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    // 标题，可空
+    private String title;
+    // 提示信息
+    private String message;
     // 当前总进度百分比,0-100
     private int percent = 0;
     // 当前值
