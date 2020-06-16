@@ -15,7 +15,7 @@ import com.cds.base.module.progress.model.Progress;
 
 /**
  * @Description 进度监听器EhCache实现
- * @Notes 未填写备注
+ * @Notes 缺点是无法多进程共享
  * @author liming
  * @Date Jun 11, 2020 5:58:23 PM
  */

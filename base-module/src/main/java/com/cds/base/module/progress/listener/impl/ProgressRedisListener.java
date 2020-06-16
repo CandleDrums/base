@@ -16,7 +16,7 @@ import com.cds.base.util.bean.CheckUtils;
 
 /**
  * @Description 进度监听器Redis实现
- * @Notes 未填写备注
+ * @Notes 推荐使用
  * @author liming
  * @Date Jun 11, 2020 5:36:12 PM
  */
