@@ -21,6 +21,7 @@ import com.cds.base.module.progress.model.Progress;
  */
 @Component("progressLocalListener")
 public class ProgressLocalListener extends AbstractProgressListener {
+
     // 放置Progress的Map
     private static final ConcurrentHashMap<String, Progress> PROGRESS_MAP = new ConcurrentHashMap<String, Progress>();
 

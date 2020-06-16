@@ -11,7 +11,7 @@ import com.cds.base.module.progress.listener.ProgressListener;
 import com.cds.base.module.progress.model.Progress;
 
 /**
- * @Description 进度监听器
+ * @Description 进度监听器默认实现
  * @Notes 未填写备注
  * @author liming
  * @Date Jun 8, 2020 4:36:16 PM
