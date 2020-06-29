@@ -13,10 +13,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cds.base.biz.service.GeneralService;
+import com.cds.base.common.exception.ValidationException;
 import com.cds.base.common.rule.NumRuleMap;
 import com.cds.base.dal.dao.GeneralDAO;
-import com.cds.base.exception.DAOException;
-import com.cds.base.exception.ValidateException;
+import com.cds.base.exception.server.DAOException;
 import com.cds.base.util.bean.BeanUtils;
 import com.cds.base.util.bean.CheckUtils;
 import com.cds.base.util.generator.num.NumGenerator;
@@ -71,11 +71,11 @@ public abstract class GeneralServiceImpl<VO, DO> extends BaseServiceImpl<VO, DO>
             e.printStackTrace();
         }
         if (CheckUtils.isEmpty(num)) {
-            throw new ValidateException("未传递编号");
+            throw new ValidationException("未传递编号");
         }
         DO oldValue = getDAO().detail(String.valueOf(num));
         if (CheckUtils.isEmpty(oldValue)) {
-            throw new ValidateException("数据不存在");
+            throw new ValidationException("数据不存在");
         }
         BeanUtils.copyProperties(value, oldValue);
         getDAO().modify(oldValue);

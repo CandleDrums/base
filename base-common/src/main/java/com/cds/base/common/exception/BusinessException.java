@@ -3,7 +3,7 @@ package com.cds.base.common.exception;
 /**
  * @Description 业务异常
  * @Notes 未填写备注
- * @author Administrator
+ * @author liming
  * @Date 2017年12月21日 上午10:44:18
  * @version 1.0
  * @since JDK 1.8

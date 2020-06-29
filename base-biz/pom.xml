@@ -18,5 +18,9 @@
 			<groupId>com.candledrums.base</groupId>
 			<artifactId>base-common</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.candledrums.base</groupId>
+			<artifactId>base-exception</artifactId>
+		</dependency>
 	</dependencies>
 </project>

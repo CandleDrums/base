@@ -20,6 +20,7 @@
 		<module>base-redis</module>
 		<module>base-module</module>
 		<module>base-cache</module>
+		<module>base-exception</module>
 	</modules>
 	<properties>
 		<java.version>1.8</java.version>

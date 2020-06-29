@@ -10,7 +10,7 @@ package com.cds.base.common.rule;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.cds.base.common.exception.ValidateException;
+import com.cds.base.common.exception.ValidationException;
 
 /**
  * @Description Num规则Map
@@ -40,7 +40,7 @@ public class NumRuleMap {
     private static String getModelName(Class t) {
         String className = t.getSimpleName();
         if (className.lastIndexOf("DO") <= 0 || className.lastIndexOf("VO") <= 0) {
-            throw new ValidateException("注册失败，请确认类型");
+            throw new ValidationException("注册失败，请确认类型");
         }
         // 去掉DO/VO后缀
         return className.substring(0, className.length() - 2);

@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cds.base.biz.service.BasicService;
 import com.cds.base.dal.dao.BasicDAO;
-import com.cds.base.exception.DAOException;
+import com.cds.base.exception.server.DAOException;
 import com.cds.base.util.bean.CheckUtils;
 
 /**

@@ -20,8 +20,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cds.base.biz.service.BaseService;
+import com.cds.base.common.exception.ValidationException;
 import com.cds.base.dal.dao.BaseDAO;
-import com.cds.base.exception.MultiRecordException;
 import com.cds.base.util.bean.BeanUtils;
 import com.cds.base.util.bean.CheckUtils;
 
@@ -91,7 +91,7 @@ public abstract class BaseServiceImpl<VO, DO> implements BaseService<VO, DO> {
             return null;
         }
         if (resultList.size() > 1) {
-            throw new MultiRecordException("查询失败，存在多条 相似记录");
+            throw new ValidationException("查询失败，存在多条 相似记录");
         }
         return resultList.get(0);
     }
