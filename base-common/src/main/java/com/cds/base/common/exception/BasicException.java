@@ -42,6 +42,13 @@ public class BasicException extends RuntimeException {
         initId();
     }
 
+    protected BasicException(String code, String message) {
+        super();
+        this.code = code;
+        this.message = message;
+        initId();
+    }
+
     private void initId() {
         this.id = UUID.randomUUID().toString().toUpperCase().replaceAll("-", "");
     }
