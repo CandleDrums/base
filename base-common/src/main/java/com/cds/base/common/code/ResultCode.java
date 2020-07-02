@@ -8,25 +8,24 @@
 package com.cds.base.common.code;
 
 /**
- * @Description TODO 填写描述信息
- * @Notes 未填写备注
+ * @Description 返回码
+ * @Notes 处理失败，出现问题 <--小于 (0) 大于--> 处理成功，但结果不成功
  * @author ming.li
  * @Date 2018年2月8日 下午3:57:08
  * @version 1.0
  * @since JDK 1.8
  */
 public enum ResultCode {
-
-    // 默认类型
+    // 未知
+    UNKNOWN(-2, "UNKNOWN", "错误"),
+    // 错误
+    ERROR(-1, "ERROR", "错误"),
+    // 成功，默认
     SUCCESS(0, "SUCCESS", "成功"),
-    // 类型1
+    // 失败
     FAIL(1, "FAIL", "失败"),
-    // 类型2
-    ERROR(2, "ERROR", "错误"),
-    // 无数据
-    NULL(3, "NULL", "无数据"),
-    // 类型3
-    UNKNOWN(-1, "UNKNOWN", "未知");
+    // 空值
+    NULL(2, "NULL", "空值");
 
     /**
      * 状态值

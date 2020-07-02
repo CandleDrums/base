@@ -24,7 +24,7 @@ public class InvalidAuthException extends BasicException {
      *
      * @param message
      */
-    protected InvalidAuthException(String message) {
+    public InvalidAuthException(String message) {
         super("401", message);
     }
 }
