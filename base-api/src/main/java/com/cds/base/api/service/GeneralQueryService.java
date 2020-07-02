@@ -44,7 +44,7 @@ public interface GeneralQueryService<VO> {
      * @description 根据实体值查询
      * @return ResponseResult<List<T>>
      */
-    ResponseResult<List<VO>> queryAll(@RequestBody VO params);
+    ResponseResult<List<VO>> queryAll(@RequestBody VO value);
 
     /**
      * @description 分页查询
