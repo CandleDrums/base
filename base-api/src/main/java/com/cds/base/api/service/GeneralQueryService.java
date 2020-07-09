@@ -26,7 +26,7 @@ import com.cds.base.common.result.ResponseResult;
  */
 public interface GeneralQueryService<VO> {
     // uri前缀
-    final static String BASE_PREFIX = "/query";
+    static String BASE_PREFIX = "/query";
 
     /**
      * @description 根据业务主键查询
