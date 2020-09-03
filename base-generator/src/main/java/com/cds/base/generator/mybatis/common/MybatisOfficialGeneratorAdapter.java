@@ -15,14 +15,11 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.mybatis.generator.api.MyBatisGenerator;
-import org.mybatis.generator.api.ProgressCallback;
 import org.mybatis.generator.api.ShellCallback;
-import org.mybatis.generator.config.ColumnOverride;
 import org.mybatis.generator.config.CommentGeneratorConfiguration;
 import org.mybatis.generator.config.Configuration;
 import org.mybatis.generator.config.Context;
 import org.mybatis.generator.config.GeneratedKey;
-import org.mybatis.generator.config.IgnoredColumn;
 import org.mybatis.generator.config.JDBCConnectionConfiguration;
 import org.mybatis.generator.config.JavaClientGeneratorConfiguration;
 import org.mybatis.generator.config.JavaModelGeneratorConfiguration;
@@ -51,27 +48,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MybatisOfficialGeneratorAdapter {
 
-    private GeneratorConfig generatorConfig;
-
-    private DBConnectionConfig dbConnectionConfig;
-
-    private ProgressCallback progressCallback;
-
-    private List<IgnoredColumn> ignoredColumns;
-
-    private List<ColumnOverride> columnOverrides;
-
     public MybatisOfficialGeneratorAdapter() {}
 
-    public void setGeneratorConfig(GeneratorConfig generatorConfig) {
-        this.generatorConfig = generatorConfig;
-    }
-
-    public void setDatabaseConfig(DBConnectionConfig databaseConfig) {
-        this.dbConnectionConfig = databaseConfig;
-    }
-
-    public void generate() throws Exception {
+    public void generate(GeneratorConfig generatorConfig, DBConnectionConfig dbConnectionConfig) throws Exception {
         Configuration configuration = new Configuration();
         Context context = new Context(ModelType.CONDITIONAL);
         configuration.addContext(context);
@@ -135,17 +114,6 @@ public class MybatisOfficialGeneratorAdapter {
 
         if (generatorConfig.getMapperName() != null) {
             tableConfig.setMapperName(generatorConfig.getMapperName());
-        }
-        // add ignore columns
-        if (ignoredColumns != null) {
-            ignoredColumns.stream().forEach(ignoredColumn -> {
-                tableConfig.addIgnoredColumn(ignoredColumn);
-            });
-        }
-        if (columnOverrides != null) {
-            columnOverrides.stream().forEach(columnOverride -> {
-                tableConfig.addColumnOverride(columnOverride);
-            });
         }
         if (generatorConfig.isUseActualColumnNames()) {
             tableConfig.addProperty("useActualColumnNames", "true");
@@ -289,7 +257,7 @@ public class MybatisOfficialGeneratorAdapter {
                 mappingXMLFile.delete();
             }
         }
-        myBatisGenerator.generate(progressCallback, contexts, fullyqualifiedTables);
+        myBatisGenerator.generate(null, contexts, fullyqualifiedTables);
     }
 
     private String getMappingXMLFilePath(GeneratorConfig generatorConfig) {
@@ -307,18 +275,6 @@ public class MybatisOfficialGeneratorAdapter {
         }
 
         return sb.toString();
-    }
-
-    public void setProgressCallback(ProgressCallback progressCallback) {
-        this.progressCallback = progressCallback;
-    }
-
-    public void setIgnoredColumns(List<IgnoredColumn> ignoredColumns) {
-        this.ignoredColumns = ignoredColumns;
-    }
-
-    public void setColumnOverrides(List<ColumnOverride> columnOverrides) {
-        this.columnOverrides = columnOverrides;
     }
 
 }

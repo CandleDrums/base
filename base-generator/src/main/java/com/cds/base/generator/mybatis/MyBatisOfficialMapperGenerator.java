@@ -7,11 +7,6 @@
  */
 package com.cds.base.generator.mybatis;
 
-import java.util.List;
-
-import org.mybatis.generator.config.ColumnOverride;
-import org.mybatis.generator.config.IgnoredColumn;
-
 import com.cds.base.generator.mybatis.common.MybatisOfficialGeneratorAdapter;
 import com.cds.base.generator.mybatis.config.DBConnectionConfig;
 import com.cds.base.generator.mybatis.config.GeneratorConfig;
@@ -23,19 +18,16 @@ import com.cds.base.generator.mybatis.config.GeneratorConfig;
  * @Date Sep 3, 2020 3:20:16 PM
  */
 public class MyBatisOfficialMapperGenerator {
-    private DBConnectionConfig dbConnectionConfig;
-    private List<IgnoredColumn> ignoredColumns;
-    private List<ColumnOverride> columnOverrides;
+    // private List<IgnoredColumn> ignoredColumns;
+    // private List<ColumnOverride> columnOverrides;
 
-    public void generateCode(GeneratorConfig generatorConfig) {
+    public void generateCode(GeneratorConfig generatorConfig, DBConnectionConfig dbConnectionConfig) {
 
         MybatisOfficialGeneratorAdapter adapter = new MybatisOfficialGeneratorAdapter();
-        adapter.setGeneratorConfig(generatorConfig);
-        adapter.setDatabaseConfig(dbConnectionConfig);
-        adapter.setIgnoredColumns(ignoredColumns);
-        adapter.setColumnOverrides(columnOverrides);
+        // adapter.setIgnoredColumns(ignoredColumns);
+        // adapter.setColumnOverrides(columnOverrides);
         try {
-            adapter.generate();
+            adapter.generate(generatorConfig, dbConnectionConfig);
         } catch (Exception e) {
             e.printStackTrace();
         }
