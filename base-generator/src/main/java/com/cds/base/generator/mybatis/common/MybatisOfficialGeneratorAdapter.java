@@ -53,7 +53,6 @@ public class MybatisOfficialGeneratorAdapter {
     public void generate(GeneratorConfig generatorConfig, DBConnectionConfig dbConnectionConfig) throws Exception {
         Configuration configuration = new Configuration();
         Context context = new Context(ModelType.CONDITIONAL);
-        configuration.addContext(context);
 
         context.addProperty("javaFileEncoding", "UTF-8");
 
@@ -65,12 +64,10 @@ public class MybatisOfficialGeneratorAdapter {
         TableConfiguration tableConfig = new TableConfiguration(context);
         tableConfig.setTableName(generatorConfig.getTableName());
         tableConfig.setDomainObjectName(generatorConfig.getDomainObjectName());
-        if (!generatorConfig.isUseExample()) {
-            tableConfig.setUpdateByExampleStatementEnabled(false);
-            tableConfig.setCountByExampleStatementEnabled(false);
-            tableConfig.setDeleteByExampleStatementEnabled(false);
-            tableConfig.setSelectByExampleStatementEnabled(false);
-        }
+        tableConfig.setUpdateByExampleStatementEnabled(true);
+        tableConfig.setCountByExampleStatementEnabled(true);
+        tableConfig.setDeleteByExampleStatementEnabled(true);
+        tableConfig.setSelectByExampleStatementEnabled(true);
 
         context.addProperty("autoDelimitKeywords", "true");
         if (DbType.MySQL.name().equals(dbType) || DbType.MySQL_8.name().equals(dbType)) {
@@ -243,6 +240,7 @@ public class MybatisOfficialGeneratorAdapter {
         }
 
         context.setTargetRuntime("MyBatis3");
+        configuration.addContext(context);
 
         List<String> warnings = new ArrayList<>();
         Set<String> fullyqualifiedTables = new HashSet<>();
