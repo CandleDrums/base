@@ -5,7 +5,7 @@
  * @Date Jun 10, 2020 3:38:58 PM
  * @Copyright (c) 2020 CandleDrumS.com All Right Reserved.
  */
-package com.cds.base.util.generator.mybatis.common;
+package com.cds.base.generator.mybatis.common;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -26,11 +26,11 @@ import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
 import com.cds.base.common.constants.Amount;
+import com.cds.base.generator.mybatis.annotaion.Column;
+import com.cds.base.generator.mybatis.annotaion.ColumnAnnotation;
+import com.cds.base.generator.mybatis.annotaion.Table;
+import com.cds.base.generator.mybatis.annotaion.TableAnnotation;
 import com.cds.base.util.bean.CheckUtils;
-import com.cds.base.util.generator.mybatis.annotaion.Column;
-import com.cds.base.util.generator.mybatis.annotaion.ColumnAnnotation;
-import com.cds.base.util.generator.mybatis.annotaion.Table;
-import com.cds.base.util.generator.mybatis.annotaion.TableAnnotation;
 
 import lombok.extern.slf4j.Slf4j;
 

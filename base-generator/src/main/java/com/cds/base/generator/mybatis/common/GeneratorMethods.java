@@ -5,12 +5,12 @@
  * @Date 2018年1月10日 下午5:43:00
  * @Copyright (c) CandleDrumS.com All Right Reserved.
  */
-package com.cds.base.util.generator.mybatis.common;
+package com.cds.base.generator.mybatis.common;
 
 import org.jdom2.Element;
 
-import com.cds.base.util.generator.mybatis.annotaion.Column;
-import com.cds.base.util.generator.mybatis.annotaion.Table;
+import com.cds.base.generator.mybatis.annotaion.Column;
+import com.cds.base.generator.mybatis.annotaion.Table;
 
 /**
  * @Description 生成方法实现

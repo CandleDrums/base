@@ -5,12 +5,12 @@
  * @Date 2017年11月20日 下午3:45:48
  * @Copyright (c) 2019 CandleDrumS.com All Right Reserved.
  */
-package com.cds.base.util.generator.mybatis;
+package com.cds.base.generator.mybatis;
 
 import java.io.File;
 
-import com.cds.base.util.generator.mybatis.annotaion.Table;
-import com.cds.base.util.generator.mybatis.common.MapperUtils;
+import com.cds.base.generator.mybatis.annotaion.Table;
+import com.cds.base.generator.mybatis.common.MapperUtils;
 import com.cds.base.util.system.OSInfoUtils;
 
 import lombok.extern.slf4j.Slf4j;

@@ -5,7 +5,7 @@
  * @Date 2019年9月16日 下午5:32:31
  * @Copyright (c) 2019 CandleDrumS.com All Right Reserved.
  */
-package com.cds.base.util.generator.num;
+package com.cds.base.generator.num;
 
 import org.apache.commons.lang3.RandomStringUtils;
 

@@ -5,7 +5,7 @@
  * @Date Sep 29, 2019 5:30:37 PM
  * @Copyright (c) 2019 CandleDrumS.com All Right Reserved.
  */
-package com.cds.base.util.generator.redis;
+package com.cds.base.generator.redis;
 
 /**
  * @Description Redis key 生成器

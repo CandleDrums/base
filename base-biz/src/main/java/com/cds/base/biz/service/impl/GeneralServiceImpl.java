@@ -17,9 +17,9 @@ import com.cds.base.common.exception.ValidationException;
 import com.cds.base.common.rule.NumRuleMap;
 import com.cds.base.dal.dao.GeneralDAO;
 import com.cds.base.exception.server.DAOException;
+import com.cds.base.generator.num.NumGenerator;
 import com.cds.base.util.bean.BeanUtils;
 import com.cds.base.util.bean.CheckUtils;
-import com.cds.base.util.generator.num.NumGenerator;
 
 /**
  * @Description 通用Service实现

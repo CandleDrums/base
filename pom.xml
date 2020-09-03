@@ -21,6 +21,7 @@
 		<module>base-module</module>
 		<module>base-cache</module>
 		<module>base-exception</module>
+		<module>base-generator</module>
 	</modules>
 	<properties>
 		<java.version>1.8</java.version>
@@ -77,6 +78,11 @@
 			<dependency>
 				<groupId>com.candledrums.base</groupId>
 				<artifactId>base-redis</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.candledrums.base</groupId>
+				<artifactId>base-generator</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>

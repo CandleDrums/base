@@ -20,6 +20,10 @@
 		</dependency>
 		<dependency>
 			<groupId>com.candledrums.base</groupId>
+			<artifactId>base-generator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.candledrums.base</groupId>
 			<artifactId>base-exception</artifactId>
 		</dependency>
 	</dependencies>

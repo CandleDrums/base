@@ -5,7 +5,7 @@
  * @Date 2017年11月20日 下午4:07:27
  * @Copyright (c) 2019 CandleDrumS.com All Right Reserved.
  */
-package com.cds.base.util.generator.mybatis.annotaion;
+package com.cds.base.generator.mybatis.annotaion;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
@@ -22,7 +22,7 @@ import java.lang.annotation.Target;
  * @since JDK 1.7
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.TYPE })
+@Target({ElementType.TYPE})
 @Inherited
 public @interface TableAnnotation {
 
