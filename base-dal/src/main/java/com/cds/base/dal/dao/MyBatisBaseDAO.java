@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.session.RowBounds;
 
 /**
  * @Description MyBatis公共基础
@@ -40,4 +41,8 @@ public interface MyBatisBaseDAO<DO, PK extends Serializable, Example> {
     int updateByPrimaryKeySelective(DO record);
 
     int updateByPrimaryKey(DO record);
+
+    List<DO> queryPagingList(DO record, RowBounds bounds);
+
+    int queryPagingCount(DO record);
 }

@@ -50,7 +50,7 @@ public class CustomJavaMapperMethodGenerator extends AbstractJavaMapperMethodGen
         // import参数类型对象
         importedTypes.add(parameterType);
         // 为方法添加参数，变量名称record
-        method.addParameter(new Parameter(parameterType, "param")); //$NON-NLS-1$
+        method.addParameter(new Parameter(parameterType, "record")); //$NON-NLS-1$
         //
         addMapperAnnotations(interfaze, method);
         context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
@@ -87,7 +87,7 @@ public class CustomJavaMapperMethodGenerator extends AbstractJavaMapperMethodGen
         // import参数类型对象
         importedTypes.add(parameterType);
         // 为方法添加参数，变量名称record
-        method.addParameter(new Parameter(parameterType, "param"));
+        method.addParameter(new Parameter(parameterType, "record"));
         FullyQualifiedJavaType RowBoundsType = new FullyQualifiedJavaType("RowBounds");
         method.addParameter(new Parameter(RowBoundsType, "bounds"));
         //
