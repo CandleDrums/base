@@ -31,7 +31,7 @@ public class CustomAbstractXmlElementGenerator extends AbstractXmlElementGenerat
         XmlElement selectTrimElement = new XmlElement("trim"); // 设置trim标签
         selectTrimElement.addAttribute(new Attribute("prefix", "WHERE"));
         selectTrimElement.addAttribute(new Attribute("prefixOverrides", "AND | OR")); // 添加where和and
-        StringBuilder sb = new StringBuilder();
+        StringBuffer sb = new StringBuffer();
         for (IntrospectedColumn introspectedColumn : introspectedTable.getAllColumns()) {
             XmlElement selectNotNullElement = new XmlElement("if"); //$NON-NLS-1$
             sb.setLength(0);
@@ -61,15 +61,6 @@ public class CustomAbstractXmlElementGenerator extends AbstractXmlElementGenerat
         XmlElement include = new XmlElement("include");
         include.addAttribute(new Attribute("refid", "Base_Object_Query"));
 
-        // 增加find
-        XmlElement find = new XmlElement("select");
-        find.addAttribute(new Attribute("id", "find"));
-        find.addAttribute(new Attribute("resultMap", "BaseResultMap"));
-        find.addAttribute(new Attribute("parameterType", introspectedTable.getBaseRecordType()));
-        find.addElement(selectText);
-        find.addElement(include);
-        parentElement.addElement(find);
-
         // 增加pageList
         XmlElement pageList = new XmlElement("select");
         pageList.addAttribute(new Attribute("id", "pageList"));
@@ -77,6 +68,20 @@ public class CustomAbstractXmlElementGenerator extends AbstractXmlElementGenerat
         pageList.addAttribute(new Attribute("parameterType", introspectedTable.getBaseRecordType()));
         pageList.addElement(selectText);
         pageList.addElement(include);
+        parentElement.addElement(pageList);
+
+        // 公用select
+        sb.setLength(0);
+        sb.append("select count(*) from ");
+        sb.append(introspectedTable.getFullyQualifiedTableNameAtRuntime());
+        selectText = new TextElement(sb.toString());
+
+        XmlElement pageListCount = new XmlElement("select");
+        pageListCount.addAttribute(new Attribute("id", "pageListCount"));
+        pageListCount.addAttribute(new Attribute("resultType", "int"));
+        pageListCount.addAttribute(new Attribute("parameterType", introspectedTable.getBaseRecordType()));
+        pageListCount.addElement(selectText);
+        pageListCount.addElement(include);
         parentElement.addElement(pageList);
     }
 
