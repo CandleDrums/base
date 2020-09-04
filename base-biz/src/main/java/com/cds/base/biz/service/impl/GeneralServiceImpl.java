@@ -66,9 +66,6 @@ public abstract class GeneralServiceImpl<VO, DO, Example> extends BaseServiceImp
     public abstract boolean delete(String num);
 
     @Override
-    public abstract List<VO> findList(List<String> numList);
-
-    @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     public abstract VO detail(String num);
 

@@ -31,12 +31,6 @@ public interface GeneralService<VO> extends BaseService<VO> {
     VO detail(String num);
 
     /**
-     * @description 根据key查询
-     * @param num(数据库主键)
-     */
-    List<VO> findList(List<String> numList);
-
-    /**
      * @description 删除
      * @return boolean
      */
