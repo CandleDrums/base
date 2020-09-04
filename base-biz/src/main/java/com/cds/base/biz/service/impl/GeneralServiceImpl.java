@@ -66,6 +66,9 @@ public abstract class GeneralServiceImpl<VO, DO, Example> extends BaseServiceImp
     public abstract boolean delete(String num);
 
     @Override
+    public abstract List<VO> findList(List<String> numList);
+
+    @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     public abstract VO detail(String num);
 
@@ -87,4 +90,5 @@ public abstract class GeneralServiceImpl<VO, DO, Example> extends BaseServiceImp
 
     @Override
     protected abstract BaseDAO<DO, Serializable, Example> getDAO();
+
 }
