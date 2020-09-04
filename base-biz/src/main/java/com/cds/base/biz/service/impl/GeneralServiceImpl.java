@@ -72,12 +72,12 @@ public abstract class GeneralServiceImpl<VO, DO, Example> extends BaseServiceImp
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class, DAOException.class},
         noRollbackFor = RuntimeException.class)
-    public int deleteAll(List<String> idList) {
-        if (CheckUtils.isEmpty(idList))
+    public int deleteAll(List<String> numList) {
+        if (CheckUtils.isEmpty(numList))
             return 0;
         int result = 0;
-        for (String id : idList) {
-            boolean success = delete(id);
+        for (String num : numList) {
+            boolean success = delete(num);
             if (success) {
                 result++;
             }
