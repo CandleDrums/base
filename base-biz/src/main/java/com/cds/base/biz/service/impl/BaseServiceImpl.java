@@ -7,6 +7,7 @@
  */
 package com.cds.base.biz.service.impl;
 
+import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -35,14 +36,14 @@ import com.cds.base.util.bean.CheckUtils;
  */
 @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT,
     timeout = TransactionDefinition.TIMEOUT_DEFAULT)
-public abstract class BaseServiceImpl<VO, DO> implements BaseService<VO, DO> {
+public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO> {
     // VO类型
     protected Class<VO> voType;
     // DO类型
     protected Class<DO> doType;
 
     // 钩子方法
-    protected abstract BaseDAO<DO> getDAO();
+    protected abstract BaseDAO<DO, Serializable, Example> getDAO();
 
     @Override
     public abstract VO save(VO value);
@@ -81,7 +82,7 @@ public abstract class BaseServiceImpl<VO, DO> implements BaseService<VO, DO> {
     public boolean contains(VO value) {
         if (CheckUtils.isEmpty(value))
             return false;
-        return getDAO().contains(getDO(value, doType));
+        return getDAO().queryPagingCount(getDO(value, doType)) > 0;
     }
 
     @Override

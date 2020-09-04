@@ -7,13 +7,15 @@
  */
 package com.cds.base.biz.service.impl;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cds.base.biz.service.BasicService;
-import com.cds.base.dal.dao.BasicDAO;
+import com.cds.base.dal.dao.BaseDAO;
 import com.cds.base.exception.server.DAOException;
 import com.cds.base.util.bean.CheckUtils;
 
@@ -25,7 +27,8 @@ import com.cds.base.util.bean.CheckUtils;
  * @version 1.0
  * @since JDK 1.8
  */
-public abstract class BasicServiceImpl<VO, DO> extends BaseServiceImpl<VO, DO> implements BasicService<VO, DO> {
+public abstract class BasicServiceImpl<VO, DO, Example> extends BaseServiceImpl<VO, DO, Example>
+    implements BasicService<VO> {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class,
@@ -33,7 +36,7 @@ public abstract class BasicServiceImpl<VO, DO> extends BaseServiceImpl<VO, DO> i
     public VO save(VO value) {
         if (CheckUtils.isEmpty(value))
             return null;
-        getDAO().save(getDO(value, doType));
+        getDAO().insertSelective(getDO(value, doType));
         return value;
     }
 
@@ -43,8 +46,7 @@ public abstract class BasicServiceImpl<VO, DO> extends BaseServiceImpl<VO, DO> i
     public boolean delete(Integer id) {
         if (CheckUtils.isEmpty(id))
             return false;
-        getDAO().delete(id);
-        return true;
+        return getDAO().deleteByPrimaryKey(id) == 0;
     }
 
     @Override
@@ -68,18 +70,29 @@ public abstract class BasicServiceImpl<VO, DO> extends BaseServiceImpl<VO, DO> i
     public VO detail(Integer id) {
         if (CheckUtils.isEmpty(id))
             return null;
-        DO result = getDAO().detail(id);
+        DO result = getDAO().selectByPrimaryKey(id);
         return getVO(result, voType);
     }
 
+    /**
+     * 默认实现，可以重写，效率更高
+     */
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     public List<VO> findList(List<Integer> idList) {
         if (CheckUtils.isEmpty(idList))
             return null;
-        return getVOList(getDAO().detailList(idList), voType);
+        List<VO> detailList = new ArrayList<VO>();
+        for (Integer id : idList) {
+            VO detail = this.detail(id);
+            if (detail == null) {
+                continue;
+            }
+            detailList.add(detail);
+        }
+        return detailList;
     }
 
     @Override
-    protected abstract BasicDAO<DO> getDAO();
+    protected abstract BaseDAO<DO, Serializable, Example> getDAO();
 }

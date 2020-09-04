@@ -17,7 +17,7 @@ import java.util.List;
  * @version 1.0
  * @since JDK 1.8
  */
-public interface GeneralService<VO, DO> extends BaseService<VO, DO> {
+public interface GeneralService<VO> extends BaseService<VO> {
     /**
      * @description 修改
      * @param t(实体值)

@@ -17,7 +17,7 @@ import java.util.List;
  * @version 1.0
  * @since JDK 1.8
  */
-public interface BasicService<VO, DO> extends BaseService<VO, DO> {
+public interface BasicService<VO> extends BaseService<VO> {
 
     /**
      * @description 根据key查询
