@@ -239,6 +239,11 @@ public class MybatisOfficialGeneratorAdapter {
             }
         }
 
+        PluginConfiguration pluginConfiguration = new PluginConfiguration();
+        pluginConfiguration.addProperty("type", "com.cds.base.generator.mybatis.plugin.CustomMyBatisGenertaorPlugin");
+        pluginConfiguration.setConfigurationType("com.cds.base.generator.mybatis.plugin.CustomMyBatisGenertaorPlugin");
+        context.addPluginConfiguration(pluginConfiguration);
+
         context.setTargetRuntime("MyBatis3");
         configuration.addContext(context);
 
