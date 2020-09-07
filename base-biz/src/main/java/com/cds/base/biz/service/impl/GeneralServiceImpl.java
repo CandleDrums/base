@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cds.base.biz.service.GeneralService;
-import com.cds.base.common.rule.NumRuleMap;
 import com.cds.base.dal.dao.BaseDAO;
 import com.cds.base.exception.server.DAOException;
 import com.cds.base.generator.num.NumGenerator;
@@ -41,7 +40,7 @@ public abstract class GeneralServiceImpl<VO, DO, Example> extends BaseServiceImp
         String num = "";
         Object numExtised = BeanUtils.getProperty(value, "num");
         if (CheckUtils.isEmpty(numExtised)) {
-            num = NumGenerator.nextNum(NumRuleMap.getNumRule(value.getClass()));
+            num = NumGenerator.nextNum(value);
             try {
                 BeanUtils.setProperty(value, "num", num);
             } catch (Exception e) {
