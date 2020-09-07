@@ -5,7 +5,7 @@
  * @Date Sep 4, 2020 5:35:16 PM
  * @Copyright (c) 2020 CandleDrums.com All Right Reserved.
  */
-package com.cds.base.biz.service.custom.impl;
+package com.cds.base.biz.service.impl.custom;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

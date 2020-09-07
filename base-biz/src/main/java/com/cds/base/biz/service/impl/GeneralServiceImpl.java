@@ -17,7 +17,6 @@ import com.cds.base.biz.service.GeneralService;
 import com.cds.base.dal.dao.BaseDAO;
 import com.cds.base.exception.server.DAOException;
 import com.cds.base.generator.num.NumGenerator;
-import com.cds.base.util.bean.BeanUtils;
 import com.cds.base.util.bean.CheckUtils;
 
 /**
@@ -37,16 +36,7 @@ public abstract class GeneralServiceImpl<VO, DO, Example> extends BaseServiceImp
     public VO save(VO value) {
         if (CheckUtils.isEmpty(value))
             return null;
-        String num = "";
-        Object numExtised = BeanUtils.getProperty(value, "num");
-        if (CheckUtils.isEmpty(numExtised)) {
-            num = NumGenerator.nextNum(value);
-            try {
-                BeanUtils.setProperty(value, "num", num);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        String num = NumGenerator.generateAndSetNum(value);
         getDAO().insertSelective(getDO(value, doType));
         if (CheckUtils.isNotEmpty(num)) {
             return detail(num);

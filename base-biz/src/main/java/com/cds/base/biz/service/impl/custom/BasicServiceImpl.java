@@ -5,7 +5,7 @@
  * @Date Sep 4, 2020 5:37:03 PM
  * @Copyright (c) 2020 CandleDrums.com All Right Reserved.
  */
-package com.cds.base.biz.service.custom.impl;
+package com.cds.base.biz.service.impl.custom;
 
 import java.util.List;
 
