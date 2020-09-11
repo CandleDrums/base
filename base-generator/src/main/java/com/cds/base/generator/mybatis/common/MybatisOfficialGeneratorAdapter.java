@@ -57,6 +57,8 @@ public class MybatisOfficialGeneratorAdapter {
         context.setId("officialGenerator");
         context.setTargetRuntime("MyBatis3");
         context.addProperty(PropertyRegistry.CONTEXT_JAVA_FILE_ENCODING, generatorConfig.getEncoding());
+        String projectPath =
+            generatorConfig.getProjectName() + "-dep/" + generatorConfig.getProjectName() + "-dep-dal/";
 
         // 设置类型转换
         setJavaTypeResolverConfig(context);
@@ -65,11 +67,11 @@ public class MybatisOfficialGeneratorAdapter {
         // 设置jdbc配置
         setJdbcConfig(context, dbConnectionConfig);
         // 设置model配置
-        setModelConfig(context, generatorConfig);
+        setModelConfig(context, generatorConfig, projectPath);
         // 设置mapper配置
-        setMapperConfig(context, generatorConfig);
+        setMapperConfig(context, generatorConfig, projectPath);
         // 设置DAO配置
-        setDaoConfig(context, generatorConfig);
+        setDaoConfig(context, generatorConfig, projectPath);
         // 设置注释配置
         setCommentConfig(context, generatorConfig);
         // 设置序列化配置
@@ -178,31 +180,32 @@ public class MybatisOfficialGeneratorAdapter {
 
     }
 
-    private void setModelConfig(Context context, GeneratorConfig generatorConfig) {
+    private void setModelConfig(Context context, GeneratorConfig generatorConfig, String projectPath) {
         // java model
         JavaModelGeneratorConfiguration modelConfig = new JavaModelGeneratorConfiguration();
         modelConfig.setTargetPackage(generatorConfig.getModelPackage());
-        modelConfig
-            .setTargetProject(generatorConfig.getProjectFolder() + "/" + generatorConfig.getModelPackageTargetFolder());
+        modelConfig.setTargetProject(
+            generatorConfig.getProjectFolder() + "/" + projectPath + generatorConfig.getModelPackageTargetFolder());
         context.setJavaModelGeneratorConfiguration(modelConfig);
 
     }
 
-    private void setMapperConfig(Context context, GeneratorConfig generatorConfig) {
+    private void setMapperConfig(Context context, GeneratorConfig generatorConfig, String projectPath) {
         // Mapper configuration
         SqlMapGeneratorConfiguration mapperConfig = new SqlMapGeneratorConfiguration();
         mapperConfig.setTargetPackage(generatorConfig.getMappingXMLPackage());
-        mapperConfig
-            .setTargetProject(generatorConfig.getProjectFolder() + "/" + generatorConfig.getMappingXMLTargetFolder());
+        mapperConfig.setTargetProject(
+            generatorConfig.getProjectFolder() + "/" + projectPath + generatorConfig.getMappingXMLTargetFolder());
         context.setSqlMapGeneratorConfiguration(mapperConfig);
     }
 
-    private void setDaoConfig(Context context, GeneratorConfig generatorConfig) {
+    private void setDaoConfig(Context context, GeneratorConfig generatorConfig, String projectPath) {
         // DAO
         JavaClientGeneratorConfiguration daoConfig = new JavaClientGeneratorConfiguration();
         daoConfig.setConfigurationType("XMLMAPPER");
         daoConfig.setTargetPackage(generatorConfig.getDaoPackage());
-        daoConfig.setTargetProject(generatorConfig.getProjectFolder() + "/" + generatorConfig.getDaoTargetFolder());
+        daoConfig.setTargetProject(
+            generatorConfig.getProjectFolder() + "/" + projectPath + generatorConfig.getDaoTargetFolder());
 
         context.setJavaClientGeneratorConfiguration(daoConfig);
     }
@@ -259,8 +262,8 @@ public class MybatisOfficialGeneratorAdapter {
      */
     private void setLombokConfig(Context context) {
         PluginConfiguration pc = new PluginConfiguration();
-        pc.addProperty("type", "com.softwareloop.mybatis.generator.plugins.LombokPlugin");
-        pc.setConfigurationType("com.softwareloop.mybatis.generator.plugins.LombokPlugin");
+        pc.addProperty("type", "com.cds.base.generator.mybatis.plugin.LombokPlugin");
+        pc.setConfigurationType("com.cds.base.generator.mybatis.plugin.LombokPlugin");
         context.addPluginConfiguration(pc);
     }
 
