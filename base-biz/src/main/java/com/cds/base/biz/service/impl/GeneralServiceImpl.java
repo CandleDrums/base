@@ -7,18 +7,16 @@
  */
 package com.cds.base.biz.service.impl;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cds.base.biz.service.GeneralService;
-import com.cds.base.common.exception.ValidationException;
-import com.cds.base.common.rule.NumRuleMap;
-import com.cds.base.dal.dao.GeneralDAO;
+import com.cds.base.dal.dao.BaseDAO;
 import com.cds.base.exception.server.DAOException;
 import com.cds.base.generator.num.NumGenerator;
-import com.cds.base.util.bean.BeanUtils;
 import com.cds.base.util.bean.CheckUtils;
 
 /**
@@ -29,7 +27,8 @@ import com.cds.base.util.bean.CheckUtils;
  * @version 1.0
  * @since JDK 1.8
  */
-public abstract class GeneralServiceImpl<VO, DO> extends BaseServiceImpl<VO, DO> implements GeneralService<VO, DO> {
+public abstract class GeneralServiceImpl<VO, DO, Example> extends BaseServiceImpl<VO, DO, Example>
+    implements GeneralService<VO> {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class,
@@ -37,17 +36,8 @@ public abstract class GeneralServiceImpl<VO, DO> extends BaseServiceImpl<VO, DO>
     public VO save(VO value) {
         if (CheckUtils.isEmpty(value))
             return null;
-        String num = "";
-        Object numExtised = BeanUtils.getProperty(value, "num");
-        if (CheckUtils.isEmpty(numExtised)) {
-            num = NumGenerator.nextNum(NumRuleMap.getNumRule(value.getClass()));
-            try {
-                BeanUtils.setProperty(value, "num", num);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        getDAO().save(getDO(value, doType));
+        String num = NumGenerator.generateAndSetNum(value);
+        getDAO().insertSelective(getDO(value, doType));
         if (CheckUtils.isNotEmpty(num)) {
             return detail(num);
         }
@@ -57,51 +47,26 @@ public abstract class GeneralServiceImpl<VO, DO> extends BaseServiceImpl<VO, DO>
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class,
         noRollbackFor = RuntimeException.class)
-    public VO modify(VO value) {
-        if (CheckUtils.isEmpty(value)) {
-            return null;
-        }
-        Object num = "";
-        try {
-            num = BeanUtils.getProperty(value, "num");
-            if (CheckUtils.isEmpty(num)) {
-                num = BeanUtils.getProperty(value, "id");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (CheckUtils.isEmpty(num)) {
-            throw new ValidationException("未传递编号");
-        }
-        DO oldValue = getDAO().detail(String.valueOf(num));
-        if (CheckUtils.isEmpty(oldValue)) {
-            throw new ValidationException("数据不存在");
-        }
-        BeanUtils.copyProperties(value, oldValue);
-        getDAO().modify(oldValue);
-        BeanUtils.copyProperties(oldValue, value);
-        return value;
-    }
+    public abstract VO modify(VO value);
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class, DAOException.class},
         noRollbackFor = RuntimeException.class)
-    public boolean delete(String num) {
-        if (CheckUtils.isEmpty(num))
-            return false;
-        getDAO().delete(num);
-        return true;
-    }
+    public abstract boolean delete(String num);
+
+    @Override
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+    public abstract VO detail(String num);
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class, DAOException.class},
         noRollbackFor = RuntimeException.class)
-    public int deleteAll(List<String> idList) {
-        if (CheckUtils.isEmpty(idList))
+    public int deleteAll(List<String> numList) {
+        if (CheckUtils.isEmpty(numList))
             return 0;
         int result = 0;
-        for (String id : idList) {
-            boolean success = delete(id);
+        for (String num : numList) {
+            boolean success = delete(num);
             if (success) {
                 result++;
             }
@@ -110,21 +75,6 @@ public abstract class GeneralServiceImpl<VO, DO> extends BaseServiceImpl<VO, DO>
     }
 
     @Override
-    @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
-    public VO detail(String num) {
-        if (CheckUtils.isEmpty(num))
-            return null;
-        DO result = getDAO().detail(num);
-        return getVO(result, voType);
-    }
+    protected abstract BaseDAO<DO, Serializable, Example> getDAO();
 
-    @Override
-    public List<VO> findList(List<String> idList) {
-        if (CheckUtils.isEmpty(idList))
-            return null;
-        return getVOList(getDAO().detailList(idList), voType);
-    }
-
-    @Override
-    protected abstract GeneralDAO<DO> getDAO();
 }

@@ -1,24 +1,21 @@
 /**
  * @Project base-dal
  * @Package com.cds.base.dal.dao
- * @Class BasicDAO.java
- * @Date Oct 31, 2019 6:08:16 PM
- * @Copyright (c) 2019 CandleDrumS.com All Right Reserved.
+ * @Class CDSBasicDAO.java
+ * @Date Sep 4, 2020 4:58:26 PM
+ * @Copyright (c) 2020 CandleDrums.com All Right Reserved.
  */
-package com.cds.base.dal.dao;
+package com.cds.base.dal.custom.dao;
 
 import java.util.List;
 
 /**
- * @Description 基本DAO
+ * @Description TODO 填写描述信息
  * @Notes 未填写备注
  * @author liming
- * @Date Oct 31, 2019 6:08:16 PM
- * @version 1.0
- * @since JDK 1.8
+ * @Date Sep 4, 2020 4:58:26 PM
  */
 public interface BasicDAO<DO> extends BaseDAO<DO> {
-
     /**
      * @description 删除
      * @return void

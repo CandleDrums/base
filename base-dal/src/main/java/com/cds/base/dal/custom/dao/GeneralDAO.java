@@ -2,20 +2,18 @@
  * @Project base-dal
  * @Package com.cds.base.dal.dao
  * @Class GeneralDAO.java
- * @Date Oct 31, 2019 6:08:28 PM
- * @Copyright (c) 2019 CandleDrumS.com All Right Reserved.
+ * @Date Sep 4, 2020 5:08:59 PM
+ * @Copyright (c) 2020 CandleDrums.com All Right Reserved.
  */
-package com.cds.base.dal.dao;
+package com.cds.base.dal.custom.dao;
 
 import java.util.List;
 
 /**
- * @Description 业务DAO
+ * @Description TODO 填写描述信息
  * @Notes 未填写备注
  * @author liming
- * @Date Oct 31, 2019 6:08:28 PM
- * @version 1.0
- * @since JDK 1.8
+ * @Date Sep 4, 2020 5:08:59 PM
  */
 public interface GeneralDAO<DO> extends BaseDAO<DO> {
     /**
@@ -41,4 +39,5 @@ public interface GeneralDAO<DO> extends BaseDAO<DO> {
      * @return List<DO>
      */
     List<DO> detailList(List<String> numList);
+
 }

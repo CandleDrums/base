@@ -17,7 +17,7 @@ import java.util.List;
  * @version 1.0
  * @since JDK 1.8
  */
-public interface BaseService<VO, DO> {
+public interface BaseService<VO> {
 
     /**
      * @description 保存

@@ -9,8 +9,12 @@ package com.cds.base.generator.num;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
+import com.cds.base.common.annotaion.handler.NumGenerateRuleHandler;
+import com.cds.base.common.exception.BusinessException;
 import com.cds.base.common.rule.NumRule;
 import com.cds.base.common.rule.NumSplicingRule;
+import com.cds.base.util.bean.BeanUtils;
+import com.cds.base.util.bean.CheckUtils;
 import com.cds.base.util.misc.DateUtils;
 
 /**
@@ -21,7 +25,56 @@ import com.cds.base.util.misc.DateUtils;
  * @version 1.0
  * @since JDK 1.8
  */
-public class NumGenerator {
+public class NumGenerator<VO> {
+
+    public static <VO> String generateAndSetNum(VO vo) {
+        Object numExtised = BeanUtils.getProperty(vo, "num");
+        if (CheckUtils.isNotEmpty(numExtised)) {
+            return numExtised.toString();
+        }
+        NumRule numRule = NumGenerateRuleHandler.getNumRule(vo.getClass());
+        if (numRule == null) {
+            throw new BusinessException("无效类型");
+        }
+        StringBuffer sb = new StringBuffer();
+        sb.append(numRule.getPrefixCode());
+        String num = generateCode(numRule.getNumSplicingRule(), 1, sb);
+        try {
+            BeanUtils.setProperty(vo, "num", num);
+            return num;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        throw new BusinessException("生成编号失败");
+    }
+
+    /**
+     * @description 获取编号
+     * @return String
+     */
+    public static <VO> String nextNum(VO vo) {
+        NumRule numRule = NumGenerateRuleHandler.getNumRule(vo.getClass());
+        if (numRule == null) {
+            throw new BusinessException("无效类型");
+        }
+        StringBuffer sb = new StringBuffer();
+        sb.append(numRule.getPrefixCode());
+        return generateCode(numRule.getNumSplicingRule(), 1, sb);
+    }
+
+    /**
+     * @description 获取编号
+     * @return String
+     */
+    public static String nextNum(Class clazz) {
+        NumRule numRule = NumGenerateRuleHandler.getNumRule(clazz);
+        if (numRule == null) {
+            throw new BusinessException("无效类型");
+        }
+        StringBuffer sb = new StringBuffer();
+        sb.append(numRule.getPrefixCode());
+        return generateCode(numRule.getNumSplicingRule(), 1, sb);
+    }
 
     /**
      * @description 获取编号

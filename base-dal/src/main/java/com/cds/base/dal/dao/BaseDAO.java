@@ -7,8 +7,10 @@
  */
 package com.cds.base.dal.dao;
 
+import java.io.Serializable;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
 /**
@@ -19,42 +21,31 @@ import org.apache.ibatis.session.RowBounds;
  * @version 1.0
  * @since JDK 1.8
  */
-public interface BaseDAO<DO> {
+public interface BaseDAO<DO, PK extends Serializable, Example> {
+    long countByExample(Example example);
 
-    /**
-     * @description 保存
-     * @return void
-     */
-    void save(DO value);
+    int deleteByExample(Example example);
 
-    /**
-     * @description 批量保存
-     * @return int
-     */
-    int saveAll(List<DO> valueList);
+    int deleteByPrimaryKey(PK id);
 
-    /**
-     * @description 是否存在
-     * @return boolean
-     */
-    boolean contains(DO value);
+    int insert(DO record);
 
-    /**
-     * @description 指定参数查询（key为类属性名）
-     * @return List<DO>
-     */
-    List<DO> queryAll(DO params);
+    int insertSelective(DO record);
 
-    /**
-     * @description 分页查询
-     * @return List<DO>
-     */
-    List<DO> queryPagingList(DO params, RowBounds bounds);
+    List<DO> selectByExample(Example example);
 
-    /**
-     * @description 总数查询
-     * @return int
-     */
-    int queryPagingCount(DO params);
+    DO selectByPrimaryKey(PK id);
+
+    int updateByExampleSelective(@Param("record") DO record, @Param("example") Example example);
+
+    int updateByExample(@Param("record") DO record, @Param("example") Example example);
+
+    int updateByPrimaryKeySelective(DO record);
+
+    int updateByPrimaryKey(DO record);
+
+    List<DO> queryPagingList(DO record, RowBounds bounds);
+
+    int queryPagingCount(DO record);
 
 }

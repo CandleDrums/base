@@ -1,21 +1,19 @@
 /**
  * @Project base-biz
- * @Package com.cds.candledrums.base.biz.service.impl
+ * @Package com.cds.base.biz.service.custom.impl
  * @Class BasicServiceImpl.java
- * @Date Oct 31, 2019 6:17:13 PM
- * @Copyright (c) 2019 CandleDrumS.com All Right Reserved.
+ * @Date Sep 4, 2020 5:37:03 PM
+ * @Copyright (c) 2020 CandleDrums.com All Right Reserved.
  */
-package com.cds.base.biz.service.impl;
+package com.cds.base.biz.service.impl.custom;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cds.base.biz.service.BasicService;
-import com.cds.base.dal.dao.BaseDAO;
+import com.cds.base.dal.custom.dao.BasicDAO;
 import com.cds.base.exception.server.DAOException;
 import com.cds.base.util.bean.CheckUtils;
 
@@ -27,8 +25,7 @@ import com.cds.base.util.bean.CheckUtils;
  * @version 1.0
  * @since JDK 1.8
  */
-public abstract class BasicServiceImpl<VO, DO, Example> extends BaseServiceImpl<VO, DO, Example>
-    implements BasicService<VO> {
+public abstract class BasicServiceImpl<VO, DO> extends BaseServiceImpl<VO, DO> implements BasicService<VO> {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class,
@@ -36,7 +33,7 @@ public abstract class BasicServiceImpl<VO, DO, Example> extends BaseServiceImpl<
     public VO save(VO value) {
         if (CheckUtils.isEmpty(value))
             return null;
-        getDAO().insertSelective(getDO(value, doType));
+        getDAO().save(getDO(value, doType));
         return value;
     }
 
@@ -46,7 +43,8 @@ public abstract class BasicServiceImpl<VO, DO, Example> extends BaseServiceImpl<
     public boolean delete(Integer id) {
         if (CheckUtils.isEmpty(id))
             return false;
-        return getDAO().deleteByPrimaryKey(id) == 0;
+        getDAO().delete(id);
+        return true;
     }
 
     @Override
@@ -70,29 +68,18 @@ public abstract class BasicServiceImpl<VO, DO, Example> extends BaseServiceImpl<
     public VO detail(Integer id) {
         if (CheckUtils.isEmpty(id))
             return null;
-        DO result = getDAO().selectByPrimaryKey(id);
+        DO result = getDAO().detail(id);
         return getVO(result, voType);
     }
 
-    /**
-     * 默认实现，可以重写，效率更高
-     */
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     public List<VO> findList(List<Integer> idList) {
         if (CheckUtils.isEmpty(idList))
             return null;
-        List<VO> detailList = new ArrayList<VO>();
-        for (Integer id : idList) {
-            VO detail = this.detail(id);
-            if (detail == null) {
-                continue;
-            }
-            detailList.add(detail);
-        }
-        return detailList;
+        return getVOList(getDAO().detailList(idList), voType);
     }
 
     @Override
-    protected abstract BaseDAO<DO, Serializable, Example> getDAO();
+    protected abstract BasicDAO<DO> getDAO();
 }

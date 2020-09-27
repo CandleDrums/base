@@ -75,4 +75,5 @@ public class GeneratorConfig {
     private boolean useSchemaPrefix;
 
     private boolean jsr310Support;
+    private String projectName;
 }

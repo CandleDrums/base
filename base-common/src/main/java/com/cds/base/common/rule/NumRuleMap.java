@@ -18,6 +18,7 @@ import com.cds.base.common.exception.ValidationException;
  * @author liming
  * @Date Jun 8, 2020 4:22:37 PM
  */
+@Deprecated
 public class NumRuleMap {
     private static final Map<String, NumRule> ruleMap = new ConcurrentHashMap<String, NumRule>();
 
