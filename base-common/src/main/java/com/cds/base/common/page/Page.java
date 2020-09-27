@@ -19,7 +19,6 @@ import lombok.Data;
  * @version 1.0
  * @since JDK 1.8
  */
-@Data
 public class Page<T> implements Serializable {
 
     // 默认序列号
@@ -176,5 +175,69 @@ public class Page<T> implements Serializable {
     public static Integer getDefaultPageSize() {
         return DEFAULT_PAGE_SIZE;
     }
+
+	public Integer getPageSize() {
+		return pageSize;
+	}
+
+	public void setPageSize(Integer pageSize) {
+		this.pageSize = pageSize;
+	}
+
+	public Integer getTotalCount() {
+		return totalCount;
+	}
+
+	public void setTotalCount(Integer totalCount) {
+		this.totalCount = totalCount;
+	}
+
+	public Integer getTotalPageCount() {
+		return totalPageCount;
+	}
+
+	public void setTotalPageCount(Integer totalPageCount) {
+		this.totalPageCount = totalPageCount;
+	}
+
+	public Boolean getNeedCount() {
+		return needCount;
+	}
+
+	public void setNeedCount(Boolean needCount) {
+		this.needCount = needCount;
+	}
+
+	public T getParam() {
+		return param;
+	}
+
+	public void setParam(T param) {
+		this.param = param;
+	}
+
+	public String getOrderBy() {
+		return orderBy;
+	}
+
+	public void setOrderBy(String orderBy) {
+		this.orderBy = orderBy;
+	}
+
+	public Boolean getDesc() {
+		return desc;
+	}
+
+	public void setDesc(Boolean desc) {
+		this.desc = desc;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public Integer getCurrentPage() {
+		return currentPage;
+	}
 
 }
