@@ -31,7 +31,7 @@ import com.cds.base.util.bean.CheckUtils;
  */
 public abstract class GeneralQueryServiceImpl<VO> implements GeneralQueryService<VO> {
 
-    protected abstract GeneralService getService();
+    protected abstract GeneralService<VO> getService();
 
     @Override
     public ResponseResult<VO> detail(@RequestParam(value = "num", required = true) @NotNull String num) {
@@ -48,7 +48,7 @@ public abstract class GeneralQueryServiceImpl<VO> implements GeneralQueryService
 
     @Override
     public ResponseResult<List<VO>> queryAll(@RequestBody @NotNull VO params) {
-        List resultList = null;
+        List<VO> resultList = null;
         resultList = getService().queryAll(params);
         if (CheckUtils.isEmpty(resultList)) {
             return ResponseResult.returnNull(null);
