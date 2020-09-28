@@ -41,6 +41,9 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
     protected Class<VO> voType;
     // DO类型
     protected Class<DO> doType;
+    //Example类型
+    protected Class<Example> exampleType;
+
 
     // 钩子方法
     protected abstract BaseDAO<DO, Serializable, Example> getDAO();
@@ -58,7 +61,7 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
         Type[] types = pt.getActualTypeArguments(); // 返回表示此类型实际类型参数的 Type 对象的数组
         voType = (Class<VO>)types[0];
         doType = (Class<DO>)types[1];
-
+        exampleType = (Class<Example>)types[2];
     }
 
     @Override
