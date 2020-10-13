@@ -31,13 +31,10 @@ import com.cds.base.util.bean.CheckUtils;
  */
 public abstract class GeneralServiceImpl<VO, DO, Example> extends BaseServiceImpl<VO, DO, Example>
     implements GeneralService<VO> {
-	
-	
-	private static final String  NUM_METHOD_NAME="andNumEqualTo";
-	
-	private static final String  CREATE_METHOD_NAME="createCriteria";
 
-	
+    private static final String NUM_METHOD_NAME = "andNumEqualTo";
+
+    private static final String CREATE_METHOD_NAME = "createCriteria";
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class,
@@ -65,23 +62,27 @@ public abstract class GeneralServiceImpl<VO, DO, Example> extends BaseServiceImp
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
-    public  VO detail(String num) {
-		try {
-			Example	example = exampleType.getDeclaredConstructor().newInstance(null);
-			Method createCriteria = example.getClass().getMethod(CREATE_METHOD_NAME);
-			createCriteria.invoke(example);
-			Method numEqual = example.getClass().getMethod(NUM_METHOD_NAME, String.class);
-			numEqual.invoke(example, num);
-	    	List<DO> resultList = getDAO().selectByExample(example);
-	    	if(CheckUtils.isEmpty(resultList)) {
-	    		return null;
-	    	}
-	    	return getVO( resultList.get(0),voType);
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-				| NoSuchMethodException | SecurityException e) {
-			e.printStackTrace();
-		}
-    	return null;
+    public VO detail(String num) {
+        try {
+            Example example = exampleType.getDeclaredConstructor().newInstance(null);
+
+            Method createCriteria = example.getClass().getMethod(CREATE_METHOD_NAME);
+            createCriteria.setAccessible(true);
+            Object criteria = createCriteria.invoke(example);
+
+            Method numEqual = criteria.getClass().getMethod(NUM_METHOD_NAME, String.class);
+            numEqual.setAccessible(true);
+            numEqual.invoke(criteria, num);
+            List<DO> resultList = getDAO().selectByExample(example);
+            if (CheckUtils.isEmpty(resultList)) {
+                return null;
+            }
+            return getVO(resultList.get(0), voType);
+        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+            | NoSuchMethodException | SecurityException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
