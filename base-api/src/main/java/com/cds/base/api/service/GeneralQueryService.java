@@ -35,12 +35,6 @@ public interface GeneralQueryService<VO> {
     ResponseResult<VO> detail(@RequestParam(value = "num", required = true) String num);
 
     /**
-     * @description 判断是否存在
-     * @return ResponseResult<Boolean>
-     */
-    ResponseResult<Boolean> contains(@RequestBody VO value);
-
-    /**
      * @description 根据实体值查询
      * @return ResponseResult<List<T>>
      */
