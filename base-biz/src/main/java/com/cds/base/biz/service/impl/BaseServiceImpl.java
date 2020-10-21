@@ -8,13 +8,16 @@
 package com.cds.base.biz.service.impl;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import org.apache.ibatis.session.RowBounds;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -25,6 +28,7 @@ import com.cds.base.common.exception.ValidationException;
 import com.cds.base.dal.dao.BaseDAO;
 import com.cds.base.util.bean.BeanUtils;
 import com.cds.base.util.bean.CheckUtils;
+import com.cds.base.util.lang.ArrayUtils;
 
 /**
  * @Description 基础Service实现
@@ -37,19 +41,29 @@ import com.cds.base.util.bean.CheckUtils;
 @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT,
     timeout = TransactionDefinition.TIMEOUT_DEFAULT)
 public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO> {
+    private static final String AND = "and";
+    private static final String EQUAL_TO = "EqualTo";
+    private static final String CREATE_METHOD_NAME = "createCriteria";
+    private static final Set<String> IGNORE_PROPERTIES;
     // VO类型
     protected Class<VO> voType;
     // DO类型
     protected Class<DO> doType;
-    //Example类型
+    // Example类型
     protected Class<Example> exampleType;
-
 
     // 钩子方法
     protected abstract BaseDAO<DO, Serializable, Example> getDAO();
 
     @Override
     public abstract VO save(VO value);
+
+    static {
+        IGNORE_PROPERTIES = new HashSet<String>();
+        IGNORE_PROPERTIES.add("serialVersionUID");
+        IGNORE_PROPERTIES.add("createDate");
+        IGNORE_PROPERTIES.add("updateDate");
+    }
 
     /**
      * 获取泛型
@@ -81,14 +95,6 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
     }
 
     @Override
-    @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
-    public boolean contains(VO value) {
-        if (CheckUtils.isEmpty(value))
-            return false;
-        return getDAO().queryPagingCount(getDO(value, doType)) > 0;
-    }
-
-    @Override
     public VO detail(VO value) {
         List<VO> resultList = this.queryAll(value);
         if (CheckUtils.isEmpty(resultList)) {
@@ -103,18 +109,23 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     public List<VO> queryAll(VO param) {
-        if (CheckUtils.isEmpty(param))
-            return null;
-        return getVOList(getDAO().queryPagingList(getDO(param, doType), new RowBounds()), voType);
+        return this.queryPagingList(param, null, null);
     }
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
-    public List<VO> queryPagingList(VO param, int startIndex, int pageSize) {
+    public List<VO> queryPagingList(VO param, Integer startIndex, Integer pageSize) {
         if (CheckUtils.isEmpty(param, pageSize))
             return null;
-        RowBounds bounds = new RowBounds(startIndex, pageSize);
-        return getVOList(getDAO().queryPagingList(getDO(param, doType), bounds), voType);
+        Example example = newExample();
+        Object criteria = newCriteria(example);
+        // 添加要查询的参数
+        addAllAndEqualPropertie(param, criteria);
+        // 设置分页
+        setPagingProperties(example, startIndex, pageSize);
+        List<DO> resultList = getDAO().selectByExample(example);
+
+        return getVOList(resultList, voType);
     }
 
     @Override
@@ -122,7 +133,126 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
     public int queryPagingCount(VO param) {
         if (CheckUtils.isEmpty(param))
             return 0;
-        return getDAO().queryPagingCount(getDO(param, doType));
+        Example example = newExample();
+        Object criteria = newCriteria(example);
+        // 添加要查询的参数
+        addAllAndEqualPropertie(param, criteria);
+        // 设置分页
+        return (int)getDAO().countByExample(example);
+    }
+
+    /**
+     * @description 设置分页
+     * @return void
+     */
+    private void setPagingProperties(Example example, Integer startIndex, Integer pageSize) {
+        if (startIndex == null || pageSize == null) {
+            return;
+        }
+        String setOffset = "setOffset";
+        String setLimit = "setLimit";
+
+        try {
+            Method setOffsetMethod = example.getClass().getMethod(setOffset, Long.class);
+            setOffsetMethod.invoke(example, startIndex);
+            Method setLimitMethod = example.getClass().getMethod(setLimit, Integer.class);
+            setLimitMethod.invoke(example, pageSize);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * @description create new Example instance
+     * @return Example
+     */
+    protected Example newExample() {
+        try {
+            return exampleType.getDeclaredConstructor().newInstance(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * @description create new Criteria instance
+     * @return Object
+     */
+    protected Object newCriteria(Example example) {
+
+        try {
+            Method createCriteria = example.getClass().getMethod(CREATE_METHOD_NAME);
+            return createCriteria.invoke(example);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * @description add equal query propertie
+     * @return void
+     */
+    protected void addAndEqualPropertie(String propertieName, Object propertieValue, Class propertieType,
+        Object criteria) {
+        String methodName = getMethodName(propertieName, criteria);
+        Method equalMethod;
+        try {
+            equalMethod = criteria.getClass().getMethod(methodName, propertieType);
+            equalMethod.invoke(criteria, propertieValue);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void addAllAndEqualPropertie(VO value, Object criteria) {
+        Class type = value.getClass();
+        // 取所有字段（包括基类的字段）
+        Field[] allFields = type.getDeclaredFields();
+        Class superClass = type.getSuperclass();
+        while (superClass != null) {
+            Field[] superFileds = superClass.getDeclaredFields();
+            allFields = ArrayUtils.addAll(allFields, superFileds);
+            superClass = superClass.getSuperclass();
+        }
+        for (Field field : allFields) {
+            field.setAccessible(true);
+            String propertieName = field.getName();
+            Class<?> propertieType = field.getType();
+            if (IGNORE_PROPERTIES.contains(propertieName)) {
+                continue;
+            }
+            Object propertieValue = null;
+            try {
+                propertieValue = field.get(value);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (propertieValue == null) {
+                continue;
+            }
+            this.addAndEqualPropertie(propertieName, propertieValue, propertieType, criteria);
+        }
+
+    }
+
+    /**
+     * @description 获取example中对应的方法名
+     * @return String
+     */
+    protected String getMethodName(String propertieName, Object criteria) {
+        String methodName = AND.toLowerCase() + propertieName.toLowerCase() + EQUAL_TO.toLowerCase();
+
+        Method[] declaredMethods = criteria.getClass().getDeclaredMethods();
+        for (Method method : declaredMethods) {
+            String name = method.getName().toLowerCase();
+            if (name.equals(methodName)) {
+                return method.getName();
+            }
+        }
+        return null;
     }
 
     /**
@@ -198,4 +328,19 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
         return new HashMap<String, Object>();
     }
 
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+    protected DO getDoDetail(Object pk, String pkName) {
+        if (CheckUtils.isEmpty(pk)) {
+            return null;
+        }
+        List<DO> resultList = null;
+        Example example = newExample();
+        Object criteria = newCriteria(example);
+        addAndEqualPropertie(pkName, pk, pk.getClass(), criteria);
+        resultList = getDAO().selectByExample(example);
+        if (CheckUtils.isEmpty(resultList)) {
+            return null;
+        }
+        return resultList.get(0);
+    }
 }

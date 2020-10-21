@@ -13,6 +13,7 @@ import com.cds.base.common.annotaion.handler.NumGenerateRuleHandler;
 import com.cds.base.common.exception.BusinessException;
 import com.cds.base.common.rule.NumRule;
 import com.cds.base.common.rule.NumSplicingRule;
+import com.cds.base.generator.exception.NumGeneratorException;
 import com.cds.base.util.bean.BeanUtils;
 import com.cds.base.util.bean.CheckUtils;
 import com.cds.base.util.misc.DateUtils;
@@ -27,6 +28,9 @@ import com.cds.base.util.misc.DateUtils;
  */
 public class NumGenerator<VO> {
 
+    public static final String CODE_1 = "10001";
+    public static final String CODE_2 = "10001";
+
     public static <VO> String generateAndSetNum(VO vo) {
         Object numExtised = BeanUtils.getProperty(vo, "num");
         if (CheckUtils.isNotEmpty(numExtised)) {
@@ -34,7 +38,7 @@ public class NumGenerator<VO> {
         }
         NumRule numRule = NumGenerateRuleHandler.getNumRule(vo.getClass());
         if (numRule == null) {
-            throw new BusinessException("无效类型");
+            throw new NumGeneratorException(CODE_1, "无效类型");
         }
         StringBuffer sb = new StringBuffer();
         sb.append(numRule.getPrefixCode());
@@ -45,7 +49,7 @@ public class NumGenerator<VO> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        throw new BusinessException("生成编号失败");
+        throw new NumGeneratorException(CODE_2, "生成编号失败");
     }
 
     /**

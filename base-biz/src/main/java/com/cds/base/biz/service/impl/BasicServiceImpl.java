@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cds.base.biz.service.BasicService;
 import com.cds.base.dal.dao.BaseDAO;
+import com.cds.base.dal.model.BasicModel;
 import com.cds.base.exception.server.DAOException;
 import com.cds.base.util.bean.CheckUtils;
 
@@ -27,7 +28,7 @@ import com.cds.base.util.bean.CheckUtils;
  * @version 1.0
  * @since JDK 1.8
  */
-public abstract class BasicServiceImpl<VO, DO, Example> extends BaseServiceImpl<VO, DO, Example>
+public abstract class BasicServiceImpl<VO, DO extends BasicModel, Example> extends BaseServiceImpl<VO, DO, Example>
     implements BasicService<VO> {
 
     @Override

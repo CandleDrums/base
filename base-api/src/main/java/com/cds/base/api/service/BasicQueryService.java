@@ -35,12 +35,6 @@ public interface BasicQueryService<VO> {
     ResponseResult<VO> detail(@RequestParam(value = "id", required = true) Integer id);
 
     /**
-     * @description 判断是否存在
-     * @return ResponseResult<Boolean>
-     */
-    ResponseResult<Boolean> contains(@RequestBody VO value);
-
-    /**
      * @description 根据实体值查询
      * @return ResponseResult<List<T>>
      */

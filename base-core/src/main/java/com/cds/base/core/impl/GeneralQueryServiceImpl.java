@@ -35,15 +35,8 @@ public abstract class GeneralQueryServiceImpl<VO> implements GeneralQueryService
 
     @Override
     public ResponseResult<VO> detail(@RequestParam(value = "num", required = true) @NotNull String num) {
-        VO data = (VO)getService().detail(num);
+        VO data = getService().detail(num);
         return ResponseResult.returnSuccess(data);
-    }
-
-    @Override
-    public ResponseResult<Boolean> contains(@RequestBody @NotNull VO value) {
-
-        boolean isExisted = getService().contains(value);
-        return ResponseResult.returnSuccess(isExisted);
     }
 
     @Override

@@ -8,17 +8,18 @@
 package com.cds.base.biz.service.impl;
 
 import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.List;
 
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cds.base.biz.service.GeneralService;
+import com.cds.base.common.exception.ValidationException;
 import com.cds.base.dal.dao.BaseDAO;
+import com.cds.base.dal.model.GeneralModel;
 import com.cds.base.exception.server.DAOException;
 import com.cds.base.generator.num.NumGenerator;
+import com.cds.base.util.bean.BeanUtils;
 import com.cds.base.util.bean.CheckUtils;
 
 /**
@@ -29,12 +30,8 @@ import com.cds.base.util.bean.CheckUtils;
  * @version 1.0
  * @since JDK 1.8
  */
-public abstract class GeneralServiceImpl<VO, DO, Example> extends BaseServiceImpl<VO, DO, Example>
+public abstract class GeneralServiceImpl<VO, DO extends GeneralModel, Example> extends BaseServiceImpl<VO, DO, Example>
     implements GeneralService<VO> {
-
-    private static final String NUM_METHOD_NAME = "andNumEqualTo";
-
-    private static final String CREATE_METHOD_NAME = "createCriteria";
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class,
@@ -53,36 +50,66 @@ public abstract class GeneralServiceImpl<VO, DO, Example> extends BaseServiceImp
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class,
         noRollbackFor = RuntimeException.class)
-    public abstract VO modify(VO value);
+    public VO modify(VO value) {
+
+        if (CheckUtils.isEmpty(value)) {
+            return null;
+        }
+        Object pk = null;
+        String pkName = "num";
+        try {
+            pk = BeanUtils.getProperty(value, "num");
+            // 没有num时
+            if (CheckUtils.isEmpty(pk)) {
+                pk = BeanUtils.getProperty(value, "id");
+                pkName = "id";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (CheckUtils.isEmpty(pk)) {
+            throw new ValidationException("请指定主键");
+        }
+        DO oldValue = getDoDetail(pk, "num");
+        if (CheckUtils.isEmpty(oldValue)) {
+            throw new ValidationException("数据不存在");
+        }
+        BeanUtils.copyProperties(value, oldValue);
+
+        Example example = newExample();
+        Object criteria = newCriteria(example);
+        addAndEqualPropertie(pkName, pk, pk.getClass(), criteria);
+        BeanUtils.copyProperties(value, oldValue);
+        getDAO().updateByExampleSelective(oldValue, example);
+        BeanUtils.copyProperties(oldValue, value);
+        return value;
+
+    }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class, DAOException.class},
         noRollbackFor = RuntimeException.class)
-    public abstract boolean delete(String num);
+    public boolean delete(String num) {
+        DO doDetail = getDoDetail(num, "num");
+        Example example = newExample();
+        Object criteria = newCriteria(example);
+        addAndEqualPropertie("num", num, String.class, criteria);
+        doDetail.setDeleted(true);
+        return getDAO().updateByExample(doDetail, example) == 1;
+    }
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     public VO detail(String num) {
-        try {
-            Example example = exampleType.getDeclaredConstructor().newInstance(null);
-
-            Method createCriteria = example.getClass().getMethod(CREATE_METHOD_NAME);
-            createCriteria.setAccessible(true);
-            Object criteria = createCriteria.invoke(example);
-
-            Method numEqual = criteria.getClass().getMethod(NUM_METHOD_NAME, String.class);
-            numEqual.setAccessible(true);
-            numEqual.invoke(criteria, num);
-            List<DO> resultList = getDAO().selectByExample(example);
-            if (CheckUtils.isEmpty(resultList)) {
-                return null;
-            }
-            return getVO(resultList.get(0), voType);
-        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-            | NoSuchMethodException | SecurityException e) {
-            e.printStackTrace();
+        List<DO> resultList = null;
+        Example example = newExample();
+        Object criteria = newCriteria(example);
+        addAndEqualPropertie("num", num, String.class, criteria);
+        resultList = getDAO().selectByExample(example);
+        if (CheckUtils.isEmpty(resultList)) {
+            return null;
         }
-        return null;
+        return getVO(resultList.get(0), voType);
     }
 
     @Override

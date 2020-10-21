@@ -39,13 +39,6 @@ public abstract class BasicQueryServiceImpl<VO> implements BasicQueryService<VO>
     }
 
     @Override
-    public ResponseResult<Boolean> contains(@RequestBody @NotNull VO value) {
-
-        boolean isExisted = getService().contains(value);
-        return ResponseResult.returnSuccess(isExisted);
-    }
-
-    @Override
     public ResponseResult<List<VO>> queryAll(@RequestBody @NotNull VO params) {
         List resultList = null;
         resultList = getService().queryAll(params);

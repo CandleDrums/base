@@ -32,12 +32,6 @@ public interface BaseService<VO> {
     int saveAll(List<VO> valueList);
 
     /**
-     * @description 判断是否存在
-     * @param t(实体值)
-     */
-    boolean contains(VO value);
-
-    /**
      * @description 根据条件查询
      * @return VO
      */
@@ -53,7 +47,7 @@ public interface BaseService<VO> {
      * @description 分页查询
      * @return List<T>
      */
-    List<VO> queryPagingList(VO params, int startIndex, int pageSize);
+    List<VO> queryPagingList(VO params, Integer startIndex, Integer pageSize);
 
     /**
      * @description 查询总数

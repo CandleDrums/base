@@ -34,10 +34,6 @@ public abstract class BasicManageServiceImpl<VO> implements BasicManageService<V
     @Override
     public ResponseResult<VO> add(@RequestBody @NotNull VO vo) {
         CheckUtils.validate(vo);
-        boolean isExisted = getService().contains(vo);
-        if (isExisted) {
-            return ResponseResult.returnResult(vo, ResultCode.ERROR.name(), "添加失败，数据已存在");
-        }
         Object result = getService().save(vo);
         if (result != null) {
             BeanUtils.copyProperties(result, vo);
