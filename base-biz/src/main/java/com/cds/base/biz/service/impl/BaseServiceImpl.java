@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cds.base.biz.service.BaseService;
 import com.cds.base.common.exception.ValidationException;
 import com.cds.base.dal.dao.BaseDAO;
+import com.cds.base.exception.server.DAOException;
 import com.cds.base.util.bean.BeanUtils;
 import com.cds.base.util.bean.CheckUtils;
 import com.cds.base.util.lang.ArrayUtils;
@@ -116,7 +117,12 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
         Object criteria = newCriteria(example);
         addAndEqualPropertie(pkName, pk, pk.getClass(), criteria);
         BeanUtils.copyProperties(value, oldValue);
-        getDAO().updateByExampleSelective(oldValue, example);
+        int successCount = getDAO().updateByExampleSelective(oldValue, example);
+        if (successCount < 1) {
+            throw new DAOException("未修改任何数据，请确认主键值！");
+        } else if (successCount > 1) {
+            throw new DAOException("存在多条记录被修改，需要回滚数据！");
+        }
         BeanUtils.copyProperties(oldValue, value);
         return value;
     }

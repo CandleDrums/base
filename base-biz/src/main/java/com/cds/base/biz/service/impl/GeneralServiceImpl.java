@@ -7,6 +7,7 @@
  */
 package com.cds.base.biz.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.transaction.annotation.Propagation;
@@ -84,9 +85,10 @@ public abstract class GeneralServiceImpl<VO, DO extends GeneralModel, Example> e
             addAndEqualPropertie("version", oldValue.getVersion(), Integer.class, criteria);
             oldValue.setVersion(oldValue.getVersion() + 1);
         }
+        oldValue.setUpdateDate(new Date());
         int successCount = getDAO().updateByExampleSelective(oldValue, example);
         if (successCount < 1) {
-            throw new DAOException("未修改任何数据，请确认主键值！");
+            throw new DAOException("未修改任何数据，请确认版本号或主键！");
         } else if (successCount > 1) {
             throw new DAOException("存在多条记录被修改，需要回滚数据！");
         }
