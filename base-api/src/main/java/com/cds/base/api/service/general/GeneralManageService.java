@@ -5,11 +5,13 @@
  * @Date Oct 31, 2019 6:41:22 PM
  * @Copyright (c) 2019 CandleDrumS.com All Right Reserved.
  */
-package com.cds.base.api.service;
+package com.cds.base.api.service.general;
 
-import org.springframework.web.bind.annotation.RequestBody;
+import java.util.List;
+
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.cds.base.api.service.BaseManageService;
 import com.cds.base.common.result.ResponseResult;
 
 /**
@@ -20,15 +22,7 @@ import com.cds.base.common.result.ResponseResult;
  * @version 1.0
  * @since JDK 1.8
  */
-public interface GeneralManageService<VO> {
-    // uri前缀
-    final static String BASE_PREFIX = "/manage";
-
-    /**
-     * @description 添加
-     * @return ResponseResult<VO>
-     */
-    ResponseResult<VO> add(@RequestBody VO value);
+public interface GeneralManageService<VO> extends BaseManageService<VO> {
 
     /**
      * @description 逻辑删除
@@ -37,9 +31,8 @@ public interface GeneralManageService<VO> {
     ResponseResult<Boolean> delete(@RequestParam(value = "num", required = true) String num);
 
     /**
-     * @description 修改
-     * @return ResponseResult<Boolean>
+     * @description 批量删除
+     * @return int
      */
-    ResponseResult<VO> modify(@RequestBody VO value);
-
+    ResponseResult<Integer> deleteAll(@RequestParam(value = "numList", required = true) List<String> numList);
 }
