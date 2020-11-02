@@ -44,6 +44,6 @@ public abstract class BasicManageServiceImpl<VO> implements BasicManageService<V
 
     @Override
     public ResponseResult<Boolean> delete(@RequestParam(value = "id", required = true) @NotNull Integer id) {
-        return ResponseResult.returnSuccess(getService().delete(id));
+        return ResponseResult.returnResult(getService().delete(id));
     }
 }

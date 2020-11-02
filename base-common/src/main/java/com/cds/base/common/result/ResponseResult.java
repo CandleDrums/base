@@ -44,6 +44,34 @@ public class ResponseResult<T> implements Serializable {
      * @description 返回成功结果
      * @return ResponseResult<T>
      */
+    public static ResponseResult<Boolean> returnResult(Boolean success) {
+        ResponseResult<Boolean> result = new ResponseResult<Boolean>();
+        ResultCode rc = ResultCode.SUCCESS;
+
+        if (!success) {
+            rc = ResultCode.FAIL;
+        }
+        result.setResult(rc.getCode());
+        result.setMessage(rc.getDisplayName());
+        result.setData(success);
+        return result;
+    }
+
+    /**
+     * @description 返回自定义结果
+     * @return ResponseResult<T>
+     */
+    public static <T> ResponseResult<T> returnResult(String resultCode, String message) {
+        ResponseResult<T> result = new ResponseResult<>();
+        result.setResult(resultCode);
+        result.setMessage(message);
+        return result;
+    }
+
+    /**
+     * @description 返回成功结果
+     * @return ResponseResult<T>
+     */
     public static <T> ResponseResult<T> returnSuccess(T data) {
         ResponseResult<T> result = new ResponseResult<>();
         result.setResult(ResultCode.SUCCESS.name());
@@ -71,6 +99,18 @@ public class ResponseResult<T> implements Serializable {
     public static <T> ResponseResult<T> returnFail(T data, String message) {
         ResponseResult<T> result = new ResponseResult<>();
         result.setResult(ResultCode.FAIL.name());
+        result.setMessage(message);
+        result.setData(data);
+        return result;
+    }
+
+    /**
+     * @description 返回自定义结果
+     * @return ResponseResult<T>
+     */
+    public static <T> ResponseResult<T> returnResult(T data, String resultCode, String message) {
+        ResponseResult<T> result = new ResponseResult<>();
+        result.setResult(resultCode);
         result.setMessage(message);
         result.setData(data);
         return result;
@@ -112,15 +152,4 @@ public class ResponseResult<T> implements Serializable {
         return result;
     }
 
-    /**
-     * @description 返回自定义结果
-     * @return ResponseResult<T>
-     */
-    public static <T> ResponseResult<T> returnResult(T data, String resultCode, String message) {
-        ResponseResult<T> result = new ResponseResult<>();
-        result.setResult(resultCode);
-        result.setMessage(message);
-        result.setData(data);
-        return result;
-    }
 }

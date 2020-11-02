@@ -7,7 +7,6 @@
  */
 package com.cds.base.biz.service.impl;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cds.base.biz.service.BasicService;
-import com.cds.base.dal.dao.BaseDAO;
 import com.cds.base.dal.model.BasicModel;
 import com.cds.base.exception.server.DAOException;
 import com.cds.base.util.bean.CheckUtils;
@@ -30,16 +28,6 @@ import com.cds.base.util.bean.CheckUtils;
  */
 public abstract class BasicServiceImpl<VO, DO extends BasicModel, Example> extends BaseServiceImpl<VO, DO, Example>
     implements BasicService<VO> {
-
-    @Override
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class,
-        noRollbackFor = RuntimeException.class)
-    public VO save(VO value) {
-        if (CheckUtils.isEmpty(value))
-            return null;
-        getDAO().insertSelective(getDO(value, doType));
-        return value;
-    }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class, DAOException.class},
@@ -94,6 +82,4 @@ public abstract class BasicServiceImpl<VO, DO extends BasicModel, Example> exten
         return detailList;
     }
 
-    @Override
-    protected abstract BaseDAO<DO, Serializable, Example> getDAO();
 }

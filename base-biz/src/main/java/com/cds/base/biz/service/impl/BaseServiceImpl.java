@@ -55,9 +55,6 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
     // 钩子方法
     protected abstract BaseDAO<DO, Serializable, Example> getDAO();
 
-    @Override
-    public abstract VO save(VO value);
-
     static {
         IGNORE_PROPERTIES = new HashSet<String>();
         IGNORE_PROPERTIES.add("serialVersionUID");
@@ -76,6 +73,52 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
         voType = (Class<VO>)types[0];
         doType = (Class<DO>)types[1];
         exampleType = (Class<Example>)types[2];
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class,
+        noRollbackFor = RuntimeException.class)
+    public VO save(VO value) {
+        if (CheckUtils.isEmpty(value))
+            return null;
+        Boolean success = getDAO().insertSelective(getDO(value, doType)) > 0;
+        if (!success) {
+            return null;
+        }
+        return value;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class,
+        noRollbackFor = RuntimeException.class)
+    public VO modify(VO value) {
+
+        if (CheckUtils.isEmpty(value)) {
+            return null;
+        }
+        Object pk = null;
+        String pkName = "id";
+        try {
+            pk = BeanUtils.getProperty(value, "id");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (CheckUtils.isEmpty(pk)) {
+            throw new ValidationException("请指定主键");
+        }
+        DO oldValue = getDoDetail(pk, pkName);
+        if (CheckUtils.isEmpty(oldValue)) {
+            throw new ValidationException("数据不存在");
+        }
+        BeanUtils.copyProperties(value, oldValue);
+
+        Example example = newExample();
+        Object criteria = newCriteria(example);
+        addAndEqualPropertie(pkName, pk, pk.getClass(), criteria);
+        BeanUtils.copyProperties(value, oldValue);
+        getDAO().updateByExampleSelective(oldValue, example);
+        BeanUtils.copyProperties(oldValue, value);
+        return value;
     }
 
     @Override

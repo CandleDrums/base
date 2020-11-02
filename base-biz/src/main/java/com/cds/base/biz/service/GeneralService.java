@@ -18,11 +18,6 @@ import java.util.List;
  * @since JDK 1.8
  */
 public interface GeneralService<VO> extends BaseService<VO> {
-    /**
-     * @description 修改
-     * @param t(实体值)
-     */
-    VO modify(VO value);
 
     /**
      * @description 根据key查询

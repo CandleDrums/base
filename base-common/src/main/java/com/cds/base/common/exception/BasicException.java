@@ -60,7 +60,7 @@ public class BasicException extends RuntimeException {
     @Override
     public String getMessage() {
         StringBuilder sb = new StringBuilder();
-        sb.append("exception id : ").append(id).append(",").append(message);
+        sb.append(message + ",").append("Exception ID:").append(id).append(",");
         return sb.toString();
     }
 
@@ -80,7 +80,7 @@ public class BasicException extends RuntimeException {
             newException.setMessage(message, args);
             return newException;
         } catch (Throwable e) {
-            throw new RuntimeException("create exception instance fail : " + e.getMessage(), e);
+            throw new RuntimeException("Create Exception Instance Fail : " + e.getMessage(), e);
         }
     }
 

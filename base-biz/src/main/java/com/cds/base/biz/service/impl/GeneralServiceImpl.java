@@ -7,7 +7,6 @@
  */
 package com.cds.base.biz.service.impl;
 
-import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.transaction.annotation.Propagation;
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cds.base.biz.service.GeneralService;
 import com.cds.base.common.exception.ValidationException;
-import com.cds.base.dal.dao.BaseDAO;
 import com.cds.base.dal.model.GeneralModel;
 import com.cds.base.exception.server.DAOException;
 import com.cds.base.generator.num.NumGenerator;
@@ -40,11 +38,14 @@ public abstract class GeneralServiceImpl<VO, DO extends GeneralModel, Example> e
         if (CheckUtils.isEmpty(value))
             return null;
         String num = NumGenerator.generateAndSetNum(value);
-        getDAO().insertSelective(getDO(value, doType));
+        Boolean success = getDAO().insertSelective(getDO(value, doType)) > 0;
+        if (!success) {
+            return null;
+        }
         if (CheckUtils.isNotEmpty(num)) {
             return detail(num);
         }
-        return value;
+        return null;
     }
 
     @Override
@@ -70,7 +71,7 @@ public abstract class GeneralServiceImpl<VO, DO extends GeneralModel, Example> e
         if (CheckUtils.isEmpty(pk)) {
             throw new ValidationException("请指定主键");
         }
-        DO oldValue = getDoDetail(pk, "num");
+        DO oldValue = getDoDetail(pk, pkName);
         if (CheckUtils.isEmpty(oldValue)) {
             throw new ValidationException("数据不存在");
         }
@@ -79,11 +80,18 @@ public abstract class GeneralServiceImpl<VO, DO extends GeneralModel, Example> e
         Example example = newExample();
         Object criteria = newCriteria(example);
         addAndEqualPropertie(pkName, pk, pk.getClass(), criteria);
-        BeanUtils.copyProperties(value, oldValue);
-        getDAO().updateByExampleSelective(oldValue, example);
+        if (oldValue.getVersion() != null) {
+            addAndEqualPropertie("version", oldValue.getVersion(), Integer.class, criteria);
+            oldValue.setVersion(oldValue.getVersion() + 1);
+        }
+        int successCount = getDAO().updateByExampleSelective(oldValue, example);
+        if (successCount < 1) {
+            throw new DAOException("未修改任何数据，请确认主键值！");
+        } else if (successCount > 1) {
+            throw new DAOException("存在多条记录被修改，需要回滚数据！");
+        }
         BeanUtils.copyProperties(oldValue, value);
         return value;
-
     }
 
     @Override
@@ -91,6 +99,9 @@ public abstract class GeneralServiceImpl<VO, DO extends GeneralModel, Example> e
         noRollbackFor = RuntimeException.class)
     public boolean delete(String num) {
         DO doDetail = getDoDetail(num, "num");
+        if (doDetail == null) {
+            return false;
+        }
         Example example = newExample();
         Object criteria = newCriteria(example);
         addAndEqualPropertie("num", num, String.class, criteria);
@@ -127,8 +138,5 @@ public abstract class GeneralServiceImpl<VO, DO extends GeneralModel, Example> e
         }
         return result;
     }
-
-    @Override
-    protected abstract BaseDAO<DO, Serializable, Example> getDAO();
 
 }

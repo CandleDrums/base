@@ -29,7 +29,7 @@ import com.cds.base.util.misc.DateUtils;
 public class NumGenerator<VO> {
 
     public static final String CODE_1 = "10001";
-    public static final String CODE_2 = "10001";
+    public static final String CODE_2 = "10002";
 
     public static <VO> String generateAndSetNum(VO vo) {
         Object numExtised = BeanUtils.getProperty(vo, "num");
@@ -38,7 +38,8 @@ public class NumGenerator<VO> {
         }
         NumRule numRule = NumGenerateRuleHandler.getNumRule(vo.getClass());
         if (numRule == null) {
-            throw new NumGeneratorException(CODE_1, "无效类型");
+            throw new NumGeneratorException(CODE_1, vo.getClass().getSimpleName()
+                + " 未指定Num生成规则，请添加‘@NumGenerateRule(prefixCode = \"编号前缀\", ruleCode = 7)’注解");
         }
         StringBuffer sb = new StringBuffer();
         sb.append(numRule.getPrefixCode());

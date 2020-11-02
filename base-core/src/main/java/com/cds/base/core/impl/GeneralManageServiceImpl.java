@@ -29,7 +29,7 @@ import com.cds.base.util.bean.CheckUtils;
  */
 public abstract class GeneralManageServiceImpl<VO> implements GeneralManageService<VO> {
 
-    protected abstract GeneralService getService();
+    protected abstract GeneralService<VO> getService();
 
     @Override
     public ResponseResult<VO> add(@RequestBody @NotNull VO vo) {
@@ -56,7 +56,7 @@ public abstract class GeneralManageServiceImpl<VO> implements GeneralManageServi
 
     @Override
     public ResponseResult<Boolean> delete(@RequestParam(value = "num", required = true) @NotNull String key) {
-        return ResponseResult.returnSuccess(getService().delete(key));
+        return ResponseResult.returnResult(getService().delete(key));
     }
 
 }

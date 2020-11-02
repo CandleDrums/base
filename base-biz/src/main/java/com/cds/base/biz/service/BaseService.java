@@ -32,6 +32,12 @@ public interface BaseService<VO> {
     int saveAll(List<VO> valueList);
 
     /**
+     * @description 修改
+     * @param t(实体值)
+     */
+    VO modify(VO value);
+
+    /**
      * @description 根据条件查询
      * @return VO
      */
