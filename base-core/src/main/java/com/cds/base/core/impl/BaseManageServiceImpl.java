@@ -7,11 +7,13 @@
  */
 package com.cds.base.core.impl;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cds.base.api.service.BaseManageService;
 import com.cds.base.biz.service.BaseService;
@@ -55,5 +57,16 @@ public abstract class BaseManageServiceImpl<VO> implements BaseManageService<VO>
     @Override
     public ResponseResult<Integer> saveAll(@RequestBody @NotNull List<VO> valueList) {
         return ResponseResult.returnSuccess(getService().saveAll(valueList));
+    }
+
+    @Override
+    public ResponseResult<Boolean> delete(@RequestParam(value = "pk", required = true) @NotNull Serializable pk) {
+        return ResponseResult.returnResult(getService().delete(pk));
+    }
+
+    @Override
+    public ResponseResult<Integer>
+        deleteAll(@RequestParam(value = "pkList", required = true) List<Serializable> pkList) {
+        return ResponseResult.returnSuccess(getService().deleteAll(pkList));
     }
 }

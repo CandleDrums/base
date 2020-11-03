@@ -7,11 +7,13 @@
  */
 package com.cds.base.core.impl;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cds.base.api.service.BaseQueryService;
 import com.cds.base.biz.service.BaseService;
@@ -29,6 +31,11 @@ import com.cds.base.util.bean.CheckUtils;
 public abstract class BaseQueryServiceImpl<VO> implements BaseQueryService<VO> {
 
     protected abstract BaseService<VO> getService();
+
+    @Override
+    public ResponseResult<VO> detail(@RequestParam(value = "pk", required = true) @NotNull Serializable pk) {
+        return ResponseResult.returnSuccess(getService().detail(pk));
+    }
 
     @Override
     public ResponseResult<List<VO>> queryAll(@RequestBody @NotNull VO params) {

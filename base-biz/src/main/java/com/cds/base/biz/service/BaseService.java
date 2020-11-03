@@ -7,6 +7,7 @@
  */
 package com.cds.base.biz.service;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -21,37 +22,56 @@ public interface BaseService<VO> {
 
     /**
      * @description 保存
-     * @param t(实体值)
+     * @return VO
      */
     VO save(VO value);
 
     /**
      * @description 批量保存
-     * @param ts
+     * @return int 成功数
      */
     int saveAll(List<VO> valueList);
 
     /**
      * @description 修改
-     * @param t(实体值)
+     * @return VO
      */
     VO modify(VO value);
 
     /**
-     * @description 根据条件查询
+     * @description 根据主键查询详情
      * @return VO
      */
-    VO detail(VO value);
+    VO detail(Serializable pk);
 
     /**
-     * @description 查询全部
-     * @return List<T>
+     * @description 根据参数查询详情
+     * @return VO
+     */
+    VO detail(VO params);
+
+    /**
+     * @description 删除
+     * @return boolean
+     */
+    boolean delete(Serializable pk);
+
+    /**
+     * 
+     * @description 批量删除
+     * @return int 成功数
+     */
+    int deleteAll(List<Serializable> pkList);
+
+    /**
+     * @description 根据参数查询
+     * @return List<VO>
      */
     List<VO> queryAll(VO params);
 
     /**
-     * @description 分页查询
-     * @return List<T>
+     * @description 根据参数分页查询
+     * @return List<VO>
      */
     List<VO> queryPagingList(VO params, Integer startIndex, Integer pageSize);
 

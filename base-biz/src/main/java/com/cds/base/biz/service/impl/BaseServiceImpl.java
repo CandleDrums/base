@@ -12,6 +12,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -27,6 +28,7 @@ import com.cds.base.biz.service.BaseService;
 import com.cds.base.common.exception.ValidationException;
 import com.cds.base.dal.dao.BaseDAO;
 import com.cds.base.exception.server.DAOException;
+import com.cds.base.generator.num.NumGenerator;
 import com.cds.base.util.bean.BeanUtils;
 import com.cds.base.util.bean.CheckUtils;
 import com.cds.base.util.lang.ArrayUtils;
@@ -82,9 +84,16 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
     public VO save(VO value) {
         if (CheckUtils.isEmpty(value))
             return null;
+        String num = null;
+        if (isGeneral()) {
+            num = NumGenerator.generateAndSetNum(value);
+        }
         Boolean success = getDAO().insertSelective(getDO(value, doType)) > 0;
         if (!success) {
             return null;
+        }
+        if (CheckUtils.isNotEmpty(num)) {
+            return detail(num);
         }
         return value;
     }
@@ -98,16 +107,21 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
             return null;
         }
         Object pk = null;
-        String pkName = "id";
         try {
-            pk = BeanUtils.getProperty(value, "id");
+            if (isGeneral()) {
+                pk = BeanUtils.getProperty(value, "num");
+            }
+            // 没有num时
+            if (CheckUtils.isEmpty(pk)) {
+                pk = BeanUtils.getProperty(value, "id");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
         if (CheckUtils.isEmpty(pk)) {
             throw new ValidationException("请指定主键");
         }
-        DO oldValue = getDoDetail(pk, pkName);
+        DO oldValue = getDoDetail(pk, getPkName());
         if (CheckUtils.isEmpty(oldValue)) {
             throw new ValidationException("数据不存在");
         }
@@ -115,16 +129,85 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
 
         Example example = newExample();
         Object criteria = newCriteria(example);
-        addAndEqualPropertie(pkName, pk, pk.getClass(), criteria);
-        BeanUtils.copyProperties(value, oldValue);
+        addAndEqualPropertie(getPkName(), pk, pk.getClass(), criteria);
+        if (isGeneral()) {
+            Object version = BeanUtils.getProperty(oldValue, "version");
+            if (version != null) {
+                addAndEqualPropertie("version", version, Integer.class, criteria);
+                try {
+                    BeanUtils.setProperty(oldValue, "version", Integer.parseInt(version.toString()) + 1);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            try {
+                BeanUtils.setProperty(oldValue, "updateDate", new Date());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         int successCount = getDAO().updateByExampleSelective(oldValue, example);
         if (successCount < 1) {
-            throw new DAOException("未修改任何数据，请确认主键值！");
+            throw new DAOException("未修改任何数据，请确认版本号或主键！");
         } else if (successCount > 1) {
             throw new DAOException("存在多条记录被修改，需要回滚数据！");
         }
         BeanUtils.copyProperties(oldValue, value);
         return value;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class, DAOException.class},
+        noRollbackFor = RuntimeException.class)
+    public boolean delete(Serializable pk) {
+        DO doDetail = getDoDetail(pk, getPkName());
+        if (doDetail == null) {
+            return false;
+        }
+        Example example = newExample();
+        Object criteria = newCriteria(example);
+        addAndEqualPropertie(getPkName(), pk, pk.getClass(), criteria);
+        if (isGeneral()) {
+            try {
+                BeanUtils.setProperty(doDetail, "deleted", true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return getDAO().updateByExample(doDetail, example) == 1;
+    }
+
+    @Override
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+    public VO detail(Serializable pk) {
+        List<DO> resultList = null;
+        Example example = newExample();
+        Object criteria = newCriteria(example);
+        // 设置主键
+        addAndEqualPropertie(getPkName(), pk, pk.getClass(), criteria);
+
+        resultList = getDAO().selectByExample(example);
+        if (CheckUtils.isEmpty(resultList)) {
+            return null;
+        }
+        return getVO(resultList.get(0), voType);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class, DAOException.class},
+        noRollbackFor = RuntimeException.class)
+    public int deleteAll(List<Serializable> numList) {
+        if (CheckUtils.isEmpty(numList))
+            return 0;
+        int result = 0;
+        for (Serializable num : numList) {
+            boolean success = delete(num);
+            if (success) {
+                result++;
+            }
+        }
+        return result;
     }
 
     @Override
@@ -144,8 +227,8 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
     }
 
     @Override
-    public VO detail(VO value) {
-        List<VO> resultList = this.queryAll(value);
+    public VO detail(VO params) {
+        List<VO> resultList = this.queryAll(params);
         if (CheckUtils.isEmpty(resultList)) {
             return null;
         }
@@ -157,19 +240,19 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
-    public List<VO> queryAll(VO param) {
-        return this.queryPagingList(param, null, null);
+    public List<VO> queryAll(VO params) {
+        return this.queryPagingList(params, null, null);
     }
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
-    public List<VO> queryPagingList(VO param, Integer startIndex, Integer pageSize) {
-        if (CheckUtils.isEmpty(param, pageSize))
+    public List<VO> queryPagingList(VO params, Integer startIndex, Integer pageSize) {
+        if (CheckUtils.isEmpty(params, pageSize))
             return null;
         Example example = newExample();
         Object criteria = newCriteria(example);
         // 添加要查询的参数
-        addAllAndEqualPropertie(param, criteria);
+        addAllAndEqualPropertie(params, criteria);
         // 设置分页
         setPagingProperties(example, startIndex, pageSize);
         List<DO> resultList = getDAO().selectByExample(example);
@@ -391,5 +474,24 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
             return null;
         }
         return resultList.get(0);
+    }
+
+    protected String getPkName() {
+        String pkName = "id";
+        if (isGeneral()) {
+            pkName = "num";
+        }
+        return pkName;
+    }
+
+    protected boolean isGeneral() {
+        Class<? super DO> superclass = doType.getSuperclass();
+        if (superclass == null) {
+            return false;
+        }
+        if ("GeneralModel".equals(superclass.getSimpleName())) {
+            return true;
+        }
+        return false;
     }
 }
