@@ -1,9 +1,9 @@
 /**
  * @Project base-core
  * @Package com.cds.base.core.impl
- * @Class GeneralQueryServiceImpl.java
- * @Date Oct 31, 2019 6:51:06 PM
- * @Copyright (c) 2019 CandleDrumS.com All Right Reserved.
+ * @Class BaseQueryService.java
+ * @Date Nov 3, 2020 10:02:42 AM
+ * @Copyright (c) 2020 CandleDrums.com All Right Reserved.
  */
 package com.cds.base.core.impl;
 
@@ -12,32 +12,23 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.cds.base.api.service.GeneralQueryService;
-import com.cds.base.biz.service.GeneralService;
+import com.cds.base.api.service.BaseQueryService;
+import com.cds.base.biz.service.BaseService;
 import com.cds.base.common.page.Page;
 import com.cds.base.common.page.PageResult;
 import com.cds.base.common.result.ResponseResult;
 import com.cds.base.util.bean.CheckUtils;
 
 /**
- * @Description 业务查询Service
+ * @Description TODO 填写描述信息
  * @Notes 未填写备注
  * @author liming
- * @Date Oct 31, 2019 6:51:06 PM
- * @version 1.0
- * @since JDK 1.8
+ * @Date Nov 3, 2020 10:02:42 AM
  */
-public abstract class GeneralQueryServiceImpl<VO> implements GeneralQueryService<VO> {
+public abstract class BaseQueryServiceImpl<VO> implements BaseQueryService<VO> {
 
-    protected abstract GeneralService<VO> getService();
-
-    @Override
-    public ResponseResult<VO> detail(@RequestParam(value = "num", required = true) @NotNull String num) {
-        VO data = getService().detail(num);
-        return ResponseResult.returnSuccess(data);
-    }
+    protected abstract BaseService<VO> getService();
 
     @Override
     public ResponseResult<List<VO>> queryAll(@RequestBody @NotNull VO params) {
@@ -51,7 +42,11 @@ public abstract class GeneralQueryServiceImpl<VO> implements GeneralQueryService
 
     @Override
     public ResponseResult<PageResult<VO>> queryPagingList(@RequestBody @NotNull Page<VO> page) {
-        List<VO> resultList = getService().queryPagingList(page.getParam(), page.getStartIndex(), page.getPageSize());
+        List<VO> resultList = null;
+        resultList = getService().queryPagingList(page.getParam(), page.getStartIndex(), page.getPageSize());
+        if (CheckUtils.isEmpty(resultList)) {
+            return ResponseResult.returnNull(null);
+        }
         int resultCount = getService().queryPagingCount(page.getParam());
 
         PageResult<VO> pageResult = new PageResult<VO>();

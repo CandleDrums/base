@@ -1,18 +1,20 @@
 /**
  * @Project base-core
- * @Package com.cds.base.core.impl
+ * @Package com.cds.base.core.impl.general
  * @Class GeneralManageServiceImpl.java
  * @Date Oct 31, 2019 6:39:35 PM
  * @Copyright (c) 2019 CandleDrumS.com All Right Reserved.
  */
-package com.cds.base.core.impl;
+package com.cds.base.core.impl.general;
+
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.cds.base.api.service.GeneralManageService;
+import com.cds.base.api.service.general.GeneralManageService;
 import com.cds.base.biz.service.GeneralService;
 import com.cds.base.common.code.ResultCode;
 import com.cds.base.common.result.ResponseResult;
@@ -32,7 +34,7 @@ public abstract class GeneralManageServiceImpl<VO> implements GeneralManageServi
     protected abstract GeneralService<VO> getService();
 
     @Override
-    public ResponseResult<VO> add(@RequestBody @NotNull VO vo) {
+    public ResponseResult<VO> save(@RequestBody @NotNull VO vo) {
         CheckUtils.validate(vo);
         Object result = getService().save(vo);
         if (result != null) {
@@ -51,7 +53,16 @@ public abstract class GeneralManageServiceImpl<VO> implements GeneralManageServi
             return ResponseResult.returnSuccess(vo);
         }
         return ResponseResult.returnFail(vo);
+    }
 
+    @Override
+    public ResponseResult<Integer> saveAll(@RequestBody @NotNull List<VO> valueList) {
+        return ResponseResult.returnSuccess(getService().saveAll(valueList));
+    }
+
+    @Override
+    public ResponseResult<Integer> deleteAll(@RequestParam(value = "numList", required = true) List<String> numList) {
+        return ResponseResult.returnSuccess(getService().deleteAll(numList));
     }
 
     @Override

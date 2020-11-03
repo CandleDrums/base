@@ -1,11 +1,11 @@
 /**
  * @Project base-core
- * @Package com.cds.base.core.impl
+ * @Package com.cds.base.core.impl.task
  * @Class TaskServiceImpl.java
  * @Date Jul 2, 2020 5:51:55 PM
  * @Copyright (c) 2020 CandleDrumS.com All Right Reserved.
  */
-package com.cds.base.core.impl;
+package com.cds.base.core.impl.task;
 
 import com.cds.base.api.service.TaskService;
 import com.cds.base.common.result.ResponseResult;
