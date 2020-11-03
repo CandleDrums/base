@@ -114,6 +114,7 @@ public abstract class GeneralServiceImpl<VO, DO extends GeneralModel, Example> e
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     public VO detail(String num) {
+
         List<DO> resultList = null;
         Example example = newExample();
         Object criteria = newCriteria(example);

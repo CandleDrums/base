@@ -7,16 +7,18 @@
  */
 package com.cds.base.core.impl.general;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.cds.base.api.service.general.GeneralManageService;
+import com.cds.base.api.service.BaseManageService;
 import com.cds.base.biz.service.GeneralService;
 import com.cds.base.common.result.ResponseResult;
 import com.cds.base.core.impl.BaseManageServiceImpl;
+import com.cds.base.util.bean.BeanUtils;
 
 /**
  * @Description 业务管理Service
@@ -26,20 +28,20 @@ import com.cds.base.core.impl.BaseManageServiceImpl;
  * @version 1.0
  * @since JDK 1.8
  */
-public abstract class GeneralManageServiceImpl<VO> extends BaseManageServiceImpl<VO>
-    implements GeneralManageService<VO> {
+public abstract class GeneralManageServiceImpl<VO> extends BaseManageServiceImpl<VO> implements BaseManageService<VO> {
 
     @Override
     protected abstract GeneralService<VO> getService();
 
     @Override
-    public ResponseResult<Integer> deleteAll(@RequestParam(value = "numList", required = true) List<String> numList) {
-        return ResponseResult.returnSuccess(getService().deleteAll(numList));
+    public ResponseResult<Boolean> delete(@RequestParam(value = "pk", required = true) @NotNull Serializable pk) {
+        return ResponseResult.returnResult(getService().delete(pk.toString()));
     }
 
     @Override
-    public ResponseResult<Boolean> delete(@RequestParam(value = "num", required = true) @NotNull String key) {
-        return ResponseResult.returnResult(getService().delete(key));
+    public ResponseResult<Integer>
+        deleteAll(@RequestParam(value = "pkList", required = true) List<Serializable> pkList) {
+        return ResponseResult.returnSuccess(getService().deleteAll(BeanUtils.getObjectList(pkList, String.class)));
     }
 
 }

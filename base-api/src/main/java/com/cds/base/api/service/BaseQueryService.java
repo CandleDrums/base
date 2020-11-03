@@ -7,9 +7,11 @@
  */
 package com.cds.base.api.service;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cds.base.common.page.Page;
 import com.cds.base.common.page.PageResult;
@@ -25,6 +27,12 @@ public interface BaseQueryService<VO> {
 
     // uri前缀
     final static String BASE_PREFIX = "/query";
+
+    /**
+     * @description 根据业务主键查询
+     * @return ResponseResult<T>
+     */
+    ResponseResult<VO> detail(@RequestParam(value = "pk", required = true) Serializable pk);
 
     /**
      * @description 根据实体值查询

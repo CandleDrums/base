@@ -7,9 +7,11 @@
  */
 package com.cds.base.core.impl.basic;
 
+import java.io.Serializable;
+
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.cds.base.api.service.basic.BasicQueryService;
+import com.cds.base.api.service.BaseQueryService;
 import com.cds.base.biz.service.BasicService;
 import com.cds.base.common.result.ResponseResult;
 import com.cds.base.core.impl.BaseQueryServiceImpl;
@@ -22,14 +24,14 @@ import com.cds.base.core.impl.BaseQueryServiceImpl;
  * @version 1.0
  * @since JDK 1.8
  */
-public abstract class BasicQueryServiceImpl<VO> extends BaseQueryServiceImpl<VO> implements BasicQueryService<VO> {
+public abstract class BasicQueryServiceImpl<VO> extends BaseQueryServiceImpl<VO> implements BaseQueryService<VO> {
 
     @Override
     protected abstract BasicService<VO> getService();
 
     @Override
-    public ResponseResult<VO> detail(@RequestParam(value = "id", required = true) Integer id) {
-        VO data = getService().detail(id);
+    public ResponseResult<VO> detail(@RequestParam(value = "pk", required = true) Serializable pk) {
+        VO data = getService().detail(Integer.valueOf(pk.toString()));
         return ResponseResult.returnSuccess(data);
     }
 
