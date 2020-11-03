@@ -11,15 +11,12 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
-import org.springframework.beans.BeanUtils;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cds.base.api.service.basic.BasicManageService;
 import com.cds.base.biz.service.BasicService;
-import com.cds.base.common.code.ResultCode;
 import com.cds.base.common.result.ResponseResult;
-import com.cds.base.util.bean.CheckUtils;
+import com.cds.base.core.impl.BaseManageServiceImpl;
 
 /**
  * @Description 基本管理Service
@@ -29,25 +26,10 @@ import com.cds.base.util.bean.CheckUtils;
  * @version 1.0
  * @since JDK 1.8
  */
-public abstract class BasicManageServiceImpl<VO> implements BasicManageService<VO> {
+public abstract class BasicManageServiceImpl<VO> extends BaseManageServiceImpl<VO> implements BasicManageService<VO> {
 
+    @Override
     protected abstract BasicService<VO> getService();
-
-    @Override
-    public ResponseResult<VO> save(@RequestBody @NotNull VO vo) {
-        CheckUtils.validate(vo);
-        Object result = getService().save(vo);
-        if (result != null) {
-            BeanUtils.copyProperties(result, vo);
-            return ResponseResult.returnSuccess(vo);
-        }
-        return ResponseResult.returnResult(vo, ResultCode.FAIL.name(), "添加失败，状态未知");
-    }
-
-    @Override
-    public ResponseResult<Integer> saveAll(@RequestBody @NotNull List<VO> valueList) {
-        return ResponseResult.returnSuccess(getService().saveAll(valueList));
-    }
 
     @Override
     public ResponseResult<Boolean> delete(@RequestParam(value = "id", required = true) @NotNull Integer id) {

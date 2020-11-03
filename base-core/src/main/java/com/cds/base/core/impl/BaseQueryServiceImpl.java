@@ -21,7 +21,7 @@ import com.cds.base.common.result.ResponseResult;
 import com.cds.base.util.bean.CheckUtils;
 
 /**
- * @Description TODO 填写描述信息
+ * @Description 基础查询服务实现
  * @Notes 未填写备注
  * @author liming
  * @Date Nov 3, 2020 10:02:42 AM
