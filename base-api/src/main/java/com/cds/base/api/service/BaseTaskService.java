@@ -1,7 +1,7 @@
 /**
  * @Project base-api
  * @Package com.cds.base.api.service
- * @Class TaskService.java
+ * @Class BaseTaskService.java
  * @Date Jul 2, 2020 5:04:02 PM
  * @Copyright (c) 2020 CandleDrumS.com All Right Reserved.
  */
@@ -17,7 +17,7 @@ import com.cds.base.common.result.ResponseResult;
  * @author liming
  * @Date Jul 2, 2020 5:04:02 PM
  */
-public interface TaskService<VO> {
+public interface BaseTaskService<VO> {
 
     // uri前缀
     final static String BASE_PREFIX = "/task";
