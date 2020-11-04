@@ -186,8 +186,13 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            return getDAO().updateByExample(doDetail, example) == 1;
         }
-        return getDAO().updateByExample(doDetail, example) == 1;
+        if (pk instanceof Integer) {
+            return getDAO().deleteByPrimaryKey(pk) == 1;
+        }
+        return getDAO().deleteByExample(example) == 1;
+
     }
 
     @Override
