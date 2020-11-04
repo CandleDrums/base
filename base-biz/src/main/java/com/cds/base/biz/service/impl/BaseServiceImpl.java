@@ -253,13 +253,13 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     public List<VO> queryAll(VO params) {
-        return this.queryPagingList(params, 1, 2000);
+        return this.queryPagingList(params, 0, 2000);
     }
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     public List<VO> queryPagingList(VO params, Integer startIndex, Integer pageSize) {
-        if (CheckUtils.isEmpty(params, pageSize))
+        if (CheckUtils.isEmpty(startIndex, pageSize))
             return null;
         Example example = newExample();
         Object criteria = newCriteria(example);
@@ -269,7 +269,7 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
             addAndEqualPropertie("deleted", false, Boolean.class, criteria);
         }
         // 设置分页
-        setPagingProperties(example, startIndex, pageSize);
+        setPagingProperties(example, Long.valueOf(startIndex), pageSize);
         List<DO> resultList = getDAO().selectByExample(example);
 
         return getVOList(resultList, voType);
@@ -292,7 +292,7 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
      * @description 设置分页
      * @return void
      */
-    private void setPagingProperties(Example example, Integer startIndex, Integer pageSize) {
+    private void setPagingProperties(Example example, Long startIndex, Integer pageSize) {
         if (startIndex == null || pageSize == null) {
             return;
         }
@@ -366,6 +366,9 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
     }
 
     protected void addAllAndEqualPropertie(VO value, Object criteria) {
+        if (value == null) {
+            return;
+        }
         Class type = value.getClass();
         // 取所有字段（包括基类的字段）
         Field[] allFields = type.getDeclaredFields();

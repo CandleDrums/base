@@ -35,7 +35,7 @@ public abstract class BaseQueryServiceImpl<VO> implements BaseQueryService<VO> {
     }
 
     @Override
-    public ResponseResult<List<VO>> queryAll(@NotNull VO params) {
+    public ResponseResult<List<VO>> queryAll(VO params) {
         List<VO> resultList = null;
         resultList = getService().queryAll(params);
         if (CheckUtils.isEmpty(resultList)) {
