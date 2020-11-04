@@ -7,8 +7,6 @@
  */
 package com.cds.base.api.service;
 
-import org.springframework.web.bind.annotation.RequestBody;
-
 import com.cds.base.common.result.ResponseResult;
 
 /**
@@ -26,6 +24,6 @@ public interface BaseTaskService<VO> {
      * @description 提交任务
      * @return ResponseResult<Boolean>
      */
-    ResponseResult<Boolean> submit(@RequestBody VO value);
+    ResponseResult<Boolean> submit(VO value);
 
 }

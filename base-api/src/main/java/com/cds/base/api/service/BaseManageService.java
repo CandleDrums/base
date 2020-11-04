@@ -10,9 +10,6 @@ package com.cds.base.api.service;
 import java.io.Serializable;
 import java.util.List;
 
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import com.cds.base.common.result.ResponseResult;
 
 /**
@@ -29,30 +26,24 @@ public interface BaseManageService<VO> {
      * @description 保存
      * @return ResponseResult<Boolean>
      */
-    ResponseResult<VO> save(@RequestBody VO value);
+    ResponseResult<VO> save(VO value);
 
     /**
      * @description 批量保存
      * @param ts
      */
-    ResponseResult<Integer> saveAll(@RequestBody List<VO> valueList);
+    ResponseResult<Integer> saveAll(List<VO> valueList);
 
     /**
      * @description 修改
      * @return ResponseResult<Boolean>
      */
-    ResponseResult<VO> modify(@RequestBody VO value);
+    ResponseResult<VO> modify(VO value);
 
     /**
      * @description 逻辑删除
      * @return ResponseResult<Boolean>
      */
-    ResponseResult<Boolean> delete(@RequestParam(value = "pk", required = true) Serializable pk);
-
-    /**
-     * @description 批量删除
-     * @return int
-     */
-    ResponseResult<Integer> deleteAll(@RequestParam(value = "pkList", required = true) List<Serializable> pkList);
+    ResponseResult<Boolean> delete(Serializable pk);
 
 }

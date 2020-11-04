@@ -10,9 +10,6 @@ package com.cds.base.api.service;
 import java.io.Serializable;
 import java.util.List;
 
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import com.cds.base.common.page.Page;
 import com.cds.base.common.page.PageResult;
 import com.cds.base.common.result.ResponseResult;
@@ -32,18 +29,18 @@ public interface BaseQueryService<VO> {
      * @description 根据业务主键查询
      * @return ResponseResult<T>
      */
-    ResponseResult<VO> detail(@RequestParam(value = "pk", required = true) Serializable pk);
+    ResponseResult<VO> detail(Serializable pk);
 
     /**
      * @description 根据实体值查询
      * @return ResponseResult<List<T>>
      */
-    ResponseResult<List<VO>> queryAll(@RequestBody VO value);
+    ResponseResult<List<VO>> queryAll(VO value);
 
     /**
      * @description 分页查询
      * @return ResponseResult<List<T>>
      */
-    ResponseResult<PageResult<VO>> queryPagingList(@RequestBody Page<VO> page);
+    ResponseResult<PageResult<VO>> queryPagingList(Page<VO> page);
 
 }

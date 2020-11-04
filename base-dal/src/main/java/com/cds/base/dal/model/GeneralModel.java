@@ -34,6 +34,6 @@ public class GeneralModel extends BasicModel {
     // 更新时间，非空，默认与创建时间相同
     private Date updateDate;
     // 逻辑删除标识，0或NULL为正常，1为已删除，删除时需更新updateDate
-    private boolean deleted;
+    private Boolean deleted;
 
 }

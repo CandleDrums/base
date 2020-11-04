@@ -12,9 +12,6 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import com.cds.base.api.service.BaseQueryService;
 import com.cds.base.biz.service.BaseService;
 import com.cds.base.common.page.Page;
@@ -33,12 +30,12 @@ public abstract class BaseQueryServiceImpl<VO> implements BaseQueryService<VO> {
     protected abstract BaseService<VO> getService();
 
     @Override
-    public ResponseResult<VO> detail(@RequestParam(value = "pk", required = true) @NotNull Serializable pk) {
+    public ResponseResult<VO> detail(@NotNull Serializable pk) {
         return ResponseResult.returnSuccess(getService().detail(pk));
     }
 
     @Override
-    public ResponseResult<List<VO>> queryAll(@RequestBody @NotNull VO params) {
+    public ResponseResult<List<VO>> queryAll(@NotNull VO params) {
         List<VO> resultList = null;
         resultList = getService().queryAll(params);
         if (CheckUtils.isEmpty(resultList)) {
@@ -48,7 +45,7 @@ public abstract class BaseQueryServiceImpl<VO> implements BaseQueryService<VO> {
     }
 
     @Override
-    public ResponseResult<PageResult<VO>> queryPagingList(@RequestBody @NotNull Page<VO> page) {
+    public ResponseResult<PageResult<VO>> queryPagingList(@NotNull Page<VO> page) {
         List<VO> resultList = null;
         resultList = getService().queryPagingList(page.getParam(), page.getStartIndex(), page.getPageSize());
         if (CheckUtils.isEmpty(resultList)) {

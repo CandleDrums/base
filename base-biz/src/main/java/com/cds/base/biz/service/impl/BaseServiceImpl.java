@@ -88,7 +88,19 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
         if (isGeneral()) {
             num = NumGenerator.generateAndSetNum(value);
         }
-        Boolean success = getDAO().insertSelective(getDO(value, doType)) > 0;
+        DO doValue = getDO(value, doType);
+        if (isGeneral()) {
+            try {
+                // 防止数据库未设置默认值
+                BeanUtils.setProperty(doValue, "deleted", false);
+                BeanUtils.setProperty(doValue, "version", 0);
+                BeanUtils.setProperty(doValue, "updateDate", new Date());
+                BeanUtils.setProperty(doValue, "createDate", new Date());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        Boolean success = getDAO().insertSelective(doValue) > 0;
         if (!success) {
             return null;
         }
@@ -241,7 +253,7 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     public List<VO> queryAll(VO params) {
-        return this.queryPagingList(params, null, null);
+        return this.queryPagingList(params, 1, 2000);
     }
 
     @Override
@@ -253,6 +265,9 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
         Object criteria = newCriteria(example);
         // 添加要查询的参数
         addAllAndEqualPropertie(params, criteria);
+        if (isGeneral()) {
+            addAndEqualPropertie("deleted", false, Boolean.class, criteria);
+        }
         // 设置分页
         setPagingProperties(example, startIndex, pageSize);
         List<DO> resultList = getDAO().selectByExample(example);
@@ -327,6 +342,18 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
      * @return void
      */
     protected void addAndEqualPropertie(String propertieName, Object propertieValue, Class propertieType,
+        Object criteria) {
+        String methodName = getMethodName(propertieName, criteria);
+        Method equalMethod;
+        try {
+            equalMethod = criteria.getClass().getMethod(methodName, propertieType);
+            equalMethod.invoke(criteria, propertieValue);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void addAndInPropertie(String propertieName, Object propertieValue, Class propertieType,
         Object criteria) {
         String methodName = getMethodName(propertieName, criteria);
         Method equalMethod;

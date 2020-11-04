@@ -12,9 +12,6 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import com.cds.base.api.service.BaseManageService;
 import com.cds.base.biz.service.BaseService;
 import com.cds.base.common.code.ResultCode;
@@ -33,7 +30,7 @@ public abstract class BaseManageServiceImpl<VO> implements BaseManageService<VO>
     protected abstract BaseService<VO> getService();
 
     @Override
-    public ResponseResult<VO> save(@RequestBody @NotNull VO vo) {
+    public ResponseResult<VO> save(@NotNull VO vo) {
         CheckUtils.validate(vo);
         Object result = getService().save(vo);
         if (result != null) {
@@ -44,7 +41,7 @@ public abstract class BaseManageServiceImpl<VO> implements BaseManageService<VO>
     }
 
     @Override
-    public ResponseResult<VO> modify(@RequestBody @NotNull VO vo) {
+    public ResponseResult<VO> modify(@NotNull VO vo) {
 
         Object result = getService().modify(vo);
         if (result != null) {
@@ -55,18 +52,13 @@ public abstract class BaseManageServiceImpl<VO> implements BaseManageService<VO>
     }
 
     @Override
-    public ResponseResult<Integer> saveAll(@RequestBody @NotNull List<VO> valueList) {
+    public ResponseResult<Integer> saveAll(@NotNull List<VO> valueList) {
         return ResponseResult.returnSuccess(getService().saveAll(valueList));
     }
 
     @Override
-    public ResponseResult<Boolean> delete(@RequestParam(value = "pk", required = true) @NotNull Serializable pk) {
+    public ResponseResult<Boolean> delete(@NotNull Serializable pk) {
         return ResponseResult.returnResult(getService().delete(pk));
     }
 
-    @Override
-    public ResponseResult<Integer>
-        deleteAll(@RequestParam(value = "pkList", required = true) List<Serializable> pkList) {
-        return ResponseResult.returnSuccess(getService().deleteAll(pkList));
-    }
 }
