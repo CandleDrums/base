@@ -118,31 +118,26 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
         if (CheckUtils.isEmpty(value)) {
             return null;
         }
+        int successCount = 0;
         Object pk = null;
         try {
-            if (isGeneral()) {
-                pk = BeanUtils.getProperty(value, "num");
-            }
-            // 没有num时
-            if (CheckUtils.isEmpty(pk)) {
-                pk = BeanUtils.getProperty(value, "id");
-            }
+            pk = BeanUtils.getProperty(value, getPkName());
         } catch (Exception e) {
             e.printStackTrace();
         }
         if (CheckUtils.isEmpty(pk)) {
             throw new ValidationException("请指定主键");
         }
-        DO oldValue = getDoDetail(pk, getPkName());
+        DO oldValue = getDoDetail(pk.toString());
         if (CheckUtils.isEmpty(oldValue)) {
             throw new ValidationException("数据不存在");
         }
         BeanUtils.copyProperties(value, oldValue);
 
-        Example example = newExample();
-        Object criteria = newCriteria(example);
-        addAndEqualPropertie(getPkName(), pk, pk.getClass(), criteria);
         if (isGeneral()) {
+            Example example = newExample();
+            Object criteria = newCriteria(example);
+            addAndEqualPropertie(getPkName(), pk, pk.getClass(), criteria);
             Object version = BeanUtils.getProperty(oldValue, "version");
             if (version != null) {
                 addAndEqualPropertie("version", version, Integer.class, criteria);
@@ -157,9 +152,11 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            successCount = getDAO().updateByExampleSelective(oldValue, example);
+        } else {
+            successCount = getDAO().updateByPrimaryKeySelective(oldValue);
         }
 
-        int successCount = getDAO().updateByExampleSelective(oldValue, example);
         if (successCount < 1) {
             throw new DAOException("未修改任何数据，请确认版本号或主键！");
         } else if (successCount > 1) {
@@ -173,36 +170,35 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class, DAOException.class},
         noRollbackFor = RuntimeException.class)
     public boolean delete(Serializable pk) {
-        DO doDetail = getDoDetail(pk, getPkName());
+        if (!isGeneral()) {
+            return getDAO().deleteByPrimaryKey(Integer.parseInt(pk.toString())) == 1;
+        }
+        DO doDetail = getDoDetail(pk);
         if (doDetail == null) {
             return false;
         }
         Example example = newExample();
         Object criteria = newCriteria(example);
-        addAndEqualPropertie(getPkName(), pk, pk.getClass(), criteria);
-        if (isGeneral()) {
-            try {
-                BeanUtils.setProperty(doDetail, "deleted", true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return getDAO().updateByExample(doDetail, example) == 1;
+        addAndEqualPropertie(getPkName(), pk, getPkType(), criteria);
+        try {
+            BeanUtils.setProperty(doDetail, "deleted", true);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        if (pk instanceof Integer) {
-            return getDAO().deleteByPrimaryKey(pk) == 1;
-        }
-        return getDAO().deleteByExample(example) == 1;
-
+        return getDAO().updateByExample(doDetail, example) == 1;
     }
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     public VO detail(Serializable pk) {
+        if (!isGeneral()) {
+            return getVO(getDAO().selectByPrimaryKey(Integer.parseInt(pk.toString())), voType);
+        }
         List<DO> resultList = null;
         Example example = newExample();
         Object criteria = newCriteria(example);
         // 设置主键
-        addAndEqualPropertie(getPkName(), pk, pk.getClass(), criteria);
+        addAndEqualPropertie(getPkName(), pk, getPkType(), criteria);
 
         resultList = getDAO().selectByExample(example);
         if (CheckUtils.isEmpty(resultList)) {
@@ -283,14 +279,34 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     public int queryPagingCount(VO param) {
-        if (CheckUtils.isEmpty(param))
-            return 0;
         Example example = newExample();
         Object criteria = newCriteria(example);
         // 添加要查询的参数
         addAllAndEqualPropertie(param, criteria);
+        if (isGeneral()) {
+            addAndEqualPropertie("deleted", false, Boolean.class, criteria);
+        }
         // 设置分页
         return (int)getDAO().countByExample(example);
+    }
+
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+    protected DO getDoDetail(Serializable pk) {
+        if (CheckUtils.isEmpty(pk)) {
+            return null;
+        }
+        if (!isGeneral()) {
+            return getDAO().selectByPrimaryKey(Integer.parseInt(pk.toString()));
+        }
+        List<DO> resultList = null;
+        Example example = newExample();
+        Object criteria = newCriteria(example);
+        addAndEqualPropertie(getPkName(), pk, getPkType(), criteria);
+        resultList = getDAO().selectByExample(example);
+        if (CheckUtils.isEmpty(resultList)) {
+            return null;
+        }
+        return resultList.get(0);
     }
 
     /**
@@ -320,7 +336,7 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
      */
     protected Example newExample() {
         try {
-            return exampleType.getDeclaredConstructor().newInstance(null);
+            return exampleType.getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -495,28 +511,23 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
         return new HashMap<String, Object>();
     }
 
-    @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
-    protected DO getDoDetail(Object pk, String pkName) {
-        if (CheckUtils.isEmpty(pk)) {
-            return null;
-        }
-        List<DO> resultList = null;
-        Example example = newExample();
-        Object criteria = newCriteria(example);
-        addAndEqualPropertie(pkName, pk, pk.getClass(), criteria);
-        resultList = getDAO().selectByExample(example);
-        if (CheckUtils.isEmpty(resultList)) {
-            return null;
-        }
-        return resultList.get(0);
-    }
-
     protected String getPkName() {
         String pkName = "id";
         if (isGeneral()) {
             pkName = "num";
         }
         return pkName;
+    }
+
+    /**
+     * @description 主键类型
+     * @return Class
+     */
+    protected Class getPkType() {
+        if (isGeneral()) {
+            return String.class;
+        }
+        return Integer.class;
     }
 
     protected boolean isGeneral() {
