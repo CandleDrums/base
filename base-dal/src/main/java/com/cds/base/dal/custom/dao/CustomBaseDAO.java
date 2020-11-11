@@ -7,9 +7,8 @@
  */
 package com.cds.base.dal.custom.dao;
 
+import java.io.Serializable;
 import java.util.List;
-
-import org.apache.ibatis.session.RowBounds;
 
 /**
  * @Description 基础DAO接口
@@ -31,10 +30,16 @@ public interface CustomBaseDAO<DO> {
     int saveAll(List<DO> valueList);
 
     /**
-     * @description 是否存在
-     * @return boolean
+     * @description 更新
+     * @return void
      */
-    boolean contains(DO value);
+    Integer modify(DO value);
+
+    /**
+     * @description 根据主键查询
+     * @return DO
+     */
+    DO detail(Serializable pk);
 
     /**
      * @description 指定参数查询（key为类属性名）
@@ -46,12 +51,18 @@ public interface CustomBaseDAO<DO> {
      * @description 分页查询
      * @return List<DO>
      */
-    List<DO> queryPagingList(DO params, RowBounds bounds);
+    List<DO> queryPagingList(DO params, Integer startIndex, Integer pageSize);
 
     /**
      * @description 总数查询
      * @return int
      */
     int queryPagingCount(DO params);
+
+    /**
+     * @description 删除
+     * @return void
+     */
+    Integer delete(Serializable pk);
 
 }
