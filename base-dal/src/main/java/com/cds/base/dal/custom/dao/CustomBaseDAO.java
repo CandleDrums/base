@@ -1,7 +1,7 @@
 /**
  * @Project base-dal
  * @Package com.cds.base.dal.dao
- * @Class BaseDAO.java
+ * @Class CustomBaseDAO.java
  * @Date Sep 4, 2020 5:03:17 PM
  * @Copyright (c) 2020 CandleDrums.com All Right Reserved.
  */
@@ -12,12 +12,12 @@ import java.util.List;
 import org.apache.ibatis.session.RowBounds;
 
 /**
- * @Description TODO 填写描述信息
+ * @Description 基础DAO接口
  * @Notes 未填写备注
  * @author liming
  * @Date Sep 4, 2020 5:03:17 PM
  */
-public interface BaseDAO<DO> {
+public interface CustomBaseDAO<DO> {
     /**
      * @description 保存
      * @return void

@@ -10,12 +10,12 @@ package com.cds.base.dal.custom.dao;
 import java.util.List;
 
 /**
- * @Description TODO 填写描述信息
+ * @Description 基本DAO
  * @Notes 未填写备注
  * @author liming
  * @Date Sep 4, 2020 4:58:26 PM
  */
-public interface BasicDAO<DO> extends BaseDAO<DO> {
+public interface BasicDAO<DO> extends CustomBaseDAO<DO> {
     /**
      * @description 删除
      * @return void
