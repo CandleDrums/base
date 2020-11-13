@@ -1,7 +1,7 @@
 /**
  * @Project base-common
  * @Package com.cds.base.common.rule
- * @Class NumSplicingRule.java
+ * @Class SplicingRule.java
  * @Date 2019年9月16日 下午6:33:09
  * @Copyright (c) 2019 CandleDrumS.com All Right Reserved.
  */
@@ -15,7 +15,7 @@ package com.cds.base.common.rule;
  * @version 1.0
  * @since JDK 1.8
  */
-public enum NumSplicingRule {
+public enum SplicingRule {
 
     DEFAULT(0, "无"), TIMESTAMP(1, "时间戳"), RANDOM(2, "随机数"), REDIS_INCR(4, "自增长");
 
@@ -28,7 +28,7 @@ public enum NumSplicingRule {
      */
     private String displayName;
 
-    private NumSplicingRule(int intValue, String displayName) {
+    private SplicingRule(int intValue, String displayName) {
         this.intValue = intValue;
         this.displayName = displayName;
     }
@@ -37,8 +37,8 @@ public enum NumSplicingRule {
      * @description 根据值获取枚举
      * @return NumSplicingRule
      */
-    public static NumSplicingRule getNumSplicingRule(int value) {
-        for (NumSplicingRule rule : NumSplicingRule.values()) {
+    public static SplicingRule getSplicingRule(int value) {
+        for (SplicingRule rule : SplicingRule.values()) {
             if (rule.intValue() == value) {
                 return rule;
             }

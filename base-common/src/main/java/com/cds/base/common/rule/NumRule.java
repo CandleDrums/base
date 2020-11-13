@@ -7,6 +7,8 @@
  */
 package com.cds.base.common.rule;
 
+import com.cds.base.common.annotaion.NumGenerateRule;
+
 import lombok.Data;
 
 /**
@@ -19,7 +21,7 @@ import lombok.Data;
 public class NumRule {
 
     // 前缀
-    private String prefixCode;
+    private String prefix;
     // 编号拼接规则<see>NumSplicingRule</see>
     // 1=TIMESTAMP;
     // 2=RANDOM;
@@ -28,11 +30,20 @@ public class NumRule {
     // 5=TIMESTAMP+REDIS_INCR;
     // 6=RANDOM+REDIS_INCR;
     // 7=TIMESTAMP+RANDOM+REDIS_INCR
-    private int numSplicingRule;
+    private int rule;
 
-    public NumRule(String prefixCode, int numSplicingRule) {
-        this.prefixCode = prefixCode;
-        this.numSplicingRule = numSplicingRule;
+    public NumRule(String prefix, int rule) {
+        this.prefix = prefix;
+        this.rule = rule;
     }
 
+    public static NumRule getNumRule(Class<?> clazz) {
+        NumGenerateRule annotation = clazz.getAnnotation(NumGenerateRule.class);
+        if (annotation == null) {
+            return null;
+        }
+        String prefix = annotation.prefixCode();
+        int rule = annotation.ruleCode();
+        return new NumRule(prefix, rule);
+    }
 }

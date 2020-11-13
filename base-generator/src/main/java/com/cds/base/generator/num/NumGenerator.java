@@ -9,10 +9,9 @@ package com.cds.base.generator.num;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
-import com.cds.base.common.annotaion.handler.NumGenerateRuleHandler;
 import com.cds.base.common.exception.BusinessException;
 import com.cds.base.common.rule.NumRule;
-import com.cds.base.common.rule.NumSplicingRule;
+import com.cds.base.common.rule.SplicingRule;
 import com.cds.base.generator.exception.NumGeneratorException;
 import com.cds.base.util.bean.BeanUtils;
 import com.cds.base.util.bean.CheckUtils;
@@ -36,14 +35,14 @@ public class NumGenerator<VO> {
         if (CheckUtils.isNotEmpty(numExtised)) {
             return numExtised.toString();
         }
-        NumRule numRule = NumGenerateRuleHandler.getNumRule(vo.getClass());
+        NumRule numRule = NumRule.getNumRule(vo.getClass());
         if (numRule == null) {
             throw new NumGeneratorException(CODE_1, vo.getClass().getSimpleName()
                 + " 未指定Num生成规则，请添加‘@NumGenerateRule(prefixCode = \"编号前缀\", ruleCode = 7)’注解");
         }
         StringBuffer sb = new StringBuffer();
-        sb.append(numRule.getPrefixCode());
-        String num = generateCode(numRule.getNumSplicingRule(), 1, sb);
+        sb.append(numRule.getPrefix());
+        String num = generateCode(numRule.getRule(), 1, sb);
         try {
             BeanUtils.setProperty(vo, "num", num);
             return num;
@@ -58,13 +57,13 @@ public class NumGenerator<VO> {
      * @return String
      */
     public static <VO> String nextNum(VO vo) {
-        NumRule numRule = NumGenerateRuleHandler.getNumRule(vo.getClass());
+        NumRule numRule = NumRule.getNumRule(vo.getClass());
         if (numRule == null) {
             throw new BusinessException("无效类型");
         }
         StringBuffer sb = new StringBuffer();
-        sb.append(numRule.getPrefixCode());
-        return generateCode(numRule.getNumSplicingRule(), 1, sb);
+        sb.append(numRule.getPrefix());
+        return generateCode(numRule.getRule(), 1, sb);
     }
 
     /**
@@ -72,13 +71,13 @@ public class NumGenerator<VO> {
      * @return String
      */
     public static String nextNum(Class clazz) {
-        NumRule numRule = NumGenerateRuleHandler.getNumRule(clazz);
+        NumRule numRule = NumRule.getNumRule(clazz);
         if (numRule == null) {
             throw new BusinessException("无效类型");
         }
         StringBuffer sb = new StringBuffer();
-        sb.append(numRule.getPrefixCode());
-        return generateCode(numRule.getNumSplicingRule(), 1, sb);
+        sb.append(numRule.getPrefix());
+        return generateCode(numRule.getRule(), 1, sb);
     }
 
     /**
@@ -87,8 +86,8 @@ public class NumGenerator<VO> {
      */
     public static String nextNum(NumRule rule) {
         StringBuffer sb = new StringBuffer();
-        sb.append(rule.getPrefixCode());
-        return generateCode(rule.getNumSplicingRule(), 1, sb);
+        sb.append(rule.getPrefix());
+        return generateCode(rule.getRule(), 1, sb);
     }
 
     /**
@@ -103,7 +102,7 @@ public class NumGenerator<VO> {
             sb = new StringBuffer();
             count = 1;
         }
-        NumSplicingRule rule = NumSplicingRule.getNumSplicingRule(count);
+        SplicingRule rule = SplicingRule.getSplicingRule(count);
         if (rule != null) {
             String code = getCodeFromRule(rule);
             sb.append(code);
@@ -116,7 +115,7 @@ public class NumGenerator<VO> {
      * @description 根据规则生成code
      * @return String
      */
-    private static String getCodeFromRule(NumSplicingRule rule) {
+    private static String getCodeFromRule(SplicingRule rule) {
         switch (rule) {
             case DEFAULT: {
                 break;
