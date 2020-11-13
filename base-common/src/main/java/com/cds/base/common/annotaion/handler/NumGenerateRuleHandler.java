@@ -11,7 +11,7 @@ import com.cds.base.common.annotaion.NumGenerateRule;
 import com.cds.base.common.rule.NumRule;
 
 /**
- * @Description TODO 填写描述信息
+ * @Description num生成规则处理
  * @Notes 未填写备注
  * @author liming
  * @Date Sep 4, 2020 6:31:28 PM

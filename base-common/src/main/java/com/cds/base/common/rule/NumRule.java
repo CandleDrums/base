@@ -10,7 +10,7 @@ package com.cds.base.common.rule;
 import lombok.Data;
 
 /**
- * @Description Num生成规则
+ * @Description num规则
  * @Notes 未填写备注
  * @author liming
  * @Date Jun 8, 2020 3:51:33 PM
