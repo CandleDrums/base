@@ -27,8 +27,9 @@ import com.cds.base.util.misc.DateUtils;
  */
 public class NumGenerator<VO> {
 
-    public static final String CODE_1 = "10001";
-    public static final String CODE_2 = "10002";
+    public static final String CODE_1 = "error-001";
+    public static final String CODE_2 = "error-002";
+    public static final String NUM = "num";
 
     public static <VO> String generateAndSetNum(VO vo) {
         Object numExtised = BeanUtils.getProperty(vo, "num");
@@ -44,7 +45,7 @@ public class NumGenerator<VO> {
         sb.append(numRule.getPrefix());
         String num = generateCode(numRule.getRule(), 1, sb);
         try {
-            BeanUtils.setProperty(vo, "num", num);
+            BeanUtils.setProperty(vo, NUM, num);
             return num;
         } catch (Exception e) {
             e.printStackTrace();
