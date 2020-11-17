@@ -11,7 +11,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 import com.cds.base.common.exception.BusinessException;
 import com.cds.base.common.rule.NumRule;
-import com.cds.base.common.rule.SplicingRule;
+import com.cds.base.common.rule.SplicingRuleType;
 import com.cds.base.generator.exception.NumGeneratorException;
 import com.cds.base.util.bean.BeanUtils;
 import com.cds.base.util.bean.CheckUtils;
@@ -103,7 +103,7 @@ public class NumGenerator<VO> {
             sb = new StringBuffer();
             count = 1;
         }
-        SplicingRule rule = SplicingRule.getSplicingRule(count);
+        SplicingRuleType rule = SplicingRuleType.getSplicingRuleType(count);
         if (rule != null) {
             String code = getCodeFromRule(rule);
             sb.append(code);
@@ -116,7 +116,7 @@ public class NumGenerator<VO> {
      * @description 根据规则生成code
      * @return String
      */
-    private static String getCodeFromRule(SplicingRule rule) {
+    private static String getCodeFromRule(SplicingRuleType rule) {
         switch (rule) {
             case DEFAULT: {
                 break;

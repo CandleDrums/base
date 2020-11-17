@@ -15,7 +15,7 @@ package com.cds.base.common.rule;
  * @version 1.0
  * @since JDK 1.8
  */
-public enum SplicingRule {
+public enum SplicingRuleType {
 
     DEFAULT(0, "无"), TIMESTAMP(1, "时间戳"), RANDOM(2, "随机数"), REDIS_INCR(4, "自增长");
 
@@ -28,7 +28,7 @@ public enum SplicingRule {
      */
     private String displayName;
 
-    private SplicingRule(int intValue, String displayName) {
+    private SplicingRuleType(int intValue, String displayName) {
         this.intValue = intValue;
         this.displayName = displayName;
     }
@@ -37,8 +37,8 @@ public enum SplicingRule {
      * @description 根据值获取枚举
      * @return NumSplicingRule
      */
-    public static SplicingRule getSplicingRule(int value) {
-        for (SplicingRule rule : SplicingRule.values()) {
+    public static SplicingRuleType getSplicingRuleType(int value) {
+        for (SplicingRuleType rule : SplicingRuleType.values()) {
             if (rule.intValue() == value) {
                 return rule;
             }
