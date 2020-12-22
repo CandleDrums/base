@@ -35,7 +35,19 @@ public abstract class BaseQueryServiceImpl<VO> implements BaseQueryService<VO> {
     }
 
     @Override
-    public ResponseResult<List<VO>> queryAll(VO params) {
+    public ResponseResult<VO> detail(@NotNull VO value) {
+        List<VO> resultList = getService().queryAll(value);
+        if (CheckUtils.isEmpty(resultList)) {
+            return ResponseResult.returnNull(null);
+        }
+        if (resultList.size() != 1) {
+            return ResponseResult.returnFail(null, "存在多条相同记录");
+        }
+        return ResponseResult.returnSuccess(resultList.get(0));
+    }
+
+    @Override
+    public ResponseResult<List<VO>> queryAll(@NotNull VO params) {
         List<VO> resultList = null;
         resultList = getService().queryAll(params);
         if (CheckUtils.isEmpty(resultList)) {

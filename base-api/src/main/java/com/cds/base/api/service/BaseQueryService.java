@@ -32,6 +32,12 @@ public interface BaseQueryService<VO> {
     ResponseResult<VO> detail(Serializable pk);
 
     /**
+     * @description 根据实体值查询唯一记录
+     * @return ResponseResult<VO>
+     */
+    ResponseResult<VO> detail(VO value);
+
+    /**
      * @description 根据实体值查询
      * @return ResponseResult<List<T>>
      */
