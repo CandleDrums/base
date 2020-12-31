@@ -287,7 +287,8 @@ public abstract class BaseServiceImpl<VO, DO> implements BaseService<VO> {
         }
         List<VO> voList = getVOList(resultList, voType);
 
-        PageInfo<VO> pageInfo = new PageInfo<>(voList);
+        PageInfo pageInfo = new PageInfo<>(resultList);
+        pageInfo.setList(voList);
         Page<VO> pageResult = new Page<>(params);
         // 返回结果
         pageResult.setParam(params);
