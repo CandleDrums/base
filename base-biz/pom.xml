@@ -26,5 +26,9 @@
 			<groupId>com.candledrums.base</groupId>
 			<artifactId>base-exception</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.github.pagehelper</groupId>
+			<artifactId>pagehelper-spring-boot-starter</artifactId>
+		</dependency>
 	</dependencies>
 </project>

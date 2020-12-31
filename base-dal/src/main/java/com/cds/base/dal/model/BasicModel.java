@@ -10,9 +10,12 @@ package com.cds.base.dal.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Id;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import tk.mybatis.mapper.annotation.KeySql;
 
 /**
  * @Description 基础模型
@@ -27,10 +30,12 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = false)
 public class BasicModel implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	// id,自增主键，由数据库自动生成
-	private Integer id;
-	// 创建时间，非空
-	private Date createDate;
+    private static final long serialVersionUID = 1L;
+    // id,自增主键，由数据库自动生成
+    @Id
+    @KeySql(useGeneratedKeys = true)
+    private Integer id;
+    // 创建时间，非空
+    private Date createDate;
 
 }

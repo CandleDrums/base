@@ -11,7 +11,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.cds.base.common.page.Page;
-import com.cds.base.common.page.PageResult;
 import com.cds.base.common.result.ResponseResult;
 
 /**
@@ -47,6 +46,6 @@ public interface BaseQueryService<VO> {
      * @description 分页查询
      * @return ResponseResult<List<T>>
      */
-    ResponseResult<PageResult<VO>> queryPagingList(Page<VO> page);
+    ResponseResult<Page<VO>> queryPagingList(Page<VO> page);
 
 }

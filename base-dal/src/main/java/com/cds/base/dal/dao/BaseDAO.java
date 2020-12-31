@@ -7,10 +7,12 @@
  */
 package com.cds.base.dal.dao;
 
-import java.io.Serializable;
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
+import tk.mybatis.mapper.common.BaseMapper;
+import tk.mybatis.mapper.common.ConditionMapper;
+import tk.mybatis.mapper.common.ExampleMapper;
+import tk.mybatis.mapper.common.IdsMapper;
+import tk.mybatis.mapper.common.MySqlMapper;
+import tk.mybatis.mapper.common.special.InsertListMapper;
 
 /**
  * @Description 基础DAO
@@ -20,27 +22,7 @@ import org.apache.ibatis.annotations.Param;
  * @version 1.0
  * @since JDK 1.8
  */
-public interface BaseDAO<DO, PK extends Serializable, Example> {
-    long countByExample(Example example);
-
-    int deleteByExample(Example example);
-
-    int deleteByPrimaryKey(PK id);
-
-    int insert(DO record);
-
-    int insertSelective(DO record);
-
-    List<DO> selectByExample(Example example);
-
-    DO selectByPrimaryKey(PK id);
-
-    int updateByExampleSelective(@Param("record") DO record, @Param("example") Example example);
-
-    int updateByExample(@Param("record") DO record, @Param("example") Example example);
-
-    int updateByPrimaryKeySelective(DO record);
-
-    int updateByPrimaryKey(DO record);
+public interface BaseDAO<T>
+    extends BaseMapper<T>, ConditionMapper<T>, IdsMapper<T>, ExampleMapper<T>, InsertListMapper<T>, MySqlMapper<T> {
 
 }
