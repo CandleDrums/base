@@ -283,12 +283,10 @@ public abstract class BaseServiceImpl<VO, DO> implements BaseService<VO> {
 
         List<DO> resultList = getDAO().selectByCondition(condition);
         List<VO> voList = getVOList(resultList, voType);
-        PageInfo<VO> pageInfo = new PageInfo<>(voList);
-        Page<VO> pageResult = new Page<>(params);
+        Page<VO> pageInfo = (Page)new PageInfo<>(voList);
         // 返回结果
-        pageResult.setParam(params);
-        BeanUtils.copyProperties(pageInfo, pageResult);
-        return pageResult;
+        pageInfo.setParam(params);
+        return pageInfo;
     }
 
     @Override

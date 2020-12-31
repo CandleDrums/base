@@ -36,7 +36,7 @@ public class Page<T> extends PageInfo<T> implements Serializable {
     public T param;
 
     public Page() {
-        super();
+        new Page<T>(null);
     }
 
     public Page(T param) {

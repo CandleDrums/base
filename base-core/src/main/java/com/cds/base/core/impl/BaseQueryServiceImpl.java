@@ -57,6 +57,15 @@ public abstract class BaseQueryServiceImpl<VO> implements BaseQueryService<VO> {
 
     @Override
     public ResponseResult<Page<VO>> queryPagingList(@NotNull Page<VO> page) {
+        if (page == null) {
+            page = new Page<>();
+        }
+        if (page.getPageNum() <= 0) {
+            page.setPageNum(Page.DEFAULT_PAGE_NUM);
+        }
+        if (page.getPageSize() <= 0) {
+            page.setPageSize(Page.DEFAULT_PAGE_SIZE);
+        }
         Page<VO> pageResult = getService().queryPagingList(page.getParam(), page.getPageNum(), page.getPageSize());
         return ResponseResult.returnSuccess(pageResult);
     }
