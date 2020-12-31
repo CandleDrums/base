@@ -8,8 +8,6 @@
 package com.cds.base.biz.service.impl;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Date;
@@ -26,12 +24,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cds.base.biz.service.BaseService;
 import com.cds.base.common.exception.ValidationException;
+import com.cds.base.common.page.Page;
 import com.cds.base.dal.dao.BaseDAO;
 import com.cds.base.exception.server.DAOException;
 import com.cds.base.generator.num.NumGenerator;
 import com.cds.base.util.bean.BeanUtils;
 import com.cds.base.util.bean.CheckUtils;
-import com.cds.base.util.lang.ArrayUtils;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+
+import tk.mybatis.mapper.entity.Condition;
+import tk.mybatis.mapper.entity.Example.Criteria;
 
 /**
  * @Description 基础Service实现
@@ -43,39 +46,39 @@ import com.cds.base.util.lang.ArrayUtils;
  */
 @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT,
     timeout = TransactionDefinition.TIMEOUT_DEFAULT)
-public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO> {
-    private static final String AND = "and";
-    private static final String EQUAL_TO = "EqualTo";
-    private static final String CREATE_METHOD_NAME = "createCriteria";
+public abstract class BaseServiceImpl<VO, DO> implements BaseService<VO> {
+    private static final String UPDATE_DATE = "updateDate";
+    private static final String CREATE_DATE = "createDate";
+    private static final String SERIAL_ID = "serialVersionUID";
+    private static final String VERSION = "version";
+    private static final String DELETED = "deleted";
+
     private static final Set<String> IGNORE_PROPERTIES;
     // VO类型
     protected Class<VO> voType;
     // DO类型
     protected Class<DO> doType;
-    // Example类型
-    protected Class<Example> exampleType;
 
     // 钩子方法
-    protected abstract BaseDAO<DO, Serializable, Example> getDAO();
+    protected abstract BaseDAO<DO> getDAO();
 
     static {
-        IGNORE_PROPERTIES = new HashSet<String>();
-        IGNORE_PROPERTIES.add("serialVersionUID");
-        IGNORE_PROPERTIES.add("createDate");
-        IGNORE_PROPERTIES.add("updateDate");
+        IGNORE_PROPERTIES = new HashSet<>();
+        IGNORE_PROPERTIES.add(SERIAL_ID);
+        IGNORE_PROPERTIES.add(UPDATE_DATE);
+        IGNORE_PROPERTIES.add(CREATE_DATE);
     }
 
     /**
      * 获取泛型
      */
     @SuppressWarnings("unchecked")
-    public BaseServiceImpl() {
+    protected BaseServiceImpl() {
         // 返回表示此 Class 所表示的实体（类、接口、基本类型或 void）的直接超类的 Type。
         ParameterizedType pt = (ParameterizedType)this.getClass().getGenericSuperclass();
         Type[] types = pt.getActualTypeArguments(); // 返回表示此类型实际类型参数的 Type 对象的数组
         voType = (Class<VO>)types[0];
         doType = (Class<DO>)types[1];
-        exampleType = (Class<Example>)types[2];
     }
 
     @Override
@@ -92,10 +95,10 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
         if (isGeneral()) {
             try {
                 // 防止数据库未设置默认值
-                BeanUtils.setProperty(doValue, "deleted", false);
-                BeanUtils.setProperty(doValue, "version", 0);
-                BeanUtils.setProperty(doValue, "updateDate", new Date());
-                BeanUtils.setProperty(doValue, "createDate", new Date());
+                BeanUtils.setProperty(doValue, DELETED, false);
+                BeanUtils.setProperty(doValue, VERSION, 0);
+                BeanUtils.setProperty(doValue, UPDATE_DATE, new Date());
+                BeanUtils.setProperty(doValue, CREATE_DATE, new Date());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -135,24 +138,26 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
         BeanUtils.copyProperties(value, oldValue);
 
         if (isGeneral()) {
-            Example example = newExample();
-            Object criteria = newCriteria(example);
-            addAndEqualPropertie(getPkName(), pk, pk.getClass(), criteria);
-            Object version = BeanUtils.getProperty(oldValue, "version");
+            Condition condition = getCondition();
+            Criteria criteria = getCriteria(condition);
+            criteria.andEqualTo(getPkName(), pk);
+
+            Object version = BeanUtils.getProperty(oldValue, VERSION);
             if (version != null) {
-                addAndEqualPropertie("version", version, Integer.class, criteria);
+                criteria.andEqualTo(VERSION, version);
                 try {
-                    BeanUtils.setProperty(oldValue, "version", Integer.parseInt(version.toString()) + 1);
+                    BeanUtils.setProperty(oldValue, VERSION, Integer.parseInt(version.toString()) + 1);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
             try {
-                BeanUtils.setProperty(oldValue, "updateDate", new Date());
+                BeanUtils.setProperty(oldValue, UPDATE_DATE, new Date());
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            successCount = getDAO().updateByExampleSelective(oldValue, example);
+            successCount = getDAO().updateByConditionSelective(oldValue, condition);
+
         } else {
             successCount = getDAO().updateByPrimaryKeySelective(oldValue);
         }
@@ -177,15 +182,15 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
         if (doDetail == null) {
             return false;
         }
-        Example example = newExample();
-        Object criteria = newCriteria(example);
-        addAndEqualPropertie(getPkName(), pk, getPkType(), criteria);
+        Condition condition = getCondition();
+        Criteria criteria = getCriteria(condition);
+        criteria.andEqualTo(getPkName(), pk);
         try {
-            BeanUtils.setProperty(doDetail, "deleted", true);
+            BeanUtils.setProperty(doDetail, DELETED, true);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return getDAO().updateByExample(doDetail, example) == 1;
+        return getDAO().updateByConditionSelective(doDetail, condition) == 1;
     }
 
     @Override
@@ -195,14 +200,17 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
             return getVO(getDAO().selectByPrimaryKey(Integer.parseInt(pk.toString())), voType);
         }
         List<DO> resultList = null;
-        Example example = newExample();
-        Object criteria = newCriteria(example);
+        Condition condition = getCondition();
+        Criteria criteria = getCriteria(condition);
         // 设置主键
-        addAndEqualPropertie(getPkName(), pk, getPkType(), criteria);
+        criteria.andEqualTo(getPkName(), pk);
 
-        resultList = getDAO().selectByExample(example);
+        resultList = getDAO().selectByCondition(condition);
         if (CheckUtils.isEmpty(resultList)) {
             return null;
+        }
+        if (resultList.size() > 1) {
+            throw new ValidationException("查询失败，存在多条 相似记录");
         }
         return getVO(resultList.get(0), voType);
     }
@@ -254,44 +262,42 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     public List<VO> queryAll(VO params) {
-        return this.queryPagingList(params, 0, 2000);
+        return this.queryPagingList(params, 0, 2000).getList();
     }
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
-    public List<VO> queryPagingList(VO params, Integer startIndex, Integer pageSize) {
-        if (CheckUtils.isEmpty(startIndex, pageSize))
+    public Page<VO> queryPagingList(VO params, Integer pageNum, Integer pageSize) {
+        if (CheckUtils.isEmpty(pageNum, pageSize)) {
             return null;
-        Example example = newExample();
-        Object criteria = newCriteria(example);
-        // 添加要查询的参数
-        addAllAndEqualPropertie(params, criteria);
-        if (isGeneral()) {
-            addAndEqualPropertie("deleted", false, Boolean.class, criteria);
         }
-        // 设置分页
-        setPagingProperties(example, Long.valueOf(startIndex), pageSize);
-        List<DO> resultList = getDAO().selectByExample(example);
+        // 分页
+        PageHelper.startPage(pageNum, pageSize);
 
-        return getVOList(resultList, voType);
+        Condition condition = getCondition();
+        Criteria criteria = getCriteria(condition);
+        criteria.andAllEqualTo(params);
+        if (isGeneral()) {
+            criteria.andEqualTo(DELETED, false);
+        }
+
+        List<DO> resultList = getDAO().selectByCondition(condition);
+        List<VO> voList = getVOList(resultList, voType);
+        Page<VO> pageInfo = (Page)new PageInfo<>(voList);
+        // 返回结果
+        pageInfo.setParam(params);
+        return pageInfo;
     }
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     public int queryPagingCount(VO param) {
-        Example example = newExample();
-        Object criteria = newCriteria(example);
-        // 添加要查询的参数
-        addAllAndEqualPropertie(param, criteria);
-        if (isGeneral()) {
-            addAndEqualPropertie("deleted", false, Boolean.class, criteria);
-        }
         // 设置分页
-        return (int)getDAO().countByExample(example);
+        return getDAO().selectCount(getDO(param, doType));
     }
 
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
-    protected DO getDoDetail(Serializable pk) {
+    public DO getDoDetail(Serializable pk) {
         if (CheckUtils.isEmpty(pk)) {
             return null;
         }
@@ -299,143 +305,22 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
             return getDAO().selectByPrimaryKey(Integer.parseInt(pk.toString()));
         }
         List<DO> resultList = null;
-        Example example = newExample();
-        Object criteria = newCriteria(example);
-        addAndEqualPropertie(getPkName(), pk, getPkType(), criteria);
-        resultList = getDAO().selectByExample(example);
+        Condition condition = getCondition();
+        Criteria criteria = getCriteria(condition);
+        criteria.andEqualTo(getPkName(), pk);
+        resultList = getDAO().selectByCondition(condition);
         if (CheckUtils.isEmpty(resultList)) {
             return null;
         }
         return resultList.get(0);
     }
 
-    /**
-     * @description 设置分页
-     * @return void
-     */
-    private void setPagingProperties(Example example, Long startIndex, Integer pageSize) {
-        if (startIndex == null || pageSize == null) {
-            return;
-        }
-        String setOffset = "setOffset";
-        String setLimit = "setLimit";
-
-        try {
-            Method setOffsetMethod = example.getClass().getMethod(setOffset, Long.class);
-            setOffsetMethod.invoke(example, startIndex);
-            Method setLimitMethod = example.getClass().getMethod(setLimit, Integer.class);
-            setLimitMethod.invoke(example, pageSize);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private Condition getCondition() {
+        return new Condition(doType);
     }
 
-    /**
-     * @description create new Example instance
-     * @return Example
-     */
-    protected Example newExample() {
-        try {
-            return exampleType.getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * @description create new Criteria instance
-     * @return Object
-     */
-    protected Object newCriteria(Example example) {
-
-        try {
-            Method createCriteria = example.getClass().getMethod(CREATE_METHOD_NAME);
-            return createCriteria.invoke(example);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * @description add equal query propertie
-     * @return void
-     */
-    protected void addAndEqualPropertie(String propertieName, Object propertieValue, Class propertieType,
-        Object criteria) {
-        String methodName = getMethodName(propertieName, criteria);
-        Method equalMethod;
-        try {
-            equalMethod = criteria.getClass().getMethod(methodName, propertieType);
-            equalMethod.invoke(criteria, propertieValue);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    protected void addAndInPropertie(String propertieName, Object propertieValue, Class propertieType,
-        Object criteria) {
-        String methodName = getMethodName(propertieName, criteria);
-        Method equalMethod;
-        try {
-            equalMethod = criteria.getClass().getMethod(methodName, propertieType);
-            equalMethod.invoke(criteria, propertieValue);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    protected void addAllAndEqualPropertie(VO value, Object criteria) {
-        if (value == null) {
-            return;
-        }
-        Class type = value.getClass();
-        // 取所有字段（包括基类的字段）
-        Field[] allFields = type.getDeclaredFields();
-        Class superClass = type.getSuperclass();
-        while (superClass != null) {
-            Field[] superFileds = superClass.getDeclaredFields();
-            allFields = ArrayUtils.addAll(allFields, superFileds);
-            superClass = superClass.getSuperclass();
-        }
-        for (Field field : allFields) {
-            field.setAccessible(true);
-            String propertieName = field.getName();
-            Class<?> propertieType = field.getType();
-            if (IGNORE_PROPERTIES.contains(propertieName)) {
-                continue;
-            }
-            Object propertieValue = null;
-            try {
-                propertieValue = field.get(value);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            if (propertieValue == null) {
-                continue;
-            }
-            this.addAndEqualPropertie(propertieName, propertieValue, propertieType, criteria);
-        }
-
-    }
-
-    /**
-     * @description 获取example中对应的方法名
-     * @return String
-     */
-    protected String getMethodName(String propertieName, Object criteria) {
-        String methodName = AND.toLowerCase() + propertieName.toLowerCase() + EQUAL_TO.toLowerCase();
-
-        Method[] declaredMethods = criteria.getClass().getDeclaredMethods();
-        for (Method method : declaredMethods) {
-            String name = method.getName().toLowerCase();
-            if (name.equals(methodName)) {
-                return method.getName();
-            }
-        }
-        return null;
+    private Criteria getCriteria(Condition condition) {
+        return condition.createCriteria();
     }
 
     /**
@@ -459,8 +344,9 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
      * @author liming
      */
     protected <From, To> To getDO(From from, Class<To> clazz) {
-        if (CheckUtils.isEmpty(from))
+        if (CheckUtils.isEmpty(from)) {
             return null;
+        }
 
         return BeanUtils.getObject(from, clazz);
     }
@@ -474,8 +360,9 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
      * @author liming
      */
     protected <From, To> To getVO(From from, Class<To> clazz) {
-        if (CheckUtils.isEmpty(from))
+        if (CheckUtils.isEmpty(from)) {
             return null;
+        }
         return BeanUtils.getObject(from, clazz);
     }
 
@@ -488,8 +375,9 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
      * @author liming
      */
     protected <From, To> List<To> getDOList(List<From> fromList, Class<To> clazz) {
-        if (CheckUtils.isEmpty(fromList))
+        if (CheckUtils.isEmpty(fromList)) {
             return null;
+        }
         return BeanUtils.getObjectList(fromList, clazz);
     }
 
@@ -502,13 +390,14 @@ public abstract class BaseServiceImpl<VO, DO, Example> implements BaseService<VO
      * @author liming
      */
     protected <From, To> List<To> getVOList(List<From> fromList, Class<To> clazz) {
-        if (CheckUtils.isEmpty(fromList))
+        if (CheckUtils.isEmpty(fromList)) {
             return null;
+        }
         return BeanUtils.getObjectList(fromList, clazz);
     }
 
     protected Map<String, Object> getQueryMap() {
-        return new HashMap<String, Object>();
+        return new HashMap<>();
     }
 
     protected String getPkName() {

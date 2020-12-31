@@ -12,6 +12,7 @@ import java.util.Date;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import tk.mybatis.mapper.annotation.Version;
 
 /**
  * @Description 通用模型
@@ -30,6 +31,7 @@ public class GeneralModel extends BasicModel {
     // 业务编码，非空，一般由生成器生成，每个表有单独前缀
     private String num;
     // 版本号，非空，用于控制并发更新
+    @Version
     private Integer version;
     // 更新时间，非空，默认与创建时间相同
     private Date updateDate;

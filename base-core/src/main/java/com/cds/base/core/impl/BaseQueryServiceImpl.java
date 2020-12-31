@@ -15,7 +15,6 @@ import javax.validation.constraints.NotNull;
 import com.cds.base.api.service.BaseQueryService;
 import com.cds.base.biz.service.BaseService;
 import com.cds.base.common.page.Page;
-import com.cds.base.common.page.PageResult;
 import com.cds.base.common.result.ResponseResult;
 import com.cds.base.util.bean.CheckUtils;
 
@@ -57,17 +56,8 @@ public abstract class BaseQueryServiceImpl<VO> implements BaseQueryService<VO> {
     }
 
     @Override
-    public ResponseResult<PageResult<VO>> queryPagingList(@NotNull Page<VO> page) {
-        List<VO> resultList = null;
-        resultList = getService().queryPagingList(page.getParam(), page.getStartIndex(), page.getPageSize());
-        if (CheckUtils.isEmpty(resultList)) {
-            return ResponseResult.returnNull(null);
-        }
-        int resultCount = getService().queryPagingCount(page.getParam());
-
-        PageResult<VO> pageResult = new PageResult<VO>();
-        pageResult.setResultList(resultList);
-        pageResult.setResultCount(resultCount);
+    public ResponseResult<Page<VO>> queryPagingList(@NotNull Page<VO> page) {
+        Page<VO> pageResult = getService().queryPagingList(page.getParam(), page.getPageNum(), page.getPageSize());
         return ResponseResult.returnSuccess(pageResult);
     }
 }

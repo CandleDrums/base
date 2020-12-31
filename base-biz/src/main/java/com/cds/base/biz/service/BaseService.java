@@ -10,6 +10,8 @@ package com.cds.base.biz.service;
 import java.io.Serializable;
 import java.util.List;
 
+import com.cds.base.common.page.Page;
+
 /**
  * @Description 基础Service
  * @Notes 未填写备注
@@ -73,7 +75,7 @@ public interface BaseService<VO> {
      * @description 根据参数分页查询
      * @return List<VO>
      */
-    List<VO> queryPagingList(VO params, Integer startIndex, Integer pageSize);
+    Page<VO> queryPagingList(VO params, Integer pageNum, Integer pageSize);
 
     /**
      * @description 查询总数
