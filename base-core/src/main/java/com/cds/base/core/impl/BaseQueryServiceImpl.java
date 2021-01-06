@@ -66,7 +66,7 @@ public abstract class BaseQueryServiceImpl<VO> implements BaseQueryService<VO> {
         if (page.getPageSize() <= 0) {
             page.setPageSize(Page.DEFAULT_PAGE_SIZE);
         }
-        Page<VO> pageResult = getService().queryPagingList(page.getParam(), page.getPageNum(), page.getPageSize());
+        Page<VO> pageResult = getService().queryPaging(page.getParam(), page.getPageNum(), page.getPageSize());
         return ResponseResult.returnSuccess(pageResult);
     }
 }

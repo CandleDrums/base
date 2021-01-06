@@ -75,11 +75,11 @@ public interface BaseService<VO> {
      * @description 根据参数分页查询
      * @return List<VO>
      */
-    Page<VO> queryPagingList(VO params, Integer pageNum, Integer pageSize);
+    Page<VO> queryPaging(VO params, Integer pageNum, Integer pageSize);
 
     /**
      * @description 查询总数
      * @return int
      */
-    int queryPagingCount(VO params);
+    int count(VO params);
 }

@@ -11,10 +11,8 @@ import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.springframework.transaction.TransactionDefinition;
@@ -262,12 +260,12 @@ public abstract class BaseServiceImpl<VO, DO> implements BaseService<VO> {
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     public List<VO> queryAll(VO params) {
-        return this.queryPagingList(params, 0, 2000).getList();
+        return this.queryPaging(params, 0, 2000).getList();
     }
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
-    public Page<VO> queryPagingList(VO params, Integer pageNum, Integer pageSize) {
+    public Page<VO> queryPaging(VO params, Integer pageNum, Integer pageSize) {
         if (CheckUtils.isEmpty(pageNum, pageSize)) {
             return null;
         }
@@ -298,8 +296,7 @@ public abstract class BaseServiceImpl<VO, DO> implements BaseService<VO> {
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
-    public int queryPagingCount(VO param) {
-        // 设置分页
+    public int count(VO param) {
         return getDAO().selectCount(getDO(param, doType));
     }
 
@@ -322,24 +319,20 @@ public abstract class BaseServiceImpl<VO, DO> implements BaseService<VO> {
         return resultList.get(0);
     }
 
+    /**
+     * @description 创建Condition
+     * @return Condition
+     */
     private Condition getCondition() {
         return new Condition(doType);
     }
 
+    /**
+     * @description 获取Criteria
+     * @return Criteria
+     */
     private Criteria getCriteria(Condition condition) {
         return condition.createCriteria();
-    }
-
-    /**
-     * @description 获取类名
-     * @return String
-     */
-    protected String getRuleClassName(VO value) {
-        String simpleName = value.getClass().getSimpleName();
-        if (simpleName.lastIndexOf("VO") > 0 || simpleName.lastIndexOf("DO") > 0) {
-            return simpleName.substring(0, simpleName.length() - 2);
-        }
-        return simpleName;
     }
 
     /**
@@ -403,10 +396,10 @@ public abstract class BaseServiceImpl<VO, DO> implements BaseService<VO> {
         return BeanUtils.getObjectList(fromList, clazz);
     }
 
-    protected Map<String, Object> getQueryMap() {
-        return new HashMap<>();
-    }
-
+    /**
+     * @description 获取主键名称
+     * @return String
+     */
     protected String getPkName() {
         String pkName = "id";
         if (isGeneral()) {
@@ -416,16 +409,9 @@ public abstract class BaseServiceImpl<VO, DO> implements BaseService<VO> {
     }
 
     /**
-     * @description 主键类型
-     * @return Class
+     * @description 是否为通用Model
+     * @return boolean
      */
-    protected Class getPkType() {
-        if (isGeneral()) {
-            return String.class;
-        }
-        return Integer.class;
-    }
-
     protected boolean isGeneral() {
         Class<? super DO> superclass = doType.getSuperclass();
         if (superclass == null) {
