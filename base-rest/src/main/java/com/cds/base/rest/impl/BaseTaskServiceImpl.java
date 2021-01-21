@@ -5,7 +5,7 @@
  * @Date Jul 2, 2020 5:51:55 PM
  * @Copyright (c) 2020 CandleDrumS.com All Right Reserved.
  */
-package com.cds.base.core.impl;
+package com.cds.base.rest.impl;
 
 import com.cds.base.api.service.BaseTaskService;
 import com.cds.base.common.result.ResponseResult;

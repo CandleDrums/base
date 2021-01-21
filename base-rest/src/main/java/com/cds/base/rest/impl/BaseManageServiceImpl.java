@@ -5,7 +5,7 @@
  * @Date Nov 3, 2020 11:13:57 AM
  * @Copyright (c) 2020 CandleDrums.com All Right Reserved.
  */
-package com.cds.base.core.impl;
+package com.cds.base.rest.impl;
 
 import java.io.Serializable;
 import java.util.List;
