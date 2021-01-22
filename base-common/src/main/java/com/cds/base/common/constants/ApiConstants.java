@@ -19,5 +19,7 @@ public class ApiConstants {
     public static final String API_PREFIX = "api";
     // 外部api
     public static final String OPEN_API_PREFIX = "openapi";
+    // 管理api
+    public static final String ADMIN_PREFIX = "admin";
 
 }
