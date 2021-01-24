@@ -12,6 +12,8 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import org.springframework.web.bind.annotation.PathVariable;
+
 import com.cds.base.api.service.BaseQueryService;
 import com.cds.base.biz.service.BaseService;
 import com.cds.base.common.page.Page;
@@ -29,12 +31,12 @@ public abstract class BaseQueryServiceImpl<VO> implements BaseQueryService<VO> {
     protected abstract BaseService<VO> getService();
 
     @Override
-    public ResponseResult<VO> detail(@NotNull Serializable pk) {
+    public ResponseResult<VO> detail(@PathVariable @NotNull Serializable pk) {
         return ResponseResult.returnSuccess(getService().detail(pk));
     }
 
     @Override
-    public ResponseResult<VO> detail(@NotNull VO value) {
+    public ResponseResult<VO> queryUnique(@NotNull VO value) {
         List<VO> resultList = getService().queryAll(value);
         if (CheckUtils.isEmpty(resultList)) {
             return ResponseResult.returnNull(null);
@@ -46,7 +48,7 @@ public abstract class BaseQueryServiceImpl<VO> implements BaseQueryService<VO> {
     }
 
     @Override
-    public ResponseResult<List<VO>> queryAll(@NotNull VO params) {
+    public ResponseResult<List<VO>> query(@NotNull VO params) {
         List<VO> resultList = null;
         resultList = getService().queryAll(params);
         if (CheckUtils.isEmpty(resultList)) {
@@ -56,7 +58,7 @@ public abstract class BaseQueryServiceImpl<VO> implements BaseQueryService<VO> {
     }
 
     @Override
-    public ResponseResult<Page<VO>> queryPagingList(@NotNull Page<VO> page) {
+    public ResponseResult<Page<VO>> queryPage(Page<VO> page) {
         if (page == null) {
             page = new Page<>();
         }

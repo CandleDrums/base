@@ -22,7 +22,7 @@ import com.cds.base.common.result.ResponseResult;
 public interface BaseQueryService<VO> {
 
     // uri前缀
-    final static String BASE_PREFIX = "/query";
+    String BASE_PREFIX = "/query";
 
     /**
      * @description 根据业务主键查询
@@ -31,21 +31,21 @@ public interface BaseQueryService<VO> {
     ResponseResult<VO> detail(Serializable pk);
 
     /**
-     * @description 根据实体值查询唯一记录
-     * @return ResponseResult<VO>
-     */
-    ResponseResult<VO> detail(VO value);
-
-    /**
      * @description 根据实体值查询
      * @return ResponseResult<List<T>>
      */
-    ResponseResult<List<VO>> queryAll(VO value);
+    ResponseResult<List<VO>> query(VO value);
+
+    /**
+     * @description 根据实体值查询唯一记录
+     * @return ResponseResult<VO>
+     */
+    ResponseResult<VO> queryUnique(VO value);
 
     /**
      * @description 分页查询
      * @return ResponseResult<List<T>>
      */
-    ResponseResult<Page<VO>> queryPagingList(Page<VO> page);
+    ResponseResult<Page<VO>> queryPage(Page<VO> page);
 
 }
