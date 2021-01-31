@@ -33,10 +33,16 @@ public class ResponseResult<T> implements Serializable {
     private T data;
 
     public static <T> boolean isSuccess(ResponseResult<T> result) {
+        if (result == null || result.getResult() == null) {
+            return false;
+        }
         return result.getResult().equals(ResultCode.SUCCESS.name());
     }
 
     public static <T> boolean isNull(ResponseResult<T> result) {
+        if (result == null || result.getResult() == null) {
+            return true;
+        }
         return result.getResult().equals(ResultCode.NULL.name());
     }
 
