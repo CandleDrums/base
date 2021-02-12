@@ -11,8 +11,8 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * @Description 基础DAO接口
- * @Notes 未填写备注
+ * @Description 自定义DAO接口
+ * @Notes 适用于无num等实体
  * @author liming
  * @Date Sep 4, 2020 5:03:17 PM
  */
