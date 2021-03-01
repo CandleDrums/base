@@ -260,7 +260,7 @@ public abstract class BaseServiceImpl<VO, DO> implements BaseService<VO> {
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     public List<VO> queryAll(VO params) {
-        return this.queryPaging(params, 0, 2000).getList();
+        return this.queryPaging(params, 1, 2000).getList();
     }
 
     @Override
