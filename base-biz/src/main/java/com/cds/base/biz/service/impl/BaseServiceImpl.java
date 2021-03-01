@@ -274,7 +274,7 @@ public abstract class BaseServiceImpl<VO, DO> implements BaseService<VO> {
 
         Condition condition = getCondition();
         Criteria criteria = getCriteria(condition);
-        criteria.andAllEqualTo(params);
+        criteria.andEqualTo(params);
         if (isGeneral()) {
             criteria.andEqualTo(DELETED, false);
         }

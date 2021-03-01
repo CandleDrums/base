@@ -22,8 +22,6 @@
 		<module>base-cache</module>
 		<module>base-exception</module>
 		<module>base-generator</module>
-
-		<module>base-security</module>
 	</modules>
 	<properties>
 		<java.version>1.8</java.version>
