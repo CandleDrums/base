@@ -24,7 +24,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class EhCacheConfig {
     @Bean
-    public CacheManager cacheManager() {
+    public CacheManager ehCacheManager() {
         return CacheManagerBuilder.newCacheManagerBuilder()
             .withCache("defaultCache",
                 CacheConfigurationBuilder
